@@ -12,7 +12,7 @@ Set everything under **Settings → Secrets and variables → Actions**.
 | Secret | Description | How to generate |
 |---|---|---|
 | `KUBECONFIG` | kubeconfig of the target cluster, **base64-encoded** | `base64 -w0 ~/.kube/config` |
-| `VITE_API_URL` | Public URL of the backend API — baked into the JS bundle at build time | e.g. `https://api.inventory.example.com` |
+| `VITE_API_URL` | Public URL of the backend API — baked into the JS bundle at build time | `https://invent-back.jcrlabs.net` |
 | `GHCR_PAT` | Personal Access Token for the cluster to pull images from GHCR | [Create PAT](https://github.com/settings/tokens) with scope `read:packages` |
 
 ---
@@ -55,6 +55,18 @@ The `GHCR_PAT` secret is only needed by the Kubernetes cluster to pull the image
 |---|---|
 | Push to `main` | `latest`, `sha-<short-sha>` |
 | Push tag `v1.2.3` | `1.2.3`, `1.2`, `latest` |
+
+---
+
+## Kubernetes Ingress
+
+The frontend is exposed via the cluster's nginx ingress controller:
+
+| Domain | Service |
+|---|---|
+| `tallerjcr.jcrlabs.net` | `inventory-front-service:80` |
+
+Make sure a DNS `A` record points `tallerjcr.jcrlabs.net` to the cluster's ingress IP.
 
 ---
 

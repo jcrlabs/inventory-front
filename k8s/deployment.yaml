@@ -65,11 +65,10 @@ kind: Ingress
 metadata:
   name: inventory-front-ingress
   namespace: inventory
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-    - host: inventory.local
+    - host: tallerjcr.jcrlabs.net
       http:
         paths:
           - path: /
