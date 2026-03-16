@@ -55,11 +55,9 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
             <p className="text-lg font-bold text-gray-900">
               {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
             </p>
-            <p className="text-xs text-gray-500">
-              Stock: <span className={`font-medium ${product.stock <= 0 ? 'text-red-500' : 'text-green-600'}`}>
-                {product.stock}
-              </span>
-            </p>
+            <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full mt-1 ${product.paid ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+              {product.paid ? 'Pagado' : 'Pendiente'}
+            </span>
           </div>
 
           <div className="flex items-center gap-1">
@@ -90,10 +88,6 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
             )}
           </div>
         </div>
-
-        {product.sku && (
-          <p className="text-xs text-gray-400 mt-2">SKU: {product.sku}</p>
-        )}
       </div>
     </div>
   )

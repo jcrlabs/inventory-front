@@ -44,7 +44,13 @@ export default function ProductsPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: productsApi.create,
+    mutationFn: async ({ data, imageFile }: { data: CreateProductInput; imageFile?: File }) => {
+      const created = await productsApi.create(data)
+      if (imageFile) {
+        await productsApi.uploadImage(created.id, imageFile)
+      }
+      return created
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setShowCreate(false)
@@ -54,8 +60,13 @@ export default function ProductsPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CreateProductInput }) =>
-      productsApi.update(id, data),
+    mutationFn: async ({ id, data, imageFile }: { id: string; data: CreateProductInput; imageFile?: File }) => {
+      const updated = await productsApi.update(id, data)
+      if (imageFile) {
+        await productsApi.uploadImage(id, imageFile)
+      }
+      return updated
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setEditingProduct(null)
@@ -212,7 +223,7 @@ export default function ProductsPage() {
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Producto</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Categoría</th>
                 <th className="text-right px-4 py-3 font-medium text-gray-600">Precio</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600">Stock</th>
+                <th className="text-center px-4 py-3 font-medium text-gray-600">Pago</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">Estado</th>
                 {(canManage || canDelete) && (
                   <th className="px-4 py-3" />
@@ -235,7 +246,6 @@ export default function ProductsPage() {
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">{product.name}</p>
-                        {product.sku && <p className="text-xs text-gray-400">SKU: {product.sku}</p>}
                       </div>
                     </div>
                   </td>
@@ -243,8 +253,10 @@ export default function ProductsPage() {
                   <td className="px-4 py-3 text-right font-medium text-gray-900">
                     {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                   </td>
-                  <td className={`px-4 py-3 text-right font-medium ${product.stock === 0 ? 'text-red-500' : product.stock <= 5 ? 'text-amber-500' : 'text-green-600'}`}>
-                    {product.stock}
+                  <td className="px-4 py-3 text-center">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${product.paid ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                      {product.paid ? 'Pagado' : 'Pendiente'}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${product.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -300,7 +312,7 @@ export default function ProductsPage() {
       {/* Create Modal */}
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Producto">
         <ProductForm
-          onSubmit={async (data) => { await createMutation.mutateAsync(data) }}
+          onSubmit={async (data, imageFile) => { await createMutation.mutateAsync({ data, imageFile }) }}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -314,7 +326,7 @@ export default function ProductsPage() {
         {editingProduct && (
           <ProductForm
             product={editingProduct}
-            onSubmit={async (data) => { await updateMutation.mutateAsync({ id: editingProduct.id, data }) }}
+            onSubmit={async (data, imageFile) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, imageFile }) }}
             isLoading={updateMutation.isPending}
           />
         )}

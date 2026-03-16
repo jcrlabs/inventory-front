@@ -31,6 +31,7 @@ export interface Product {
   category?: Category
   created_by_id: string
   created_by?: User
+  paid: boolean
   active: boolean
   created_at: string
   updated_at: string
@@ -70,9 +71,8 @@ export interface CreateProductInput {
   name: string
   description: string
   price: number
-  stock: number
-  sku?: string
   category_id?: string
+  paid?: boolean
   active?: boolean
 }
 
