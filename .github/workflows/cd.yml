@@ -10,6 +10,9 @@ permissions:
   packages: write
 
 env:
+  # NOTE: github.repository_owner may contain uppercase letters which OCI
+  # registries reject. Each job overwrites IMAGE with a lowercase version via
+  # the "Lowercase image name" step.
   IMAGE: ghcr.io/${{ github.repository_owner }}/inventory-front
   NAMESPACE: taller-inventario
   # Backend URL baked into the JS bundle at build time.
@@ -29,6 +32,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Lowercase image name
+        run: echo "IMAGE=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/inventory-front" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
@@ -95,6 +101,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Lowercase image name
+        run: echo "IMAGE=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/inventory-front" >> "$GITHUB_ENV"
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
