@@ -40,7 +40,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
                 onClick={() => onChange(p as number)}
                 className={`w-8 h-8 rounded-lg text-sm font-medium ${
                   p === page
-                    ? 'bg-sky-500 text-white'
+                    ? 'bg-violet-600 text-white'
                     : 'hover:bg-gray-100 text-gray-700'
                 }`}
               >

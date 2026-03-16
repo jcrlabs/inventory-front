@@ -45,10 +45,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-sky-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-violet-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-sky-500 rounded-2xl mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-violet-600 rounded-2xl mb-4 shadow-lg">
             <Package className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-white">Inventory</h1>
@@ -66,7 +66,7 @@ export default function RegisterPage() {
                   minLength: { value: 3, message: 'Mínimo 3 caracteres' },
                   maxLength: { value: 50, message: 'Máximo 50 caracteres' },
                 })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
                 placeholder="mi_usuario"
                 autoComplete="username"
               />
@@ -83,7 +83,7 @@ export default function RegisterPage() {
                   pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email inválido' },
                 })}
                 type="email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
                 placeholder="usuario@ejemplo.com"
                 autoComplete="email"
               />
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                     },
                   })}
                   type={showPassword ? 'text' : 'password'}
-                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
                   placeholder="••••••••"
                   autoComplete="new-password"
                 />
@@ -133,7 +133,7 @@ export default function RegisterPage() {
                     validate: (val) => val === password || 'Las contraseñas no coinciden',
                   })}
                   type={showConfirm ? 'text' : 'password'}
-                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
                   placeholder="••••••••"
                   autoComplete="new-password"
                 />
@@ -158,7 +158,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-sky-500 text-white font-semibold rounded-xl hover:bg-sky-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+              className="w-full py-3 bg-violet-600 text-white font-semibold rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
             >
               {isLoading && (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -168,7 +168,7 @@ export default function RegisterPage() {
 
             <p className="text-center text-sm text-gray-500">
               ¿Ya tienes cuenta?{' '}
-              <Link to="/login" className="text-sky-600 font-medium hover:underline">
+              <Link to="/login" className="text-violet-700 font-medium hover:underline">
                 Inicia sesión
               </Link>
             </p>

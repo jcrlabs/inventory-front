@@ -124,7 +124,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         </label>
         <input
           {...register('name', { required: 'El nombre es obligatorio' })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
           placeholder="Nombre del producto"
         />
         {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
@@ -136,7 +136,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         <textarea
           {...register('description')}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 resize-none"
           placeholder="Descripción del producto"
         />
       </div>
@@ -157,7 +157,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
               })}
               type="number"
               step="0.01"
-              className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
               placeholder="0.00"
             />
           </div>
@@ -168,7 +168,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
           <select
             {...register('category_id')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
           >
             <option value="">Sin categoría</option>
             {categories.map((cat) => (
@@ -198,7 +198,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-sky-400 hover:text-sky-400 transition-colors"
+            className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-violet-500 hover:text-violet-500 transition-colors"
           >
             <ImagePlus size={24} />
             <span className="text-sm">Haz clic para subir una imagen</span>
@@ -220,7 +220,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
             {...register('paid')}
             type="checkbox"
             id="paid"
-            className="w-4 h-4 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
+            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
           />
           <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
         </div>
@@ -229,7 +229,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
             {...register('active')}
             type="checkbox"
             id="active"
-            className="w-4 h-4 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
+            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
           />
           <label htmlFor="active" className="text-sm text-gray-700">Producto activo</label>
         </div>
@@ -259,7 +259,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
                     return true
                   },
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
                 placeholder="Nombre del contacto"
               />
               {contactErrors.name && (
@@ -280,7 +280,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
                     return true
                   },
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
                 placeholder="Ej: Responsable de ventas"
               />
               {contactErrors.subdato && (
@@ -295,7 +295,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
               <input
                 {...registerContact('email')}
                 type="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
                 placeholder="contacto@ejemplo.com"
               />
             </div>
@@ -305,7 +305,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
               <input
                 {...registerContact('phone')}
                 type="tel"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
                 placeholder="+34 600 000 000"
               />
             </div>
@@ -317,7 +317,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 disabled:opacity-50 flex items-center gap-2"
+          className="px-6 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
         >
           {isLoading && (
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

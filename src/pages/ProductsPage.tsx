@@ -98,7 +98,7 @@ export default function ProductsPage() {
         {canManage && (
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors"
           >
             <Plus size={18} />
             Nuevo producto
@@ -115,10 +115,10 @@ export default function ProductsPage() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Buscar por nombre, SKU..."
-              className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
             />
             {isFetching && (
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
             )}
           </div>
 
@@ -131,7 +131,7 @@ export default function ProductsPage() {
                 page: 1,
               }))
             }
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
           >
             <option value="">Todas las categorías</option>
             {categories.map((cat) => (
@@ -150,7 +150,7 @@ export default function ProductsPage() {
                 page: 1,
               }))
             }
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
           >
             <option value="">Todos los estados</option>
             <option value="true">Activos</option>
@@ -160,13 +160,13 @@ export default function ProductsPage() {
           <div className="flex items-center gap-1 border border-gray-300 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-sky-500 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-violet-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <LayoutGrid size={16} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-sky-500 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+              className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-violet-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <List size={16} />
             </button>
@@ -197,7 +197,7 @@ export default function ProductsPage() {
           {canManage && (
             <button
               onClick={() => setShowCreate(true)}
-              className="mt-4 text-sky-500 hover:underline text-sm"
+              className="mt-4 text-violet-600 hover:underline text-sm"
             >
               Crear el primero
             </button>
@@ -268,7 +268,7 @@ export default function ProductsPage() {
                         {canManage && (
                           <button
                             onClick={() => setEditingProduct(product)}
-                            className="text-sky-500 hover:text-sky-700 text-xs font-medium"
+                            className="text-violet-600 hover:text-sky-700 text-xs font-medium"
                           >
                             Editar
                           </button>

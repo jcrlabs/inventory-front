@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Package, Tag, TrendingUp, AlertTriangle, Users, ShoppingCart } from 'lucide-react'
+import { Package, Tag, TrendingUp, AlertTriangle, Users, ShoppingCart, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { statsApi } from '../api/stats'
 import { productsApi } from '../api/products'
@@ -19,7 +19,7 @@ function StatsGrid() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {Array.from({ length: 4 }, (_, i) => <StatCardSkeleton key={i} />)}
       </div>
     )
@@ -31,14 +31,16 @@ function StatsGrid() {
       value: stats?.total_products ?? 0,
       sub: `${stats?.active_products ?? 0} activos`,
       icon: Package,
-      color: 'bg-sky-500',
+      gradient: 'from-violet-500 to-violet-700',
+      glow: 'rgba(109,40,217,0.25)',
       to: '/products',
     },
     {
       label: 'Categorías',
       value: stats?.total_categories ?? 0,
       icon: Tag,
-      color: 'bg-violet-500',
+      gradient: 'from-fuchsia-500 to-fuchsia-700',
+      glow: 'rgba(168,85,247,0.2)',
       to: '/categories',
     },
     {
@@ -47,9 +49,10 @@ function StatsGrid() {
         style: 'currency',
         currency: 'EUR',
       }),
-      sub: `${stats?.total_stock ?? 0} unidades totales`,
+      sub: `${stats?.total_stock ?? 0} unidades`,
       icon: TrendingUp,
-      color: 'bg-emerald-500',
+      gradient: 'from-emerald-400 to-emerald-600',
+      glow: 'rgba(16,185,129,0.2)',
       to: '/products',
     },
     {
@@ -57,7 +60,8 @@ function StatsGrid() {
       value: stats?.out_of_stock ?? 0,
       sub: `${stats?.low_stock ?? 0} con stock bajo`,
       icon: AlertTriangle,
-      color: stats?.out_of_stock ? 'bg-red-500' : 'bg-gray-400',
+      gradient: stats?.out_of_stock ? 'from-rose-400 to-rose-600' : 'from-slate-400 to-slate-500',
+      glow: stats?.out_of_stock ? 'rgba(239,68,68,0.2)' : 'rgba(100,116,139,0.15)',
       to: '/products',
     },
     ...(isAdmin
@@ -65,26 +69,36 @@ function StatsGrid() {
           label: 'Usuarios',
           value: stats?.total_users ?? 0,
           icon: Users,
-          color: 'bg-amber-500',
+          gradient: 'from-amber-400 to-amber-600',
+          glow: 'rgba(245,158,11,0.2)',
           to: '/users',
         }]
       : []),
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {cards.map(({ label, value, sub, icon: Icon, color, to }) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      {cards.map(({ label, value, sub, icon: Icon, gradient, glow, to }) => (
         <Link
           key={label}
           to={to}
-          className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition-shadow"
+          className="group bg-white rounded-2xl p-5 border border-slate-200/70 shadow-card hover:shadow-card-md hover:-translate-y-0.5 transition-all duration-200"
         >
-          <div className={`w-10 h-10 ${color} rounded-lg flex items-center justify-center mb-4`}>
-            <Icon className="text-white" size={20} />
+          <div className="flex items-start justify-between mb-4">
+            <div
+              className={`w-10 h-10 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center flex-shrink-0`}
+              style={{ boxShadow: `0 4px 14px -3px ${glow}` }}
+            >
+              <Icon className="text-white" size={18} />
+            </div>
+            <ArrowUpRight
+              size={15}
+              className="text-slate-300 group-hover:text-violet-500 transition-colors mt-0.5"
+            />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
-          <p className="text-sm text-gray-500 mt-1">{label}</p>
-          {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+          <p className="text-[1.6rem] font-bold text-slate-900 leading-none">{value}</p>
+          <p className="text-[13px] text-slate-500 mt-1.5 font-medium">{label}</p>
+          {sub && <p className="text-[11px] text-slate-400 mt-0.5">{sub}</p>}
         </Link>
       ))}
     </div>
@@ -108,27 +122,27 @@ function RecentProducts() {
   const lowStockProducts = (lowStockData?.data ?? []).filter((p) => p.stock <= 5)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
       {lowStockProducts.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <AlertTriangle className="text-amber-500" size={18} />
+        <div className="bg-white rounded-2xl border border-slate-200/70 shadow-card p-5">
+          <h2 className="text-[13px] font-semibold text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-wider">
+            <AlertTriangle className="text-amber-500" size={15} />
             Alertas de Stock
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {lowStockProducts.map((p) => (
               <div key={p.id} className="flex items-center justify-between">
                 <Link
                   to={`/products/${p.id}`}
-                  className="text-sm text-gray-700 hover:text-sky-600 truncate"
+                  className="text-[13px] text-slate-700 hover:text-violet-600 truncate font-medium transition-colors"
                 >
                   {p.name}
                 </Link>
                 <span
-                  className={`text-xs font-semibold px-2 py-0.5 rounded-full ml-3 flex-shrink-0 ${
+                  className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ml-3 flex-shrink-0 ${
                     p.stock === 0
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-amber-100 text-amber-700'
+                      ? 'bg-rose-100 text-rose-600'
+                      : 'bg-amber-100 text-amber-600'
                   }`}
                 >
                   {p.stock === 0 ? 'Sin stock' : `${p.stock} uds`}
@@ -139,14 +153,14 @@ function RecentProducts() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-2xl border border-slate-200/70 shadow-card p-5">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-semibold text-gray-900 flex items-center gap-2">
-            <ShoppingCart size={18} className="text-gray-400" />
+          <h2 className="text-[13px] font-semibold text-slate-700 flex items-center gap-2 uppercase tracking-wider">
+            <ShoppingCart size={15} className="text-slate-400" />
             Últimos Productos
           </h2>
-          <Link to="/products" className="text-sm text-sky-500 hover:underline">
-            Ver todos
+          <Link to="/products" className="text-[12px] text-violet-600 hover:text-violet-700 font-medium transition-colors">
+            Ver todos →
           </Link>
         </div>
 
@@ -154,19 +168,19 @@ function RecentProducts() {
           <div className="space-y-3">
             {Array.from({ length: 4 }, (_, i) => (
               <div key={i} className="flex items-center gap-3 animate-pulse">
-                <div className="w-9 h-9 rounded-lg bg-gray-200 flex-shrink-0" />
-                <div className="flex-1 space-y-1">
-                  <div className="h-3 bg-gray-200 rounded w-3/4" />
-                  <div className="h-3 bg-gray-200 rounded w-1/3" />
+                <div className="w-9 h-9 rounded-xl bg-slate-200 flex-shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3 bg-slate-200 rounded w-3/4" />
+                  <div className="h-3 bg-slate-200 rounded w-1/3" />
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {products.map((p) => (
               <div key={p.id} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
+                <div className="w-9 h-9 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden">
                   {p.image_url ? (
                     <img
                       src={p.image_url}
@@ -176,24 +190,26 @@ function RecentProducts() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Package className="text-gray-400" size={16} />
+                      <Package className="text-slate-400" size={15} />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <Link
                     to={`/products/${p.id}`}
-                    className="text-sm font-medium text-gray-900 hover:text-sky-600 truncate block"
+                    className="text-[13px] font-medium text-slate-800 hover:text-violet-600 truncate block transition-colors"
                   >
                     {p.name}
                   </Link>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-[11px] text-slate-400">
                     {p.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                   </p>
                 </div>
                 <span
-                  className={`text-xs flex-shrink-0 font-medium ${
-                    p.active ? 'text-green-600' : 'text-red-500'
+                  className={`text-[11px] flex-shrink-0 font-semibold px-2 py-0.5 rounded-full ${
+                    p.active
+                      ? 'bg-emerald-100 text-emerald-600'
+                      : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   {p.active ? 'Activo' : 'Inactivo'}
@@ -201,7 +217,7 @@ function RecentProducts() {
               </div>
             ))}
             {products.length === 0 && (
-              <p className="text-sm text-gray-400 text-center py-6">
+              <p className="text-[13px] text-slate-400 text-center py-8">
                 No hay productos aún
               </p>
             )}
@@ -216,12 +232,12 @@ export default function DashboardPage() {
   const user = useAuthStore((s) => s.user)
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Bienvenido, {user?.username ?? '—'} 👋
+    <div className="p-7">
+      <div className="mb-7">
+        <h1 className="text-xl font-bold text-slate-900">
+          Bienvenido, {user?.username ?? '—'}
         </h1>
-        <p className="text-gray-500 mt-1">Resumen del inventario</p>
+        <p className="text-[13px] text-slate-400 mt-0.5">Resumen del inventario</p>
       </div>
 
       <ErrorBoundary>

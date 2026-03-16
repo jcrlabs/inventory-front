@@ -43,7 +43,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
         </div>
 
         {product.category && (
-          <p className="text-xs text-sky-600 font-medium mb-2">{product.category.name}</p>
+          <p className="text-xs text-violet-700 font-medium mb-2">{product.category.name}</p>
         )}
 
         {product.description && (
@@ -71,7 +71,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
             {canManage && (
               <button
                 onClick={() => onEdit(product)}
-                className="p-1.5 rounded-lg hover:bg-sky-50 text-gray-500 hover:text-sky-600 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-violet-50 text-gray-500 hover:text-violet-700 transition-colors"
                 title="Editar"
               >
                 <Edit size={16} />

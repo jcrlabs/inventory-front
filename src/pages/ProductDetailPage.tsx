@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -65,7 +65,7 @@ export default function ProductDetailPage() {
     return (
       <div className="p-8 text-center">
         <p className="text-gray-500">Producto no encontrado</p>
-        <Link to="/products" className="mt-4 text-sky-500 hover:underline inline-block">
+        <Link to="/products" className="mt-4 text-violet-600 hover:underline inline-block">
           Volver a productos
         </Link>
       </div>
@@ -144,12 +144,12 @@ export default function ProductDetailPage() {
               <div className="space-y-2">
                 <div>
                   <p className="text-base font-semibold text-gray-900">{contact.name}</p>
-                  <p className="text-xs text-sky-600 font-medium">{contact.subdato}</p>
+                  <p className="text-xs text-violet-700 font-medium">{contact.subdato}</p>
                 </div>
                 {contact.email && (
                   <a
                     href={`mailto:${contact.email}`}
-                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-sky-600 transition-colors"
+                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-violet-700 transition-colors"
                   >
                     <Mail size={14} className="flex-shrink-0" />
                     {contact.email}
@@ -158,7 +158,7 @@ export default function ProductDetailPage() {
                 {contact.phone && (
                   <a
                     href={`tel:${contact.phone}`}
-                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-sky-600 transition-colors"
+                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-violet-700 transition-colors"
                   >
                     <Phone size={14} className="flex-shrink-0" />
                     {contact.phone}

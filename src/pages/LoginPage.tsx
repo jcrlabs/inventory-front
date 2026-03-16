@@ -35,10 +35,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-sky-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-violet-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-sky-500 rounded-2xl mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-violet-600 rounded-2xl mb-4 shadow-lg">
             <Package className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-white">Inventory</h1>
@@ -54,7 +54,7 @@ export default function LoginPage() {
               </label>
               <input
                 {...register('identifier', { required: 'Campo obligatorio' })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
                 placeholder="admin o admin@inventory.local"
                 autoComplete="username"
               />
@@ -69,7 +69,7 @@ export default function LoginPage() {
                 <input
                   {...register('password', { required: 'Campo obligatorio' })}
                   type={showPassword ? 'text' : 'password'}
-                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 focus:border-transparent"
                   placeholder="••••••••"
                   autoComplete="current-password"
                 />
@@ -89,7 +89,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-sky-500 text-white font-semibold rounded-xl hover:bg-sky-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+              className="w-full py-3 bg-violet-600 text-white font-semibold rounded-xl hover:bg-violet-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
             >
               {isLoading && (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -99,7 +99,7 @@ export default function LoginPage() {
 
             <p className="text-center text-sm text-gray-500">
               ¿No tienes cuenta?{' '}
-              <Link to="/register" className="text-sky-600 font-medium hover:underline">
+              <Link to="/register" className="text-violet-700 font-medium hover:underline">
                 Regístrate
               </Link>
             </p>

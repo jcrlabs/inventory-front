@@ -50,7 +50,7 @@ function UserForm({
           </label>
           <input
             {...register('username', { required: !user, minLength: 3 })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
             placeholder="username"
           />
           {errors.username && <p className="mt-1 text-xs text-red-500">Mínimo 3 caracteres</p>}
@@ -62,7 +62,7 @@ function UserForm({
           <input
             {...register('email', { required: !user, pattern: /^\S+@\S+\.\S+$/ })}
             type="email"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
             placeholder="user@ejemplo.com"
           />
           {errors.email && <p className="mt-1 text-xs text-red-500">Email inválido</p>}
@@ -77,7 +77,7 @@ function UserForm({
         <input
           {...register('password', { required: !user, minLength: user ? 0 : 8 })}
           type="password"
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
           placeholder="••••••••"
         />
         {errors.password && <p className="mt-1 text-xs text-red-500">Mínimo 8 caracteres</p>}
@@ -87,7 +87,7 @@ function UserForm({
         <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
         <select
           {...register('role', { required: true })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
         >
           <option value="viewer">Visualizador</option>
           <option value="manager">Gestor</option>
@@ -99,7 +99,7 @@ function UserForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 disabled:opacity-50 flex items-center gap-2"
+          className="px-6 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
         >
           {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
           {user ? 'Actualizar' : 'Crear'} usuario
@@ -163,7 +163,7 @@ export default function UsersPage() {
         </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600"
+          className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700"
         >
           <Plus size={18} />
           Nuevo usuario
@@ -172,7 +172,7 @@ export default function UsersPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -200,7 +200,7 @@ export default function UsersPage() {
                       <div>
                         <p className="font-medium text-gray-900">{user.username}</p>
                         {user.id === currentUser?.id && (
-                          <span className="text-xs text-sky-500">(tú)</span>
+                          <span className="text-xs text-violet-600">(tú)</span>
                         )}
                       </div>
                     </div>
@@ -231,7 +231,7 @@ export default function UsersPage() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => setEditing(user)}
-                        className="text-sky-500 hover:text-sky-700 text-xs font-medium"
+                        className="text-violet-600 hover:text-sky-700 text-xs font-medium"
                       >
                         Editar
                       </button>
