@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Search, Filter, LayoutGrid, List, Package } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { productsApi } from '../api/products'
+import { contactsApi } from '../api/contacts'
 import { categoriesApi } from '../api/categories'
 import ProductCard from '../components/products/ProductCard'
 import ProductForm from '../components/products/ProductForm'
@@ -13,7 +14,7 @@ import { ProductCardSkeleton } from '../components/common/Skeleton'
 import { usePermissions } from '../hooks/usePermissions'
 import { useDebounce } from '../hooks/useDebounce'
 import { getErrorMessage } from '../api/client'
-import type { Product, CreateProductInput, ProductFilters } from '../types'
+import type { Product, CreateProductInput, UpsertContactInput, ProductFilters } from '../types'
 
 export default function ProductsPage() {
   const { canManage, canDelete } = usePermissions()
@@ -44,11 +45,10 @@ export default function ProductsPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: async ({ data, imageFile }: { data: CreateProductInput; imageFile?: File }) => {
+    mutationFn: async ({ data, contact, imageFile }: { data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
       const created = await productsApi.create(data)
-      if (imageFile) {
-        await productsApi.uploadImage(created.id, imageFile)
-      }
+      if (contact) await contactsApi.upsert(created.id, contact)
+      if (imageFile) await productsApi.uploadImage(created.id, imageFile)
       return created
     },
     onSuccess: () => {
@@ -60,11 +60,10 @@ export default function ProductsPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, data, imageFile }: { id: string; data: CreateProductInput; imageFile?: File }) => {
+    mutationFn: async ({ id, data, contact, imageFile }: { id: string; data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
       const updated = await productsApi.update(id, data)
-      if (imageFile) {
-        await productsApi.uploadImage(id, imageFile)
-      }
+      if (contact) await contactsApi.upsert(id, contact)
+      if (imageFile) await productsApi.uploadImage(id, imageFile)
       return updated
     },
     onSuccess: () => {
@@ -312,7 +311,7 @@ export default function ProductsPage() {
       {/* Create Modal */}
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Producto">
         <ProductForm
-          onSubmit={async (data, imageFile) => { await createMutation.mutateAsync({ data, imageFile }) }}
+          onSubmit={async (data, contact, imageFile) => { await createMutation.mutateAsync({ data, contact, imageFile }) }}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -326,7 +325,7 @@ export default function ProductsPage() {
         {editingProduct && (
           <ProductForm
             product={editingProduct}
-            onSubmit={async (data, imageFile) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, imageFile }) }}
+            onSubmit={async (data, contact, imageFile) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, contact, imageFile }) }}
             isLoading={updateMutation.isPending}
           />
         )}

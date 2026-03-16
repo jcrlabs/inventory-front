@@ -19,6 +19,24 @@ export interface Category {
   updated_at: string
 }
 
+export interface Contact {
+  id: string
+  product_id: string
+  name: string
+  subdato: string
+  email?: string
+  phone?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface UpsertContactInput {
+  name: string
+  subdato: string
+  email?: string
+  phone?: string
+}
+
 export interface Product {
   id: string
   name: string
@@ -29,6 +47,7 @@ export interface Product {
   image_url?: string
   category_id?: string
   category?: Category
+  contact?: Contact
   created_by_id: string
   created_by?: User
   paid: boolean

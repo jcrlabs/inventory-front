@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useQuery } from '@tanstack/react-query'
-import { ImagePlus, X } from 'lucide-react'
+import { ImagePlus, X, UserRound } from 'lucide-react'
 import { categoriesApi } from '../../api/categories'
-import type { Product, CreateProductInput } from '../../types'
+import type { Product, CreateProductInput, UpsertContactInput } from '../../types'
 
 interface ProductFormProps {
   product?: Product
-  onSubmit: (data: CreateProductInput, imageFile?: File) => Promise<void>
+  onSubmit: (data: CreateProductInput, contact?: UpsertContactInput, imageFile?: File) => Promise<void>
   isLoading: boolean
 }
 
@@ -37,6 +37,23 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     },
   })
 
+  const {
+    register: registerContact,
+    reset: resetContact,
+    formState: { errors: contactErrors },
+    getValues: getContactValues,
+    watch: watchContact,
+  } = useForm<UpsertContactInput>({
+    defaultValues: {
+      name: '',
+      subdato: '',
+      email: '',
+      phone: '',
+    },
+  })
+
+  const contactName = watchContact('name')
+
   useEffect(() => {
     if (product) {
       reset({
@@ -49,8 +66,19 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       })
       setImagePreview(product.image_url ?? null)
       setImageFile(null)
+
+      if (product.contact) {
+        resetContact({
+          name: product.contact.name,
+          subdato: product.contact.subdato,
+          email: product.contact.email ?? '',
+          phone: product.contact.phone ?? '',
+        })
+      } else {
+        resetContact({ name: '', subdato: '', email: '', phone: '' })
+      }
     }
-  }, [product, reset])
+  }, [product, reset, resetContact])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -72,7 +100,19 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       ...data,
       category_id: data.category_id || undefined,
     }
-    return onSubmit(cleaned, imageFile ?? undefined)
+
+    const contactData = getContactValues()
+    const hasContact = contactData.name.trim() !== ''
+    const contact: UpsertContactInput | undefined = hasContact
+      ? {
+          name: contactData.name.trim(),
+          subdato: contactData.subdato.trim(),
+          email: contactData.email?.trim() || undefined,
+          phone: contactData.phone?.trim() || undefined,
+        }
+      : undefined
+
+    return onSubmit(cleaned, contact, imageFile ?? undefined)
   }
 
   return (
@@ -182,11 +222,8 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
             id="paid"
             className="w-4 h-4 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
           />
-          <label htmlFor="paid" className="text-sm text-gray-700">
-            Pagado
-          </label>
+          <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
         </div>
-
         <div className="flex items-center gap-2">
           <input
             {...register('active')}
@@ -194,9 +231,85 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
             id="active"
             className="w-4 h-4 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
           />
-          <label htmlFor="active" className="text-sm text-gray-700">
-            Producto activo
-          </label>
+          <label htmlFor="active" className="text-sm text-gray-700">Producto activo</label>
+        </div>
+      </div>
+
+      {/* Contact section */}
+      <div className="border-t border-gray-200 pt-4">
+        <div className="flex items-center gap-2 mb-3">
+          <UserRound size={16} className="text-gray-500" />
+          <h3 className="text-sm font-semibold text-gray-700">Contacto</h3>
+          <span className="text-xs text-gray-400">(opcional)</span>
+        </div>
+
+        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">
+                Nombre <span className="text-red-500">*</span>
+              </label>
+              <input
+                {...registerContact('name', {
+                  validate: (val) => {
+                    const subdato = getContactValues('subdato')
+                    if ((val.trim() || subdato.trim()) && !val.trim()) {
+                      return 'El nombre es obligatorio'
+                    }
+                    return true
+                  },
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                placeholder="Nombre del contacto"
+              />
+              {contactErrors.name && (
+                <p className="mt-1 text-xs text-red-500">{contactErrors.name.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">
+                A quién llamar <span className="text-red-500">*</span>
+              </label>
+              <input
+                {...registerContact('subdato', {
+                  validate: (val) => {
+                    if (contactName.trim() && !val.trim()) {
+                      return 'Indica a quién llamar'
+                    }
+                    return true
+                  },
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                placeholder="Ej: Responsable de ventas"
+              />
+              {contactErrors.subdato && (
+                <p className="mt-1 text-xs text-red-500">{contactErrors.subdato.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Email</label>
+              <input
+                {...registerContact('email')}
+                type="email"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                placeholder="contacto@ejemplo.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Teléfono</label>
+              <input
+                {...registerContact('phone')}
+                type="tel"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+                placeholder="+34 600 000 000"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
