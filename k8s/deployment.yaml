@@ -15,12 +15,29 @@ spec:
       labels:
         app: inventory-front
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: inventory-front
-          image: inventory-front:latest
-          imagePullPolicy: IfNotPresent
+          # Image is updated by CI/CD via `kubectl set image`
+          image: ghcr.io/jonathancaamano/inventory-front:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
               cpu: "50m"
@@ -28,12 +45,6 @@ spec:
             limits:
               cpu: "200m"
               memory: "128Mi"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 30
 ---
 apiVersion: v1
 kind: Service

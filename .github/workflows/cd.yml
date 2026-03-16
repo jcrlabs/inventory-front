@@ -1,0 +1,161 @@
+name: CD
+
+# Runs on every push to main and on semver tags (v1.2.3)
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+  packages: write   # required to push to GHCR
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ghcr.io/${{ github.repository_owner }}/inventory-front
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 1 — Build the React app, then build & push the Docker image to GHCR
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  build-push:
+    name: Build & push image
+    runs-on: ubuntu-latest
+
+    outputs:
+      image-tag: ${{ steps.meta.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Validate the frontend builds correctly before creating the image
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Build (production)
+        run: npm run build
+        env:
+          # VITE_API_URL is baked into the static bundle at build time.
+          # Set this secret to the public URL of the backend API.
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      # ── Docker setup ────────────────────────────────────────────────────────
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Tagging strategy:
+      #   push to main → latest + sha-<short>
+      #   push v1.2.3  → 1.2.3 + 1.2 + latest
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+          # GitHub Actions layer cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 2 — Deploy the new image to Kubernetes
+#
+# Required GitHub secrets:
+#   KUBECONFIG   — base64-encoded kubeconfig for the target cluster
+#   VITE_API_URL — public URL of the backend API (baked into the JS bundle)
+#   GHCR_PAT     — Personal Access Token with read:packages scope
+#                  (used by the K8s cluster to pull from GHCR)
+# ─────────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to Kubernetes
+    needs: build-push
+    runs-on: ubuntu-latest
+    # "production" environment can require manual approval in GitHub settings
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      # ── Resolve exact image tag ──────────────────────────────────────────────
+      - name: Resolve image tag
+        id: tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=sha-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Namespace (shared with backend) ──────────────────────────────────────
+      - name: Apply namespace
+        run: |
+          kubectl apply -f - <<'EOF'
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: inventory
+          EOF
+
+      # ── GHCR image pull secret ───────────────────────────────────────────────
+      - name: Create / update GHCR image pull secret
+        run: |
+          kubectl create secret docker-registry ghcr-secret \
+            --docker-server=ghcr.io \
+            --docker-username="${{ github.actor }}" \
+            --docker-password="${{ secrets.GHCR_PAT }}" \
+            --namespace=inventory \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      # ── Deployment ───────────────────────────────────────────────────────────
+      - name: Apply Deployment / Service / Ingress
+        run: kubectl apply -f k8s/deployment.yaml
+
+      - name: Update image tag
+        run: |
+          FULL_IMAGE="${{ env.IMAGE }}:${{ steps.tag.outputs.value }}"
+          kubectl set image deployment/inventory-front \
+            inventory-front="${FULL_IMAGE}" \
+            --namespace=inventory
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/inventory-front \
+            --namespace=inventory --timeout=5m
