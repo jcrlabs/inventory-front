@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Package, Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -96,6 +96,13 @@ export default function LoginPage() {
               )}
               Entrar
             </button>
+
+            <p className="text-center text-sm text-gray-500">
+              ¿No tienes cuenta?{' '}
+              <Link to="/register" className="text-sky-600 font-medium hover:underline">
+                Regístrate
+              </Link>
+            </p>
           </form>
 
         </div>

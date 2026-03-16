@@ -8,9 +8,20 @@ export interface TokenPair {
   user: User
 }
 
+export interface RegisterInput {
+  username: string
+  email: string
+  password: string
+}
+
 export const authApi = {
   login: async (identifier: string, password: string): Promise<TokenPair> => {
     const res = await apiClient.post<TokenPair>('/auth/login', { identifier, password })
+    return res.data
+  },
+
+  register: async (data: RegisterInput): Promise<TokenPair> => {
+    const res = await apiClient.post<TokenPair>('/auth/register', data)
     return res.data
   },
 

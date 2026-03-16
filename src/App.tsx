@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast'
 import { useAuthStore } from './store/authStore'
 import Layout from './components/layout/Layout'
 import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
@@ -42,6 +43,10 @@ function AppRoutes() {
       <Route
         path="/login"
         element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={isAuthenticated ? <Navigate to="/" replace /> : <RegisterPage />}
       />
       <Route
         element={
