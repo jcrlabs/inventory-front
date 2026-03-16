@@ -89,8 +89,8 @@ export default function ProductsPage() {
   const categories = categoriesData?.data ?? []
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Productos</h1>
           <p className="text-gray-500 text-sm mt-0.5">{total} artículos en total</p>
@@ -107,9 +107,9 @@ export default function ProductsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
-        <div className="flex flex-wrap gap-3">
-          <div className="flex-1 min-w-48 relative">
+      <div className="bg-white rounded-xl border border-gray-200 p-3 sm:p-4 mb-5">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="flex-1 min-w-0 relative" style={{ minWidth: '160px' }}>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <input
               value={searchInput}
@@ -216,7 +216,8 @@ export default function ProductsPage() {
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Producto</th>
@@ -286,6 +287,7 @@ export default function ProductsPage() {
               ))}
             </tbody>
           </table>
+          </div>
           <Pagination
             page={filters.page ?? 1}
             pageSize={filters.page_size ?? 12}

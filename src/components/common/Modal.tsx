@@ -33,9 +33,9 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={onClose} />
-      <div className={`relative bg-white rounded-2xl shadow-card-md border border-slate-200/60 w-full ${sizeClasses[size]} max-h-[90vh] flex flex-col`}>
+      <div className={`relative bg-white sm:rounded-2xl rounded-t-2xl shadow-card-md border border-slate-200/60 w-full ${sizeClasses[size]} max-h-[92vh] sm:max-h-[90vh] flex flex-col`}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
           <h2 className="text-[15px] font-semibold text-slate-900">{title}</h2>
           <button

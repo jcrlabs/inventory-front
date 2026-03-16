@@ -19,7 +19,7 @@ function StatsGrid() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-8">
         {Array.from({ length: 4 }, (_, i) => <StatCardSkeleton key={i} />)}
       </div>
     )
@@ -56,7 +56,7 @@ function StatsGrid() {
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-8">
       {cards.map(({ label, value, sub, icon: Icon, gradient, glow, to }) => (
         <Link
           key={label}
@@ -174,8 +174,8 @@ export default function DashboardPage() {
   const user = useAuthStore((s) => s.user)
 
   return (
-    <div className="p-7">
-      <div className="mb-7">
+    <div className="p-4 sm:p-6 lg:p-7">
+      <div className="mb-6">
         <h1 className="text-xl font-bold text-slate-900">
           Bienvenido, {user?.username ?? '—'}
         </h1>
