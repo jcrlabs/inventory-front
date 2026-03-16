@@ -11,7 +11,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
-  const { canManage, canDelete } = usePermissions()
+  const { canManage, canDeleteProduct } = usePermissions()
+  const canDelete = canDeleteProduct(product)
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">

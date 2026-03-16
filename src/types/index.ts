@@ -116,3 +116,10 @@ export interface UpdateUserInput {
   role?: Role
   active?: boolean
 }
+
+export interface UpdateMeInput {
+  username?: string
+  email?: string
+  current_password?: string
+  new_password?: string
+}

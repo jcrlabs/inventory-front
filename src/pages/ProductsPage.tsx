@@ -17,7 +17,7 @@ import { getErrorMessage } from '../api/client'
 import type { Product, CreateProductInput, UpsertContactInput, ProductFilters } from '../types'
 
 export default function ProductsPage() {
-  const { canManage, canDelete } = usePermissions()
+  const { canManage, canDeleteProduct } = usePermissions()
   const queryClient = useQueryClient()
 
   const [filters, setFilters] = useState<ProductFilters>({ page: 1, page_size: 12 })
@@ -224,7 +224,7 @@ export default function ProductsPage() {
                 <th className="text-right px-4 py-3 font-medium text-gray-600">Precio</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">Pago</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">Estado</th>
-                {(canManage || canDelete) && (
+                {canManage && (
                   <th className="px-4 py-3" />
                 )}
               </tr>
@@ -262,18 +262,16 @@ export default function ProductsPage() {
                       {product.active ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
-                  {(canManage || canDelete) && (
+                  {canManage && (
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        {canManage && (
-                          <button
-                            onClick={() => setEditingProduct(product)}
-                            className="text-violet-600 hover:text-sky-700 text-xs font-medium"
-                          >
-                            Editar
-                          </button>
-                        )}
-                        {canDelete && (
+                        <button
+                          onClick={() => setEditingProduct(product)}
+                          className="text-violet-600 hover:text-violet-800 text-xs font-medium"
+                        >
+                          Editar
+                        </button>
+                        {canDeleteProduct(product) && (
                           <button
                             onClick={() => setDeletingProduct(product)}
                             className="text-red-500 hover:text-red-700 text-xs font-medium"

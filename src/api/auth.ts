@@ -1,5 +1,5 @@
 import { apiClient } from './client'
-import type { User } from '../types'
+import type { User, UpdateMeInput } from '../types'
 
 export interface TokenPair {
   access_token: string
@@ -36,6 +36,11 @@ export const authApi = {
 
   me: async (): Promise<User> => {
     const res = await apiClient.get<User>('/auth/me')
+    return res.data
+  },
+
+  updateMe: async (data: UpdateMeInput): Promise<User> => {
+    const res = await apiClient.patch<User>('/auth/me', data)
     return res.data
   },
 }

@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Package, Tag, Users, LayoutDashboard, LogOut, Boxes } from 'lucide-react'
+import { Package, Tag, Users, LayoutDashboard, LogOut, Boxes, Settings } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { usePermissions } from '../../hooks/usePermissions'
 import { authApi } from '../../api/auth'
+import ProfileModal from '../profile/ProfileModal'
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
@@ -25,6 +27,7 @@ const roleLabels: Record<string, string> = {
 
 export default function Sidebar() {
   const { logout, user, refreshToken } = useAuthStore()
+  const [showProfile, setShowProfile] = useState(false)
 
   const handleLogout = async () => {
     try { await authApi.logout(refreshToken ?? undefined) } catch { /* ignore */ }
@@ -109,6 +112,13 @@ export default function Sidebar() {
               {user?.email}
             </p>
           </div>
+          <button
+            onClick={() => setShowProfile(true)}
+            title="Editar perfil"
+            className="flex-shrink-0 p-1 rounded-md text-slate-500 hover:text-white hover:bg-white/10 transition-all duration-150"
+          >
+            <Settings size={13} />
+          </button>
         </div>
 
         {/* Role badge */}
@@ -127,6 +137,8 @@ export default function Sidebar() {
           Cerrar sesión
         </button>
       </div>
+
+      <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
     </aside>
   )
 }

@@ -18,7 +18,7 @@ export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { canManage, canDelete } = usePermissions()
+  const { canManage, canDeleteProduct } = usePermissions()
   const [showEdit, setShowEdit] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
 
@@ -102,7 +102,7 @@ export default function ProductDetailPage() {
               Editar
             </button>
           )}
-          {canDelete && (
+          {product && canDeleteProduct(product) && (
             <button
               onClick={() => setShowDelete(true)}
               className="flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-200 rounded-lg text-sm font-medium text-red-600 hover:bg-red-100"
