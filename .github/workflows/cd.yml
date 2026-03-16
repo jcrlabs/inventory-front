@@ -1,0 +1,159 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  # NOTE: github.repository_owner may contain uppercase letters which OCI
+  # registries reject. Each job overwrites IMAGE with a lowercase version via
+  # the "Lowercase image name" step.
+  IMAGE: ghcr.io/${{ github.repository_owner }}/inventory-front
+  NAMESPACE: taller-inventario
+  # Backend URL baked into the JS bundle at build time.
+  # Update this if the backend hostname changes.
+  VITE_API_URL: https://invent-back.jcrlabs.net
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 1 — Build & push Docker image to GHCR
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  build-push:
+    name: Build & push image
+    runs-on: ubuntu-latest
+
+    outputs:
+      image-tag: ${{ steps.meta.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lowercase image name
+        run: echo "IMAGE=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/inventory-front" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Build (production)
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ env.VITE_API_URL }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # push to main → latest + sha-<short>
+      # push v1.2.3  → 1.2.3 + 1.2 + latest
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: VITE_API_URL=${{ env.VITE_API_URL }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+# ─────────────────────────────────────────────────────────────────────────────
+# JOB 2 — Deploy to Kubernetes
+#
+# Required GitHub secrets:
+#   KUBECONFIG  — base64-encoded kubeconfig  (base64 -w0 ~/.kube/config)
+#   GHCR_PAT    — PAT with read:packages scope, for cluster image pulls
+# ─────────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to Kubernetes
+    needs: build-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lowercase image name
+        run: echo "IMAGE=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/inventory-front" >> "$GITHUB_ENV"
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Resolve image tag
+        id: tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=sha-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Namespace ────────────────────────────────────────────────────────────
+      - name: Apply namespace
+        run: |
+          kubectl apply -f - <<'EOF'
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: taller-inventario
+          EOF
+
+      # ── GHCR image pull secret ───────────────────────────────────────────────
+      - name: Create / update GHCR image pull secret
+        run: |
+          kubectl create secret docker-registry ghcr-secret \
+            --docker-server=ghcr.io \
+            --docker-username="${{ github.actor }}" \
+            --docker-password="${{ secrets.GHCR_PAT }}" \
+            --namespace=${{ env.NAMESPACE }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      # ── Application ──────────────────────────────────────────────────────────
+      - name: Apply Deployment / Service / Ingress
+        run: kubectl apply -f k8s/deployment.yaml
+
+      - name: Update image tag
+        run: |
+          kubectl set image deployment/inventory-front \
+            inventory-front="${{ env.IMAGE }}:${{ steps.tag.outputs.value }}" \
+            --namespace=${{ env.NAMESPACE }}
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/inventory-front \
+            --namespace=${{ env.NAMESPACE }} --timeout=5m

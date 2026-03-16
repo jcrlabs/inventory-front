@@ -1,0 +1,192 @@
+name: PR Diagrams
+
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to post diagrams on'
+        required: true
+        type: number
+
+permissions:
+  pull-requests: write
+
+jobs:
+  post-diagrams:
+    name: Post architecture diagrams
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## 📐 Arquitectura del repositorio
+
+            ---
+
+            ### 🔄 Diagrama de flujo — navegación del usuario
+
+            \`\`\`mermaid
+            flowchart TD
+                Start([Abrir app]) --> Check{¿Token\nválido?}
+                Check -->|No| Login[LoginPage\n/login]
+                Check -->|Sí| Dashboard[DashboardPage\n/dashboard]
+
+                Login -->|POST /auth/login| TokenStore[(Zustand store\naccess + refresh token)]
+                TokenStore --> Dashboard
+
+                Dashboard -->|stats query| Stats[InventoryStats\ntotal productos / stock / valor]
+
+                Dashboard --> Nav{Navegar a...}
+                Nav --> Products[ProductsPage\n/products]
+                Nav --> Categories[CategoriesPage\n/categories]
+                Nav -->|Admin only| Users[UsersPage\n/users]
+
+                Products --> Search[Búsqueda debounced\n400 ms]
+                Products -->|Manager+| CreateProduct[ProductForm\ncreate]
+                Products --> Detail[ProductDetailPage\n/products/:id]
+                Detail -->|Manager+| EditProduct[ProductForm\nedit]
+                Detail -->|Admin| DeleteProduct[Confirm → DELETE]
+
+                Logout[Sidebar logout] -->|POST /auth/logout\nclear store| Login
+
+                subgraph Token Refresh
+                    Interceptor[Axios 401 interceptor] -->|POST /auth/refresh| NewToken[Nuevo access token]
+                    NewToken --> RetryQueue[Reintentar requests\ncola en espera]
+                end
+            \`\`\`
+
+            ---
+
+            ### 👤 Diagrama de casos de uso — roles en la UI
+
+            \`\`\`mermaid
+            graph LR
+                subgraph Roles
+                    Admin(["👑 Admin"])
+                    Manager(["🔧 Manager"])
+                    Viewer(["👁️ Viewer"])
+                end
+
+                subgraph Dashboard
+                    stats_ui[Ver estadísticas\ntotal / stock / valor / alertas]
+                end
+
+                subgraph Productos
+                    view_p[Ver listado y detalle]
+                    search_p[Buscar por nombre / SKU]
+                    create_p[Crear producto]
+                    edit_p[Editar producto]
+                    stock_p[Ajustar stock]
+                    img_p[Subir imagen]
+                    delete_p[Eliminar producto]
+                end
+
+                subgraph Categorías
+                    view_c[Ver categorías]
+                    manage_c[Crear / Editar categoría]
+                    delete_c[Eliminar categoría]
+                end
+
+                subgraph Usuarios
+                    view_u[Ver usuarios]
+                    manage_u[Crear / Editar / Eliminar usuarios]
+                end
+
+                Admin --> stats_ui
+                Admin --> view_p & search_p & create_p & edit_p & stock_p & img_p & delete_p
+                Admin --> view_c & manage_c & delete_c
+                Admin --> view_u & manage_u
+
+                Manager --> stats_ui
+                Manager --> view_p & search_p & create_p & edit_p & stock_p & img_p
+                Manager --> view_c & manage_c
+
+                Viewer --> stats_ui & view_p & search_p & view_c
+            \`\`\`
+
+            ---
+
+            ### 🏗️ Diagrama de arquitectura — capas del frontend
+
+            \`\`\`mermaid
+            graph TB
+                subgraph Browser
+                    Router[React Router v6\n/login /dashboard /products\n/products/:id /categories /users]
+
+                    subgraph Pages
+                        LP[LoginPage]
+                        DP[DashboardPage]
+                        PP[ProductsPage]
+                        PDP[ProductDetailPage]
+                        CP[CategoriesPage]
+                        UP[UsersPage]
+                    end
+
+                    subgraph Components
+                        Layout[Layout / Sidebar]
+                        Common[Modal / Badge / Pagination\nSkeleton / ConfirmDialog]
+                        ProdComp[ProductCard / ProductForm\nImageUpload]
+                        EB[ErrorBoundary]
+                    end
+
+                    subgraph State
+                        Zustand[Zustand\nauthStore\nuser / tokens / role]
+                        RQ[React Query\ncache + refetch\nproducts / categories / users / stats]
+                    end
+
+                    subgraph API_Layer ["API layer (src/api/)"]
+                        AxiosClient[axios client\nBearer token injection\n401 → refresh → retry]
+                        AuthAPI[auth.ts]
+                        ProductAPI[products.ts]
+                        CatAPI[categories.ts]
+                        UserAPI[users.ts]
+                        StatsAPI[stats.ts]
+                    end
+                end
+
+                subgraph Deploy
+                    Nginx[nginx:alpine\ntry_files SPA routing\n/api/* proxy → backend]
+                    Ingress["nginx Ingress K8s\ntallerjcr.jcrlabs.net"]
+                end
+
+                Router --> Pages --> Components
+                Components --> State
+                State --> API_Layer
+                API_Layer -->|HTTPS| Backend([inventory-back\ninvent-back.jcrlabs.net])
+                Browser --> Nginx --> Ingress
+            \`\`\`
+
+            ---
+
+            ### 📦 Estructura del proyecto
+
+            \`\`\`mermaid
+            graph LR
+                subgraph src
+                    API[api/\nauth · products\ncategories · users · stats]
+                    Store[store/\nauthStore.ts]
+                    Hooks[hooks/\nuseDebounce\nusePermissions]
+                    Comps[components/\ncommon · layout\nproducts]
+                    Pages2[pages/\nLogin · Dashboard · Products\nProductDetail · Categories · Users]
+                    Types[types/\nindex.ts]
+                end
+
+                Pages2 --> Comps --> Hooks & Store & API
+                API --> Types
+                Store --> Types
+            \`\`\`
+            `;
+
+            const issue_number = context.payload.pull_request
+              ? context.payload.pull_request.number
+              : Number(context.payload.inputs.pr_number);
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body: body
+            });
