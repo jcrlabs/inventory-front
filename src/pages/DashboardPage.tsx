@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Package, Tag, TrendingUp, AlertTriangle, Users, ShoppingCart, ArrowUpRight } from 'lucide-react'
+import { Package, Tag, Users, ShoppingCart, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { statsApi } from '../api/stats'
 import { productsApi } from '../api/products'
@@ -27,9 +27,9 @@ function StatsGrid() {
 
   const cards = [
     {
-      label: 'Total Productos',
+      label: 'Total Reparaciones',
       value: stats?.total_products ?? 0,
-      sub: `${stats?.active_products ?? 0} activos`,
+      sub: `${stats?.active_products ?? 0} activas`,
       icon: Package,
       gradient: 'from-violet-500 to-violet-700',
       glow: 'rgba(109,40,217,0.25)',
@@ -42,27 +42,6 @@ function StatsGrid() {
       gradient: 'from-fuchsia-500 to-fuchsia-700',
       glow: 'rgba(168,85,247,0.2)',
       to: '/categories',
-    },
-    {
-      label: 'Valor del Stock',
-      value: (stats?.stock_value ?? 0).toLocaleString('es-ES', {
-        style: 'currency',
-        currency: 'EUR',
-      }),
-      sub: `${stats?.total_stock ?? 0} unidades`,
-      icon: TrendingUp,
-      gradient: 'from-emerald-400 to-emerald-600',
-      glow: 'rgba(16,185,129,0.2)',
-      to: '/products',
-    },
-    {
-      label: 'Sin Stock',
-      value: stats?.out_of_stock ?? 0,
-      sub: `${stats?.low_stock ?? 0} con stock bajo`,
-      icon: AlertTriangle,
-      gradient: stats?.out_of_stock ? 'from-rose-400 to-rose-600' : 'from-slate-400 to-slate-500',
-      glow: stats?.out_of_stock ? 'rgba(239,68,68,0.2)' : 'rgba(100,116,139,0.15)',
-      to: '/products',
     },
     ...(isAdmin
       ? [{
@@ -112,52 +91,15 @@ function RecentProducts() {
     staleTime: 30_000,
   })
 
-  const { data: lowStockData } = useQuery({
-    queryKey: ['products', 'low-stock'],
-    queryFn: () => productsApi.list({ page: 1, page_size: 8, active: true }),
-    staleTime: 30_000,
-  })
-
   const products = data?.data ?? []
-  const lowStockProducts = (lowStockData?.data ?? []).filter((p) => p.stock <= 5)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-      {lowStockProducts.length > 0 && (
-        <div className="bg-white rounded-2xl border border-slate-200/70 shadow-card p-5">
-          <h2 className="text-[13px] font-semibold text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-wider">
-            <AlertTriangle className="text-amber-500" size={15} />
-            Alertas de Stock
-          </h2>
-          <div className="space-y-2.5">
-            {lowStockProducts.map((p) => (
-              <div key={p.id} className="flex items-center justify-between">
-                <Link
-                  to={`/products/${p.id}`}
-                  className="text-[13px] text-slate-700 hover:text-violet-600 truncate font-medium transition-colors"
-                >
-                  {p.name}
-                </Link>
-                <span
-                  className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ml-3 flex-shrink-0 ${
-                    p.stock === 0
-                      ? 'bg-rose-100 text-rose-600'
-                      : 'bg-amber-100 text-amber-600'
-                  }`}
-                >
-                  {p.stock === 0 ? 'Sin stock' : `${p.stock} uds`}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
+    <div className="grid grid-cols-1 gap-5">
       <div className="bg-white rounded-2xl border border-slate-200/70 shadow-card p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[13px] font-semibold text-slate-700 flex items-center gap-2 uppercase tracking-wider">
             <ShoppingCart size={15} className="text-slate-400" />
-            Últimos Productos
+            Últimas Reparaciones
           </h2>
           <Link to="/products" className="text-[12px] text-violet-600 hover:text-violet-700 font-medium transition-colors">
             Ver todos →
@@ -212,13 +154,13 @@ function RecentProducts() {
                       : 'bg-slate-100 text-slate-500'
                   }`}
                 >
-                  {p.active ? 'Activo' : 'Inactivo'}
+                  {p.active ? 'En curso' : 'Cerrado'}
                 </span>
               </div>
             ))}
             {products.length === 0 && (
               <p className="text-[13px] text-slate-400 text-center py-8">
-                No hay productos aún
+                No hay reparaciones aún
               </p>
             )}
           </div>
