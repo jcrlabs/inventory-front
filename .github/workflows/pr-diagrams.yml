@@ -46,8 +46,9 @@ jobs:
 
                 Products --> Search[Búsqueda debounced\n400 ms]
                 Products -->|Manager+| CreateProduct[ProductForm\ncreate]
-                Products --> ProductCard[ProductCard] -->|Manager+| EditProduct[ProductForm\nedit]
-                ProductCard -->|Admin| DeleteProduct[Confirm → DELETE]
+                Products --> Detail[ProductDetailPage\n/products/:id]
+                Detail -->|Manager+| EditProduct[ProductForm\nedit]
+                Detail -->|Admin| DeleteProduct[Confirm → DELETE]
 
                 Logout[Sidebar logout] -->|POST /auth/logout\nclear store| Login
 
@@ -113,18 +114,19 @@ jobs:
             \`\`\`mermaid
             graph TB
                 subgraph Browser
-                    Router[React Router v6\n/login /dashboard /products\n/categories /users]
+                    Router[React Router v6\n/login /dashboard /products\n/products/:id /categories /users]
 
                     subgraph Pages
                         LP[LoginPage]
                         DP[DashboardPage]
                         PP[ProductsPage]
+                        PDP[ProductDetailPage]
                         CP[CategoriesPage]
                         UP[UsersPage]
                     end
 
                     subgraph Components
-                        Layout[Layout / Sidebar / Navbar]
+                        Layout[Layout / Sidebar]
                         Common[Modal / Badge / Pagination\nSkeleton / ConfirmDialog]
                         ProdComp[ProductCard / ProductForm\nImageUpload]
                         EB[ErrorBoundary]
@@ -168,8 +170,8 @@ jobs:
                     Store[store/\nauthStore.ts]
                     Hooks[hooks/\nuseDebounce\nusePermissions]
                     Comps[components/\ncommon · layout\nproducts]
-                    Pages2[pages/\nLogin · Dashboard\nProducts · Categories · Users]
-                    Types[types.ts]
+                    Pages2[pages/\nLogin · Dashboard · Products\nProductDetail · Categories · Users]
+                    Types[types/\nindex.ts]
                 end
 
                 Pages2 --> Comps --> Hooks & Store & API
