@@ -12,8 +12,10 @@ Set everything under **Settings → Secrets and variables → Actions**.
 | Secret | Description | How to generate |
 |---|---|---|
 | `KUBECONFIG` | kubeconfig of the target cluster, **base64-encoded** | `base64 -w0 ~/.kube/config` |
-| `VITE_API_URL` | Public URL of the backend API — baked into the JS bundle at build time | `https://invent-back.jcrlabs.net` |
 | `GHCR_PAT` | Personal Access Token for the cluster to pull images from GHCR | [Create PAT](https://github.com/settings/tokens) with scope `read:packages` |
+
+> `VITE_API_URL` is **not** a secret — it is hardcoded in the workflow as `https://invent-back.jcrlabs.net`.
+> If the backend hostname changes, update `env.VITE_API_URL` in `.github/workflows/cd.yml`.
 
 ---
 
@@ -62,40 +64,29 @@ The `GHCR_PAT` secret is only needed by the Kubernetes cluster to pull the image
 
 The frontend is exposed via the cluster's nginx ingress controller:
 
-| Domain | Service |
-|---|---|
-| `tallerjcr.jcrlabs.net` | `inventory-front-service:80` |
-
-Make sure a DNS `A` record points `tallerjcr.jcrlabs.net` to the cluster's ingress IP.
+| Domain | Service | Namespace |
+|---|---|---|
+| `tallerjcr.jcrlabs.net` | `inventory-front-service:80` | `taller-inventario` |
 
 ---
 
-## Important: `VITE_API_URL` is a build-time variable
+## Note: `VITE_API_URL` is a build-time variable
 
 Vite bakes `VITE_API_URL` into the static JS bundle during `npm run build`.
-This means the URL **must be known before building the Docker image**.
-
-The CD workflow passes it as a Docker build arg:
-
-```dockerfile
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-```
-
-If the backend URL changes, a new image must be built and deployed.
+The value is set directly in the workflow (`https://invent-back.jcrlabs.net`) and
+passed as a Docker build arg — no GitHub secret required.
 
 ---
 
 ## Kubernetes secrets applied by CD
 
-The deploy job creates/updates these K8s resources automatically:
-
 ```bash
-# Image pull secret  (namespace: inventory)
+# Image pull secret  (namespace: taller-inventario)
 kubectl create secret docker-registry ghcr-secret \
   --docker-server=ghcr.io \
   --docker-username=<actor> \
-  --docker-password="<GHCR_PAT>"
+  --docker-password="<GHCR_PAT>" \
+  --namespace=taller-inventario
 ```
 
 Run with `--dry-run=client -o yaml | kubectl apply -f -` — **idempotent**.
@@ -105,7 +96,7 @@ Run with `--dry-run=client -o yaml | kubectl apply -f -` — **idempotent**.
 ## Local development
 
 ```bash
-cp .env.example .env   # set VITE_API_URL=http://localhost:8080
+cp .env.example .env   # set VITE_API_URL=http://localhost:8080 for local dev
 npm install
 npm run dev            # starts on http://localhost:3000
 ```
