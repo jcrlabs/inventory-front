@@ -4,13 +4,13 @@ interface SkeletonProps {
 
 function Skeleton({ className = '' }: SkeletonProps) {
   return (
-    <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />
+    <div className={`animate-pulse bg-slate-200 rounded-lg ${className}`} />
   )
 }
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-200/70 overflow-hidden shadow-card">
       <Skeleton className="aspect-video rounded-none" />
       <div className="p-4 space-y-2">
         <Skeleton className="h-4 w-3/4" />
@@ -28,9 +28,9 @@ export function ProductCardSkeleton() {
 
 export function StatCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <Skeleton className="h-10 w-10 rounded-lg mb-4" />
-      <Skeleton className="h-8 w-24 mb-1" />
+    <div className="bg-white rounded-2xl border border-slate-200/70 shadow-card p-5">
+      <Skeleton className="h-10 w-10 rounded-xl mb-4" />
+      <Skeleton className="h-8 w-24 mb-1.5" />
       <Skeleton className="h-4 w-32" />
     </div>
   )

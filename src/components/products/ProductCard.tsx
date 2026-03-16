@@ -11,7 +11,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
-  const { canManage, canDelete } = usePermissions()
+  const { canManage, canDeleteProduct } = usePermissions()
+  const canDelete = canDeleteProduct(product)
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">
@@ -43,7 +44,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
         </div>
 
         {product.category && (
-          <p className="text-xs text-sky-600 font-medium mb-2">{product.category.name}</p>
+          <p className="text-xs text-violet-700 font-medium mb-2">{product.category.name}</p>
         )}
 
         {product.description && (
@@ -55,11 +56,9 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
             <p className="text-lg font-bold text-gray-900">
               {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
             </p>
-            <p className="text-xs text-gray-500">
-              Stock: <span className={`font-medium ${product.stock <= 0 ? 'text-red-500' : 'text-green-600'}`}>
-                {product.stock}
-              </span>
-            </p>
+            <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full mt-1 ${product.paid ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+              {product.paid ? 'Pagado' : 'Pendiente'}
+            </span>
           </div>
 
           <div className="flex items-center gap-1">
@@ -73,7 +72,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
             {canManage && (
               <button
                 onClick={() => onEdit(product)}
-                className="p-1.5 rounded-lg hover:bg-sky-50 text-gray-500 hover:text-sky-600 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-violet-50 text-gray-500 hover:text-violet-700 transition-colors"
                 title="Editar"
               >
                 <Edit size={16} />
@@ -90,10 +89,6 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
             )}
           </div>
         </div>
-
-        {product.sku && (
-          <p className="text-xs text-gray-400 mt-2">SKU: {product.sku}</p>
-        )}
       </div>
     </div>
   )

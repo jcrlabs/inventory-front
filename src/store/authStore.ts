@@ -8,6 +8,7 @@ interface AuthState {
   expiresAt: Date | null
   isAuthenticated: boolean
   setAuth: (user: User, accessToken: string, refreshToken: string, expiresAt: string) => void
+  updateUser: (user: User) => void
   logout: () => void
 }
 
@@ -60,6 +61,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       expiresAt: new Date(expiresAt),
       isAuthenticated: true,
     })
+  },
+
+  updateUser: (user: User) => {
+    localStorage.setItem('user', JSON.stringify(user))
+    set({ user })
   },
 
   logout: () => {

@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Search, Filter, LayoutGrid, List, Package } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { productsApi } from '../api/products'
+import { contactsApi } from '../api/contacts'
 import { categoriesApi } from '../api/categories'
 import ProductCard from '../components/products/ProductCard'
 import ProductForm from '../components/products/ProductForm'
@@ -13,10 +14,10 @@ import { ProductCardSkeleton } from '../components/common/Skeleton'
 import { usePermissions } from '../hooks/usePermissions'
 import { useDebounce } from '../hooks/useDebounce'
 import { getErrorMessage } from '../api/client'
-import type { Product, CreateProductInput, ProductFilters } from '../types'
+import type { Product, CreateProductInput, UpsertContactInput, ProductFilters } from '../types'
 
 export default function ProductsPage() {
-  const { canManage, canDelete } = usePermissions()
+  const { canManage, canDeleteProduct } = usePermissions()
   const queryClient = useQueryClient()
 
   const [filters, setFilters] = useState<ProductFilters>({ page: 1, page_size: 12 })
@@ -44,7 +45,12 @@ export default function ProductsPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: productsApi.create,
+    mutationFn: async ({ data, contact, imageFile }: { data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
+      const created = await productsApi.create(data)
+      if (contact) await contactsApi.upsert(created.id, contact)
+      if (imageFile) await productsApi.uploadImage(created.id, imageFile)
+      return created
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setShowCreate(false)
@@ -54,8 +60,12 @@ export default function ProductsPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CreateProductInput }) =>
-      productsApi.update(id, data),
+    mutationFn: async ({ id, data, contact, imageFile }: { id: string; data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
+      const updated = await productsApi.update(id, data)
+      if (contact) await contactsApi.upsert(id, contact)
+      if (imageFile) await productsApi.uploadImage(id, imageFile)
+      return updated
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setEditingProduct(null)
@@ -79,8 +89,8 @@ export default function ProductsPage() {
   const categories = categoriesData?.data ?? []
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Productos</h1>
           <p className="text-gray-500 text-sm mt-0.5">{total} artículos en total</p>
@@ -88,7 +98,7 @@ export default function ProductsPage() {
         {canManage && (
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors"
           >
             <Plus size={18} />
             Nuevo producto
@@ -97,18 +107,18 @@ export default function ProductsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
-        <div className="flex flex-wrap gap-3">
-          <div className="flex-1 min-w-48 relative">
+      <div className="bg-white rounded-xl border border-gray-200 p-3 sm:p-4 mb-5">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="flex-1 min-w-0 relative" style={{ minWidth: '160px' }}>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Buscar por nombre, SKU..."
-              className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
             />
             {isFetching && (
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
             )}
           </div>
 
@@ -121,7 +131,7 @@ export default function ProductsPage() {
                 page: 1,
               }))
             }
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
           >
             <option value="">Todas las categorías</option>
             {categories.map((cat) => (
@@ -140,7 +150,7 @@ export default function ProductsPage() {
                 page: 1,
               }))
             }
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white"
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
           >
             <option value="">Todos los estados</option>
             <option value="true">Activos</option>
@@ -150,13 +160,13 @@ export default function ProductsPage() {
           <div className="flex items-center gap-1 border border-gray-300 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-sky-500 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-violet-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <LayoutGrid size={16} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-sky-500 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+              className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-violet-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <List size={16} />
             </button>
@@ -187,7 +197,7 @@ export default function ProductsPage() {
           {canManage && (
             <button
               onClick={() => setShowCreate(true)}
-              className="mt-4 text-sky-500 hover:underline text-sm"
+              className="mt-4 text-violet-600 hover:underline text-sm"
             >
               Crear el primero
             </button>
@@ -206,15 +216,16 @@ export default function ProductsPage() {
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Producto</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Categoría</th>
                 <th className="text-right px-4 py-3 font-medium text-gray-600">Precio</th>
-                <th className="text-right px-4 py-3 font-medium text-gray-600">Stock</th>
+                <th className="text-center px-4 py-3 font-medium text-gray-600">Pago</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">Estado</th>
-                {(canManage || canDelete) && (
+                {canManage && (
                   <th className="px-4 py-3" />
                 )}
               </tr>
@@ -235,7 +246,6 @@ export default function ProductsPage() {
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">{product.name}</p>
-                        {product.sku && <p className="text-xs text-gray-400">SKU: {product.sku}</p>}
                       </div>
                     </div>
                   </td>
@@ -243,26 +253,26 @@ export default function ProductsPage() {
                   <td className="px-4 py-3 text-right font-medium text-gray-900">
                     {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                   </td>
-                  <td className={`px-4 py-3 text-right font-medium ${product.stock === 0 ? 'text-red-500' : product.stock <= 5 ? 'text-amber-500' : 'text-green-600'}`}>
-                    {product.stock}
+                  <td className="px-4 py-3 text-center">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${product.paid ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                      {product.paid ? 'Pagado' : 'Pendiente'}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${product.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                       {product.active ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
-                  {(canManage || canDelete) && (
+                  {canManage && (
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        {canManage && (
-                          <button
-                            onClick={() => setEditingProduct(product)}
-                            className="text-sky-500 hover:text-sky-700 text-xs font-medium"
-                          >
-                            Editar
-                          </button>
-                        )}
-                        {canDelete && (
+                        <button
+                          onClick={() => setEditingProduct(product)}
+                          className="text-violet-600 hover:text-violet-800 text-xs font-medium"
+                        >
+                          Editar
+                        </button>
+                        {canDeleteProduct(product) && (
                           <button
                             onClick={() => setDeletingProduct(product)}
                             className="text-red-500 hover:text-red-700 text-xs font-medium"
@@ -277,6 +287,7 @@ export default function ProductsPage() {
               ))}
             </tbody>
           </table>
+          </div>
           <Pagination
             page={filters.page ?? 1}
             pageSize={filters.page_size ?? 12}
@@ -300,7 +311,7 @@ export default function ProductsPage() {
       {/* Create Modal */}
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Producto">
         <ProductForm
-          onSubmit={async (data) => { await createMutation.mutateAsync(data) }}
+          onSubmit={async (data, contact, imageFile) => { await createMutation.mutateAsync({ data, contact, imageFile }) }}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -314,7 +325,7 @@ export default function ProductsPage() {
         {editingProduct && (
           <ProductForm
             product={editingProduct}
-            onSubmit={async (data) => { await updateMutation.mutateAsync({ id: editingProduct.id, data }) }}
+            onSubmit={async (data, contact, imageFile) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, contact, imageFile }) }}
             isLoading={updateMutation.isPending}
           />
         )}

@@ -31,7 +31,7 @@ function CategoryForm({
         </label>
         <input
           {...register('name', { required: 'El nombre es obligatorio' })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
           placeholder="Nombre de la categoría"
         />
         {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
@@ -41,7 +41,7 @@ function CategoryForm({
         <textarea
           {...register('description')}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 resize-none"
           placeholder="Descripción de la categoría"
         />
       </div>
@@ -49,7 +49,7 @@ function CategoryForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 disabled:opacity-50 flex items-center gap-2"
+          className="px-6 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
         >
           {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
           {category ? 'Actualizar' : 'Crear'} categoría
@@ -105,7 +105,7 @@ export default function CategoriesPage() {
   const categories = data?.data ?? []
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Categorías</h1>
@@ -114,7 +114,7 @@ export default function CategoriesPage() {
         {canManage && (
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600"
+            className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700"
           >
             <Plus size={18} />
             Nueva categoría
@@ -124,7 +124,7 @@ export default function CategoriesPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : categories.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
@@ -152,7 +152,7 @@ export default function CategoriesPage() {
                     {canManage && (
                       <button
                         onClick={() => setEditing(category)}
-                        className="p-1.5 rounded-lg hover:bg-sky-50 text-gray-400 hover:text-sky-600 transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-violet-50 text-gray-400 hover:text-violet-700 transition-colors"
                       >
                         <Edit size={15} />
                       </button>
