@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Search, Filter, LayoutGrid, List, Package } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -9,7 +9,9 @@ import ProductForm from '../components/products/ProductForm'
 import Modal from '../components/common/Modal'
 import ConfirmDialog from '../components/common/ConfirmDialog'
 import Pagination from '../components/common/Pagination'
+import { ProductCardSkeleton } from '../components/common/Skeleton'
 import { usePermissions } from '../hooks/usePermissions'
+import { useDebounce } from '../hooks/useDebounce'
 import { getErrorMessage } from '../api/client'
 import type { Product, CreateProductInput, ProductFilters } from '../types'
 
@@ -24,9 +26,16 @@ export default function ProductsPage() {
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null)
   const [showCreate, setShowCreate] = useState(false)
 
-  const { data, isLoading } = useQuery({
+  // Debounce search input so we don't query on every keystroke
+  const debouncedSearch = useDebounce(searchInput, 400)
+  useEffect(() => {
+    setFilters((f) => ({ ...f, search: debouncedSearch || undefined, page: 1 }))
+  }, [debouncedSearch])
+
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ['products', filters],
     queryFn: () => productsApi.list(filters),
+    placeholderData: (prev) => prev, // keep previous data while refetching
   })
 
   const { data: categoriesData } = useQuery({
@@ -65,11 +74,6 @@ export default function ProductsPage() {
     onError: (err) => toast.error(getErrorMessage(err)),
   })
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    setFilters((f) => ({ ...f, search: searchInput, page: 1 }))
-  }
-
   const products = data?.data ?? []
   const total = data?.total ?? 0
   const categories = categoriesData?.data ?? []
@@ -95,17 +99,18 @@ export default function ProductsPage() {
       {/* Filters */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
         <div className="flex flex-wrap gap-3">
-          <form onSubmit={handleSearch} className="flex-1 min-w-48">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-              <input
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Buscar por nombre, SKU..."
-                className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
-          </form>
+          <div className="flex-1 min-w-48 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+            <input
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Buscar por nombre, SKU..."
+              className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            />
+            {isFetching && (
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+            )}
+          </div>
 
           <select
             value={filters.category_id ?? ''}
@@ -172,8 +177,8 @@ export default function ProductsPage() {
 
       {/* Products grid/list */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {Array.from({ length: 8 }, (_, i) => <ProductCardSkeleton key={i} />)}
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-20 text-gray-400">

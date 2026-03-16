@@ -29,10 +29,17 @@ export default function ImageUpload({ productId, currentImageUrl }: ImageUploadP
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+
     const reader = new FileReader()
-    reader.onloadend = () => setPreview(reader.result as string)
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') setPreview(reader.result)
+    }
+    reader.onerror = () => toast.error('No se pudo leer el archivo')
     reader.readAsDataURL(file)
     upload(file)
+
+    // Reset input so the same file can be re-selected if needed
+    e.target.value = ''
   }
 
   return (

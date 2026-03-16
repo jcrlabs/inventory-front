@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { Package, Tag, Users, LayoutDashboard, LogOut } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { usePermissions } from '../../hooks/usePermissions'
+import { authApi } from '../../api/auth'
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
@@ -11,7 +12,12 @@ const navItems = [
 ] as const
 
 export default function Sidebar() {
-  const { logout, user } = useAuthStore()
+  const { logout, user, refreshToken } = useAuthStore()
+
+  const handleLogout = async () => {
+    try { await authApi.logout(refreshToken ?? undefined) } catch { /* ignore */ }
+    logout()
+  }
   const { role } = usePermissions()
 
   return (
@@ -59,7 +65,7 @@ export default function Sidebar() {
           </span>
         </div>
         <button
-          onClick={logout}
+          onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
         >
           <LogOut size={18} />

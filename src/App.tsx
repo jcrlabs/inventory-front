@@ -10,11 +10,15 @@ import ProductDetailPage from './pages/ProductDetailPage'
 import CategoriesPage from './pages/CategoriesPage'
 import UsersPage from './pages/UsersPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ErrorBoundary from './components/common/ErrorBoundary'
 import { usePermissions } from './hooks/usePermissions'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { retry: 1, staleTime: 30_000 },
+    queries: {
+      retry: 1,
+      staleTime: 30_000,
+    },
   },
 })
 
@@ -46,15 +50,15 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/products/:id" element={<ProductDetailPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/" element={<ErrorBoundary><DashboardPage /></ErrorBoundary>} />
+        <Route path="/products" element={<ErrorBoundary><ProductsPage /></ErrorBoundary>} />
+        <Route path="/products/:id" element={<ErrorBoundary><ProductDetailPage /></ErrorBoundary>} />
+        <Route path="/categories" element={<ErrorBoundary><CategoriesPage /></ErrorBoundary>} />
         <Route
           path="/users"
           element={
             <AdminRoute>
-              <UsersPage />
+              <ErrorBoundary><UsersPage /></ErrorBoundary>
             </AdminRoute>
           }
         />
@@ -68,7 +72,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppRoutes />
+        <ErrorBoundary>
+          <AppRoutes />
+        </ErrorBoundary>
         <Toaster
           position="top-right"
           toastOptions={{

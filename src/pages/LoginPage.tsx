@@ -6,7 +6,11 @@ import toast from 'react-hot-toast'
 import { authApi } from '../api/auth'
 import { useAuthStore } from '../store/authStore'
 import { getErrorMessage } from '../api/client'
-import type { LoginRequest } from '../types'
+
+interface LoginForm {
+  identifier: string
+  password: string
+}
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -14,18 +18,14 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginRequest>()
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
 
-  const onSubmit = async (data: LoginRequest) => {
+  const onSubmit = async ({ identifier, password }: LoginForm) => {
     setIsLoading(true)
     try {
-      const res = await authApi.login(data)
-      setAuth(res.user, res.token)
-      toast.success(`Bienvenido, ${res.user.username}!`)
+      const pair = await authApi.login(identifier, password)
+      setAuth(pair.user, pair.access_token, pair.refresh_token, pair.expires_at)
+      toast.success(`Bienvenido, ${pair.user.username}!`)
       navigate('/')
     } catch (err) {
       toast.error(getErrorMessage(err))
@@ -47,7 +47,6 @@ export default function LoginPage() {
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Iniciar sesión</h2>
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -102,7 +101,7 @@ export default function LoginPage() {
           <div className="mt-6 p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-500 text-center">
               Credenciales por defecto:{' '}
-              <span className="font-mono font-medium text-gray-700">admin / admin123!</span>
+              <span className="font-mono font-medium text-gray-700">admin / Admin1234!</span>
             </p>
           </div>
         </div>

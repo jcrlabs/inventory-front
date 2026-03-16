@@ -194,7 +194,7 @@ export default function UsersPage() {
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
                         <span className="text-sm font-semibold text-gray-600 uppercase">
-                          {user.username[0]}
+                          {user.username?.[0] ?? '?'}
                         </span>
                       </div>
                       <div>
