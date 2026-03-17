@@ -135,7 +135,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         />
       </div>
 
-      {/* Price + Category */}
+      {/* Price + Paid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -158,6 +158,19 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           {errors.price && <p className="mt-1 text-xs text-red-500">{errors.price.message}</p>}
         </div>
 
+        <div className="flex items-center gap-2 pt-6">
+          <input
+            {...register('paid')}
+            type="checkbox"
+            id="paid"
+            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
+          />
+          <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
+        </div>
+      </div>
+
+      {/* Category + Status */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
           <select
@@ -172,9 +185,19 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
             ))}
           </select>
         </div>
-      </div>
 
-      {/* Image upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+          <select
+            {...register('status')}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
+          >
+            <option value="en_progreso">En progreso</option>
+            <option value="reparado">Reparado</option>
+            <option value="no_reparado">No reparado</option>
+          </select>
+        </div>
+      </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Imagen</label>
         {imagePreview ? (
@@ -205,30 +228,6 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           className="hidden"
           onChange={handleImageChange}
         />
-      </div>
-
-      {/* Paid + Status */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="flex items-center gap-2 pt-6">
-          <input
-            {...register('paid')}
-            type="checkbox"
-            id="paid"
-            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
-          />
-          <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-          <select
-            {...register('status')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
-          >
-            <option value="en_progreso">En progreso</option>
-            <option value="reparado">Reparado</option>
-            <option value="no_reparado">No reparado</option>
-          </select>
-        </div>
       </div>
 
       {/* Contact section */}
