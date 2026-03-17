@@ -43,6 +43,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   return (
     <>
+      {/* ProfileModal is rendered outside <aside> to avoid fixed-in-transform
+          stacking context issues that misposition the modal overlay */}
+      <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
       <aside
         className={`
           fixed inset-y-0 left-0 z-40
@@ -159,7 +162,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </button>
         </div>
 
-        <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
       </aside>
     </>
   )
