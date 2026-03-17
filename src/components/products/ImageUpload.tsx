@@ -36,9 +36,9 @@ export default function ImageUpload({ productId, images }: ImageUploadProps) {
   })
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    addImage(file)
+    const files = e.target.files
+    if (!files || files.length === 0) return
+    Array.from(files).forEach((file) => addImage(file))
     e.target.value = ''
   }
 
@@ -89,6 +89,7 @@ export default function ImageUpload({ productId, images }: ImageUploadProps) {
         ref={inputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
+        multiple
         className="hidden"
         onChange={handleFileChange}
       />
