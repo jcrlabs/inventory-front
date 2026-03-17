@@ -7,8 +7,8 @@ import { authApi } from '../../api/auth'
 import ProfileModal from '../profile/ProfileModal'
 
 const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
   { to: '/products', icon: Package, label: 'Productos', roles: ['admin', 'manager', 'viewer'] },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
   { to: '/categories', icon: Tag, label: 'Categorías', roles: ['admin', 'manager', 'viewer'] },
   { to: '/users', icon: Users, label: 'Usuarios', roles: ['admin'] },
 ] as const
@@ -43,6 +43,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   return (
     <>
+      {/* ProfileModal is rendered outside <aside> to avoid fixed-in-transform
+          stacking context issues that misposition the modal overlay */}
+      <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
       <aside
         className={`
           fixed inset-y-0 left-0 z-40
@@ -90,7 +93,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <NavLink
                   key={to}
                   to={to}
-                  end={to === '/'}
+                  end={to === '/products' || to === '/dashboard'}
                   onClick={onClose}
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${
@@ -159,7 +162,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </button>
         </div>
 
-        <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} />
       </aside>
     </>
   )

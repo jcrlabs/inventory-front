@@ -1,6 +1,7 @@
 import { apiClient } from './client'
 import type {
   Product,
+  ProductImage,
   PaginatedResponse,
   ProductFilters,
   CreateProductInput,
@@ -13,6 +14,7 @@ export const productsApi = {
     if (filters.search) params.set('search', filters.search)
     if (filters.category_id) params.set('category_id', filters.category_id)
     if (filters.active !== undefined) params.set('active', String(filters.active))
+    if (filters.paid !== undefined) params.set('paid', String(filters.paid))
     if (filters.page) params.set('page', String(filters.page))
     if (filters.page_size) params.set('page_size', String(filters.page_size))
 
@@ -39,6 +41,7 @@ export const productsApi = {
     await apiClient.delete(`/products/${id}`)
   },
 
+  // Legacy single-image upload (used from ProductForm on create/edit)
   uploadImage: async (id: string, file: File): Promise<{ image_url: string }> => {
     const formData = new FormData()
     formData.append('image', file)
@@ -48,5 +51,21 @@ export const productsApi = {
       { headers: { 'Content-Type': 'multipart/form-data' } }
     )
     return res.data
+  },
+
+  // Multi-image gallery
+  addImage: async (id: string, file: File): Promise<ProductImage> => {
+    const formData = new FormData()
+    formData.append('image', file)
+    const res = await apiClient.post<ProductImage>(
+      `/products/${id}/images`,
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } }
+    )
+    return res.data
+  },
+
+  deleteImage: async (productId: string, imageId: string): Promise<void> => {
+    await apiClient.delete(`/products/${productId}/images/${imageId}`)
   },
 }
