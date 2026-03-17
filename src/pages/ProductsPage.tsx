@@ -47,10 +47,14 @@ export default function ProductsPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: async ({ data, contact, imageFile }: { data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
+    mutationFn: async ({ data, contact, imageFiles }: { data: CreateProductInput; contact?: UpsertContactInput; imageFiles?: File[] }) => {
       const created = await productsApi.create(data)
       if (contact) await contactsApi.upsert(created.id, contact)
-      if (imageFile) await productsApi.uploadImage(created.id, imageFile)
+      if (imageFiles?.length) {
+        for (const file of imageFiles) {
+          await productsApi.addImage(created.id, file)
+        }
+      }
       return created
     },
     onSuccess: () => {
@@ -62,10 +66,14 @@ export default function ProductsPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, data, contact, imageFile }: { id: string; data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
+    mutationFn: async ({ id, data, contact, imageFiles }: { id: string; data: CreateProductInput; contact?: UpsertContactInput; imageFiles?: File[] }) => {
       const updated = await productsApi.update(id, data)
       if (contact) await contactsApi.upsert(id, contact)
-      if (imageFile) await productsApi.uploadImage(id, imageFile)
+      if (imageFiles?.length) {
+        for (const file of imageFiles) {
+          await productsApi.addImage(id, file)
+        }
+      }
       return updated
     },
     onSuccess: () => {
@@ -368,7 +376,7 @@ export default function ProductsPage() {
 
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Producto">
         <ProductForm
-          onSubmit={async (data, contact, imageFile) => { await createMutation.mutateAsync({ data, contact, imageFile }) }}
+          onSubmit={async (data, contact, imageFiles) => { await createMutation.mutateAsync({ data, contact, imageFiles }) }}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -377,7 +385,7 @@ export default function ProductsPage() {
         {editingProduct && (
           <ProductForm
             product={editingProduct}
-            onSubmit={async (data, contact, imageFile) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, contact, imageFile }) }}
+            onSubmit={async (data, contact, imageFiles) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, contact, imageFiles }) }}
             isLoading={updateMutation.isPending}
           />
         )}
