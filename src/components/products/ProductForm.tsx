@@ -7,7 +7,7 @@ import type { Product, CreateProductInput, UpsertContactInput, ProductStatus } f
 
 interface ProductFormProps {
   product?: Product
-  onSubmit: (data: CreateProductInput, contact?: UpsertContactInput, imageFile?: File) => Promise<void>
+  onSubmit: (data: CreateProductInput, contact?: UpsertContactInput, imageFiles?: File[]) => Promise<void>
   isLoading: boolean
 }
 
@@ -17,8 +17,17 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     queryFn: () => categoriesApi.list(),
   })
 
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(product?.image_url ?? null)
+  // Multi-image state
+  const [imageFiles, setImageFiles] = useState<File[]>([])
+  const [imagePreviews, setImagePreviews] = useState<{ url: string; isExisting: boolean }[]>(() => {
+    if (product) {
+      const imgs: { url: string; isExisting: boolean }[] = []
+      product.images?.forEach((img) => { if (img.image_url) imgs.push({ url: img.image_url, isExisting: true }) })
+      if (imgs.length === 0 && product.image_url) imgs.push({ url: product.image_url, isExisting: true })
+      return imgs
+    }
+    return []
+  })
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const {
@@ -43,11 +52,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     formState: { errors: contactErrors },
     getValues: getContactValues,
   } = useForm<UpsertContactInput>({
-    defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-    },
+    defaultValues: { name: '', email: '', phone: '' },
   })
 
   useEffect(() => {
@@ -60,8 +65,12 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         paid: product.paid,
         status: (product.status as ProductStatus) ?? 'en_progreso',
       })
-      setImagePreview(product.image_url ?? null)
-      setImageFile(null)
+
+      const imgs: { url: string; isExisting: boolean }[] = []
+      product.images?.forEach((img) => { if (img.image_url) imgs.push({ url: img.image_url, isExisting: true }) })
+      if (imgs.length === 0 && product.image_url) imgs.push({ url: product.image_url, isExisting: true })
+      setImagePreviews(imgs)
+      setImageFiles([])
 
       if (product.contact) {
         resetContact({
@@ -75,17 +84,32 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     }
   }, [product, reset, resetContact])
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setImageFile(file)
-    setImagePreview(URL.createObjectURL(file))
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    if (!files.length) return
+    const newFiles = [...imageFiles, ...files]
+    const newPreviews = [
+      ...imagePreviews,
+      ...files.map((f) => ({ url: URL.createObjectURL(f), isExisting: false })),
+    ]
+    setImageFiles(newFiles)
+    setImagePreviews(newPreviews)
+    // Reset input so same file can be selected again
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
-  const removeImage = () => {
-    setImageFile(null)
-    setImagePreview(null)
-    if (fileInputRef.current) fileInputRef.current.value = ''
+  const removeImage = (index: number) => {
+    const preview = imagePreviews[index]
+    if (!preview.isExisting) {
+      // Track how many non-existing previews are before this index to find the file
+      const newFileIndex = imagePreviews.slice(0, index).filter((p) => !p.isExisting).length
+      const newFiles = [...imageFiles]
+      newFiles.splice(newFileIndex, 1)
+      setImageFiles(newFiles)
+    }
+    const newPreviews = [...imagePreviews]
+    newPreviews.splice(index, 1)
+    setImagePreviews(newPreviews)
   }
 
   const categories = categoriesData?.data ?? []
@@ -106,8 +130,10 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         }
       : undefined
 
-    return onSubmit(cleaned, contact, imageFile ?? undefined)
+    return onSubmit(cleaned, contact, imageFiles.length > 0 ? imageFiles : undefined)
   }
+
+  const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
@@ -118,7 +144,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         </label>
         <input
           {...register('name', { required: 'El nombre es obligatorio' })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+          className={inputClass}
           placeholder="Nombre del producto"
         />
         {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
@@ -130,7 +156,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         <textarea
           {...register('description')}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 resize-none"
+          className={`${inputClass} resize-none`}
           placeholder="Descripción del producto"
         />
       </div>
@@ -179,13 +205,10 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           >
             <option value="">Sin categoría</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
           <select
@@ -198,35 +221,58 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           </select>
         </div>
       </div>
+
+      {/* Images — multi-upload */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Imagen</label>
-        {imagePreview ? (
-          <div className="relative w-full h-40 rounded-lg overflow-hidden border border-gray-200">
-            <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
-            <button
-              type="button"
-              onClick={removeImage}
-              className="absolute top-2 right-2 p-1 bg-white/80 rounded-full text-gray-600 hover:bg-white hover:text-red-500 transition-colors"
-            >
-              <X size={16} />
-            </button>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Imágenes
+          {imagePreviews.length > 0 && (
+            <span className="ml-1.5 text-xs font-normal text-gray-400">({imagePreviews.length})</span>
+          )}
+        </label>
+
+        {/* Preview grid */}
+        {imagePreviews.length > 0 && (
+          <div className="grid grid-cols-3 gap-2 mb-2">
+            {imagePreviews.map((preview, i) => (
+              <div key={i} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+                <img
+                  src={preview.url}
+                  alt={`imagen ${i + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                {!preview.isExisting && (
+                  <button
+                    type="button"
+                    onClick={() => removeImage(i)}
+                    className="absolute top-1 right-1 p-0.5 bg-black/60 hover:bg-red-600 text-white rounded-full transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-violet-500 hover:text-violet-500 transition-colors"
-          >
-            <ImagePlus size={24} />
-            <span className="text-sm">Haz clic para subir una imagen</span>
-          </button>
         )}
+
+        {/* Add more images button */}
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full h-20 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-1.5 text-gray-400 hover:border-violet-500 hover:text-violet-500 transition-colors"
+        >
+          <ImagePlus size={20} />
+          <span className="text-xs">
+            {imagePreviews.length > 0 ? 'Añadir más imágenes' : 'Haz clic para subir imágenes'}
+          </span>
+        </button>
         <input
           ref={fileInputRef}
           type="file"
           accept="image/*"
+          multiple
           className="hidden"
-          onChange={handleImageChange}
+          onChange={handleFileChange}
         />
       </div>
 
@@ -270,7 +316,6 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
                 placeholder="contacto@ejemplo.com"
               />
             </div>
-
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Teléfono</label>
               <input

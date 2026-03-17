@@ -34,10 +34,14 @@ export default function ProductDetailPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: async ({ data, contact, imageFile }: { data: CreateProductInput; contact?: UpsertContactInput; imageFile?: File }) => {
+    mutationFn: async ({ data, contact, imageFiles }: { data: CreateProductInput; contact?: UpsertContactInput; imageFiles?: File[] }) => {
       await productsApi.update(id!, data)
       if (contact) await contactsApi.upsert(id!, contact)
-      if (imageFile) await productsApi.uploadImage(id!, imageFile)
+      if (imageFiles?.length) {
+        for (const file of imageFiles) {
+          await productsApi.addImage(id!, file)
+        }
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['product', id] })
@@ -289,8 +293,8 @@ export default function ProductDetailPage() {
       <Modal isOpen={showEdit} onClose={() => setShowEdit(false)} title="Editar Producto">
         <ProductForm
           product={product}
-          onSubmit={async (data, contact, imageFile) => {
-            await updateMutation.mutateAsync({ data, contact, imageFile })
+          onSubmit={async (data, contact, imageFiles) => {
+            await updateMutation.mutateAsync({ data, contact, imageFiles })
           }}
           isLoading={updateMutation.isPending}
         />
