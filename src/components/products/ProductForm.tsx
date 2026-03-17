@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useQuery } from '@tanstack/react-query'
 import { ImagePlus, X, UserRound } from 'lucide-react'
 import { categoriesApi } from '../../api/categories'
-import type { Product, CreateProductInput, UpsertContactInput } from '../../types'
+import type { Product, CreateProductInput, UpsertContactInput, ProductStatus } from '../../types'
 
 interface ProductFormProps {
   product?: Product
@@ -33,7 +33,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       price: 0,
       category_id: undefined,
       paid: false,
-      active: true,
+      status: 'en_progreso' as ProductStatus,
     },
   })
 
@@ -42,17 +42,13 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     reset: resetContact,
     formState: { errors: contactErrors },
     getValues: getContactValues,
-    watch: watchContact,
   } = useForm<UpsertContactInput>({
     defaultValues: {
       name: '',
-      subdato: '',
       email: '',
       phone: '',
     },
   })
-
-  const contactName = watchContact('name')
 
   useEffect(() => {
     if (product) {
@@ -62,7 +58,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         price: product.price,
         category_id: product.category_id ?? undefined,
         paid: product.paid,
-        active: product.active,
+        status: (product.status as ProductStatus) ?? 'en_progreso',
       })
       setImagePreview(product.image_url ?? null)
       setImageFile(null)
@@ -70,12 +66,11 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       if (product.contact) {
         resetContact({
           name: product.contact.name,
-          subdato: product.contact.subdato,
           email: product.contact.email ?? '',
           phone: product.contact.phone ?? '',
         })
       } else {
-        resetContact({ name: '', subdato: '', email: '', phone: '' })
+        resetContact({ name: '', email: '', phone: '' })
       }
     }
   }, [product, reset, resetContact])
@@ -106,7 +101,6 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     const contact: UpsertContactInput | undefined = hasContact
       ? {
           name: contactData.name.trim(),
-          subdato: contactData.subdato.trim(),
           email: contactData.email?.trim() || undefined,
           phone: contactData.phone?.trim() || undefined,
         }
@@ -141,7 +135,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         />
       </div>
 
-      {/* Price + Category */}
+      {/* Price + Paid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -164,6 +158,19 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           {errors.price && <p className="mt-1 text-xs text-red-500">{errors.price.message}</p>}
         </div>
 
+        <div className="flex items-center gap-2 pt-6">
+          <input
+            {...register('paid')}
+            type="checkbox"
+            id="paid"
+            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
+          />
+          <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
+        </div>
+      </div>
+
+      {/* Category + Status */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
           <select
@@ -178,9 +185,19 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
             ))}
           </select>
         </div>
-      </div>
 
-      {/* Image upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+          <select
+            {...register('status')}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
+          >
+            <option value="en_progreso">En progreso</option>
+            <option value="reparado">Reparado</option>
+            <option value="no_reparado">No reparado</option>
+          </select>
+        </div>
+      </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Imagen</label>
         {imagePreview ? (
@@ -213,28 +230,6 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         />
       </div>
 
-      {/* Paid + Active */}
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2">
-          <input
-            {...register('paid')}
-            type="checkbox"
-            id="paid"
-            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
-          />
-          <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            {...register('active')}
-            type="checkbox"
-            id="active"
-            className="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-600"
-          />
-          <label htmlFor="active" className="text-sm text-gray-700">Producto activo</label>
-        </div>
-      </div>
-
       {/* Contact section */}
       <div className="border-t border-gray-200 pt-4">
         <div className="flex items-center gap-2 mb-3">
@@ -244,49 +239,25 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         </div>
 
         <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">
-                Nombre <span className="text-red-500">*</span>
-              </label>
-              <input
-                {...registerContact('name', {
-                  validate: (val) => {
-                    const subdato = getContactValues('subdato')
-                    if ((val.trim() || subdato.trim()) && !val.trim()) {
-                      return 'El nombre es obligatorio'
-                    }
-                    return true
-                  },
-                })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
-                placeholder="Nombre del contacto"
-              />
-              {contactErrors.name && (
-                <p className="mt-1 text-xs text-red-500">{contactErrors.name.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">
-                A quién llamar <span className="text-red-500">*</span>
-              </label>
-              <input
-                {...registerContact('subdato', {
-                  validate: (val) => {
-                    if (contactName.trim() && !val.trim()) {
-                      return 'Indica a quién llamar'
-                    }
-                    return true
-                  },
-                })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
-                placeholder="Ej: Responsable de ventas"
-              />
-              {contactErrors.subdato && (
-                <p className="mt-1 text-xs text-red-500">{contactErrors.subdato.message}</p>
-              )}
-            </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Nombre <span className="text-red-500">*</span>
+            </label>
+            <input
+              {...registerContact('name', {
+                validate: (val) => {
+                  if (getContactValues('email') || getContactValues('phone')) {
+                    if (!val.trim()) return 'El nombre es obligatorio si hay email o teléfono'
+                  }
+                  return true
+                },
+              })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
+              placeholder="Nombre del contacto"
+            />
+            {contactErrors.name && (
+              <p className="mt-1 text-xs text-red-500">{contactErrors.name.message}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

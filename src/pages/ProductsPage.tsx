@@ -142,19 +142,20 @@ export default function ProductsPage() {
           </select>
 
           <select
-            value={filters.active === undefined ? '' : String(filters.active)}
+            value={filters.status ?? ''}
             onChange={(e) =>
               setFilters((f) => ({
                 ...f,
-                active: e.target.value === '' ? undefined : e.target.value === 'true',
+                status: (e.target.value || undefined) as typeof f.status,
                 page: 1,
               }))
             }
             className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
           >
             <option value="">Todos los estados</option>
-            <option value="true">Activos</option>
-            <option value="false">Inactivos</option>
+            <option value="en_progreso">En progreso</option>
+            <option value="reparado">Reparado</option>
+            <option value="no_reparado">No reparado</option>
           </select>
 
           <select
@@ -191,7 +192,7 @@ export default function ProductsPage() {
           <button
             onClick={() => {
               setSearchInput('')
-              setFilters({ page: 1, page_size: 12, paid: undefined, active: undefined })
+              setFilters({ page: 1, page_size: 12, paid: undefined, status: undefined })
             }}
             className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
@@ -275,8 +276,12 @@ export default function ProductsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${product.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                      {product.active ? 'Activo' : 'Inactivo'}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                      product.status === 'reparado' ? 'bg-green-100 text-green-700'
+                      : product.status === 'en_progreso' ? 'bg-amber-100 text-amber-700'
+                      : 'bg-red-100 text-red-700'
+                    }`}>
+                      {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
                     </span>
                   </td>
                   {canManage && (
