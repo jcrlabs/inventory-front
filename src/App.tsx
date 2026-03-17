@@ -31,7 +31,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
   const { isAdmin } = usePermissions()
-  if (!isAdmin) return <Navigate to="/" replace />
+  if (!isAdmin) return <Navigate to="/products" replace />
   return <>{children}</>
 }
 
@@ -55,7 +55,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route path="/" element={<ErrorBoundary><DashboardPage /></ErrorBoundary>} />
+        <Route path="/" element={<Navigate to="/products" replace />} />
+        <Route path="/dashboard" element={<ErrorBoundary><DashboardPage /></ErrorBoundary>} />
         <Route path="/products" element={<ErrorBoundary><ProductsPage /></ErrorBoundary>} />
         <Route path="/products/:id" element={<ErrorBoundary><ProductDetailPage /></ErrorBoundary>} />
         <Route path="/categories" element={<ErrorBoundary><CategoriesPage /></ErrorBoundary>} />

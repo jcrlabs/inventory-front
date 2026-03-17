@@ -157,6 +157,22 @@ export default function ProductsPage() {
             <option value="false">Inactivos</option>
           </select>
 
+          <select
+            value={filters.paid === undefined ? '' : String(filters.paid)}
+            onChange={(e) =>
+              setFilters((f) => ({
+                ...f,
+                paid: e.target.value === '' ? undefined : e.target.value === 'true',
+                page: 1,
+              }))
+            }
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
+          >
+            <option value="">Pagado / Pendiente</option>
+            <option value="true">Pagado</option>
+            <option value="false">Pendiente</option>
+          </select>
+
           <div className="flex items-center gap-1 border border-gray-300 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
@@ -175,7 +191,7 @@ export default function ProductsPage() {
           <button
             onClick={() => {
               setSearchInput('')
-              setFilters({ page: 1, page_size: 12 })
+              setFilters({ page: 1, page_size: 12, paid: undefined, active: undefined })
             }}
             className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
           >

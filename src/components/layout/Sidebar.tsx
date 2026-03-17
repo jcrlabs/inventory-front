@@ -7,8 +7,8 @@ import { authApi } from '../../api/auth'
 import ProfileModal from '../profile/ProfileModal'
 
 const navItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
   { to: '/products', icon: Package, label: 'Productos', roles: ['admin', 'manager', 'viewer'] },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
   { to: '/categories', icon: Tag, label: 'Categorías', roles: ['admin', 'manager', 'viewer'] },
   { to: '/users', icon: Users, label: 'Usuarios', roles: ['admin'] },
 ] as const
@@ -93,7 +93,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <NavLink
                   key={to}
                   to={to}
-                  end={to === '/'}
+                  end={to === '/products' || to === '/dashboard'}
                   onClick={onClose}
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${

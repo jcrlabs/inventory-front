@@ -119,8 +119,24 @@ export default function ProductDetailPage() {
         <div className="lg:col-span-1 space-y-6">
           {canManage ? (
             <div>
-              <h2 className="text-sm font-medium text-gray-700 mb-2">Imagen del producto</h2>
-              <ImageUpload productId={product.id} currentImageUrl={product.image_url} />
+              <h2 className="text-sm font-medium text-gray-700 mb-2">
+                Imágenes del producto
+                {product.images && product.images.length > 0 && (
+                  <span className="ml-2 text-xs text-gray-400 font-normal">({product.images.length})</span>
+                )}
+              </h2>
+              <ImageUpload productId={product.id} images={product.images ?? []} />
+            </div>
+          ) : (product.images && product.images.length > 0) ? (
+            <div className="grid grid-cols-2 gap-2">
+              {product.images.map((img) => (
+                <img
+                  key={img.id}
+                  src={img.image_url}
+                  alt={product.name}
+                  className="w-full aspect-square object-cover rounded-xl border border-gray-200"
+                />
+              ))}
             </div>
           ) : product.image_url ? (
             <img

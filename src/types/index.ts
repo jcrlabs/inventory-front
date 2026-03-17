@@ -37,6 +37,14 @@ export interface UpsertContactInput {
   phone?: string
 }
 
+export interface ProductImage {
+  id: string
+  product_id: string
+  image_url?: string
+  position: number
+  created_at: string
+}
+
 export interface Product {
   id: string
   name: string
@@ -44,6 +52,7 @@ export interface Product {
   price: number
   sku: string
   image_url?: string
+  images?: ProductImage[]
   category_id?: string
   category?: Category
   contact?: Contact
@@ -81,6 +90,7 @@ export interface ProductFilters {
   search?: string
   category_id?: string
   active?: boolean
+  paid?: boolean
   page?: number
   page_size?: number
 }
