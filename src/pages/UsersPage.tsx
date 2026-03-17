@@ -23,6 +23,8 @@ const roleLabels: Record<Role, string> = {
   viewer: 'Visualizador',
 }
 
+const inputClass = "w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+
 function UserForm({
   user,
   onSubmit,
@@ -45,49 +47,49 @@ function UserForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">
             Usuario <span className="text-red-500">*</span>
           </label>
           <input
             {...register('username', { required: !user, minLength: 3 })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+            className={inputClass}
             placeholder="username"
           />
-          {errors.username && <p className="mt-1 text-xs text-red-500">Mínimo 3 caracteres</p>}
+          {errors.username && <p className="mt-1.5 text-xs text-red-500">Mínimo 3 caracteres</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-slate-700 mb-1.5">
             Email <span className="text-red-500">*</span>
           </label>
           <input
             {...register('email', { required: !user, pattern: /^\S+@\S+\.\S+$/ })}
             type="email"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+            className={inputClass}
             placeholder="user@ejemplo.com"
           />
-          {errors.email && <p className="mt-1 text-xs text-red-500">Email inválido</p>}
+          {errors.email && <p className="mt-1.5 text-xs text-red-500">Email inválido</p>}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1.5">
           Contraseña {!user && <span className="text-red-500">*</span>}
-          {user && <span className="text-gray-400 font-normal">(dejar vacío para no cambiar)</span>}
+          {user && <span className="text-slate-400 font-normal text-xs ml-1">(dejar vacío para no cambiar)</span>}
         </label>
         <input
           {...register('password', { required: !user, minLength: user ? 0 : 8 })}
           type="password"
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+          className={inputClass}
           placeholder="••••••••"
         />
-        {errors.password && <p className="mt-1 text-xs text-red-500">Mínimo 8 caracteres</p>}
+        {errors.password && <p className="mt-1.5 text-xs text-red-500">Mínimo 8 caracteres</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+        <label className="block text-sm font-medium text-slate-700 mb-1.5">Rol</label>
         <select
           {...register('role', { required: true })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 bg-white"
+          className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
         >
           <option value="viewer">Visualizador</option>
           <option value="manager">Gestor</option>
@@ -99,7 +101,8 @@ function UserForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
+          className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center gap-2 transition-all hover:opacity-90 disabled:opacity-60"
+          style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}
         >
           {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
           {user ? 'Actualizar' : 'Crear'} usuario
@@ -132,8 +135,7 @@ export default function UsersPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateUserInput }) =>
-      usersApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateUserInput }) => usersApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       setEditing(null)
@@ -156,108 +158,115 @@ export default function UsersPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
-      <div className="flex items-center justify-between mb-5">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Usuarios</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{data?.total ?? 0} usuarios registrados</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-violet-500 mb-0.5">Administración</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Usuarios</h1>
+          <p className="text-sm text-slate-400 mt-0.5">{data?.total ?? 0} usuarios registrados</p>
         </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700"
+          className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+          style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px -3px rgba(109,40,217,0.4)' }}
         >
-          <Plus size={18} />
-          Nuevo usuario
+          <Plus size={17} />
+          <span className="hidden sm:inline">Nuevo usuario</span>
+          <span className="sm:hidden">Nuevo</span>
         </button>
       </div>
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden">
           <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[640px]">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="text-left px-6 py-3 font-medium text-gray-600">Usuario</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-600">Email</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-600">Rol</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-600">Estado</th>
-                <th className="text-left px-6 py-3 font-medium text-gray-600">Último acceso</th>
-                <th className="px-6 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-sm font-semibold text-gray-600 uppercase">
-                          {user.username?.[0] ?? '?'}
-                        </span>
+            <table className="w-full text-sm min-w-[580px]">
+              <thead style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+                <tr>
+                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Usuario</th>
+                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>
+                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Rol</th>
+                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden md:table-cell">Estado</th>
+                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden lg:table-cell">Último acceso</th>
+                  <th className="px-5 py-3" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {users.map((user) => (
+                  <tr key={user.id} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold"
+                          style={{ background: 'linear-gradient(135deg, #a78bfa, #7c3aed)' }}
+                        >
+                          {user.username?.[0]?.toUpperCase() ?? '?'}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-slate-800">{user.username}</p>
+                          {user.id === currentUser?.id && (
+                            <span className="text-xs text-violet-500 font-medium">(tú)</span>
+                          )}
+                          {/* Email shown below name on small screens */}
+                          <p className="text-xs text-slate-400 sm:hidden mt-0.5">{user.email}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{user.username}</p>
-                        {user.id === currentUser?.id && (
-                          <span className="text-xs text-violet-600">(tú)</span>
+                    </td>
+                    <td className="px-5 py-3.5 text-slate-500 hidden sm:table-cell">{user.email}</td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-1.5">
+                        <Shield size={12} className={
+                          user.role === 'admin' ? 'text-red-500' :
+                          user.role === 'manager' ? 'text-amber-500' : 'text-blue-500'
+                        } />
+                        <Badge variant={roleBadgeVariant(user.role)}>
+                          {roleLabels[user.role]}
+                        </Badge>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5 hidden md:table-cell">
+                      <Badge variant={user.active ? 'success' : 'error'}>
+                        {user.active ? 'Activo' : 'Inactivo'}
+                      </Badge>
+                    </td>
+                    <td className="px-5 py-3.5 text-slate-400 text-xs hidden lg:table-cell">
+                      {user.last_login
+                        ? new Date(user.last_login).toLocaleDateString('es-ES')
+                        : 'Nunca'}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center justify-end gap-3">
+                        <button
+                          onClick={() => setEditing(user)}
+                          className="text-xs font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+                        >
+                          Editar
+                        </button>
+                        {user.id !== currentUser?.id && (
+                          <button
+                            onClick={() => setDeleting(user)}
+                            className="text-xs font-semibold text-red-500 hover:text-red-700 transition-colors"
+                          >
+                            Eliminar
+                          </button>
                         )}
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-gray-500">{user.email}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1.5">
-                      <Shield size={13} className={
-                        user.role === 'admin' ? 'text-red-500' :
-                        user.role === 'manager' ? 'text-amber-500' : 'text-blue-500'
-                      } />
-                      <Badge variant={roleBadgeVariant(user.role)}>
-                        {roleLabels[user.role]}
-                      </Badge>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <Badge variant={user.active ? 'success' : 'error'}>
-                      {user.active ? 'Activo' : 'Inactivo'}
-                    </Badge>
-                  </td>
-                  <td className="px-6 py-4 text-gray-400 text-xs">
-                    {user.last_login
-                      ? new Date(user.last_login).toLocaleDateString('es-ES')
-                      : 'Nunca'}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => setEditing(user)}
-                        className="text-violet-600 hover:text-sky-700 text-xs font-medium"
-                      >
-                        Editar
-                      </button>
-                      {user.id !== currentUser?.id && (
-                        <button
-                          onClick={() => setDeleting(user)}
-                          className="text-red-500 hover:text-red-700 text-xs font-medium"
-                        >
-                          Eliminar
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {users.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-400">
-                    <Users className="mx-auto mb-2" size={32} />
-                    No hay usuarios
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ))}
+                {users.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-14 text-center">
+                      <Users className="mx-auto mb-3 text-slate-200" size={36} />
+                      <p className="text-slate-500 font-medium">No hay usuarios</p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

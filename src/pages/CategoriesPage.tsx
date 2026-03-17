@@ -12,6 +12,8 @@ import { usePermissions } from '../hooks/usePermissions'
 import { getErrorMessage } from '../api/client'
 import type { Category, CreateCategoryInput } from '../types'
 
+const inputClass = "w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+
 function CategoryForm({
   category,
   onSubmit,
@@ -28,22 +30,22 @@ function CategoryForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-slate-700 mb-1.5">
           Nombre <span className="text-red-500">*</span>
         </label>
         <input
           {...register('name', { required: 'El nombre es obligatorio' })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600"
+          className={inputClass}
           placeholder="Nombre de la categoría"
         />
-        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+        {errors.name && <p className="mt-1.5 text-xs text-red-500">{errors.name.message}</p>}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+        <label className="block text-sm font-medium text-slate-700 mb-1.5">Descripción</label>
         <textarea
           {...register('description')}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-600 resize-none"
+          className={`${inputClass} resize-none`}
           placeholder="Descripción de la categoría"
         />
       </div>
@@ -51,7 +53,8 @@ function CategoryForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 disabled:opacity-50 flex items-center gap-2"
+          className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center gap-2 transition-all hover:opacity-90 disabled:opacity-60"
+          style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}
         >
           {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
           {category ? 'Actualizar' : 'Crear'} categoría
@@ -72,52 +75,50 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-6">
-        <span className="w-5 h-5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+        <span className="w-5 h-5 border-2 border-violet-400 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   if (products.length === 0) {
-    return (
-      <p className="text-sm text-gray-400 italic py-4 text-center">Sin productos en esta categoría</p>
-    )
+    return <p className="text-sm text-slate-400 italic py-4 text-center">Sin productos en esta categoría</p>
   }
 
   return (
-    <div className="divide-y divide-gray-100">
+    <div className="divide-y divide-slate-50">
       {products.map((product) => {
         const firstImage = product.images?.[0]?.image_url ?? product.image_url
         return (
           <Link
             key={product.id}
             to={`/products/${product.id}`}
-            className="flex items-center gap-3 py-2.5 px-1 hover:bg-violet-50 rounded-lg transition-colors group"
+            className="flex items-center gap-3 py-2.5 px-1 hover:bg-violet-50/50 rounded-xl transition-colors group"
           >
-            <div className="w-10 h-10 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
+            <div className="w-9 h-9 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden border border-slate-200/50">
               {firstImage ? (
                 <img src={firstImage} alt={product.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Package className="text-gray-300" size={16} />
+                  <Package className="text-slate-300" size={15} />
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate group-hover:text-violet-700 transition-colors">
+              <p className="text-sm font-medium text-slate-800 truncate group-hover:text-violet-700 transition-colors">
                 {product.name}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-400">
                 {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                 {' · '}
-                <span className={product.paid ? 'text-green-600' : 'text-amber-600'}>
+                <span className={product.paid ? 'text-emerald-600' : 'text-amber-600'}>
                   {product.paid ? 'Pagado' : 'Pendiente'}
                 </span>
               </p>
             </div>
-            <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-              product.status === 'reparado' ? 'bg-green-100 text-green-700'
-              : product.status === 'en_progreso' ? 'bg-amber-100 text-amber-700'
-              : 'bg-red-100 text-red-600'
+            <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-semibold ${
+              product.status === 'reparado' ? 'bg-emerald-50 text-emerald-600'
+              : product.status === 'en_progreso' ? 'bg-amber-50 text-amber-600'
+              : 'bg-red-50 text-red-600'
             }`}>
               {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
             </span>
@@ -152,8 +153,7 @@ export default function CategoriesPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CreateCategoryInput }) =>
-      categoriesApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: CreateCategoryInput }) => categoriesApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
       setEditing(null)
@@ -185,82 +185,94 @@ export default function CategoriesPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
-      <div className="flex items-center justify-between mb-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Categorías</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{data?.total ?? 0} categorías</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-violet-500 mb-0.5">Inventario</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Categorías</h1>
+          <p className="text-sm text-slate-400 mt-0.5">{data?.total ?? 0} categorías</p>
         </div>
         {canManage && (
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700"
+            className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px -3px rgba(109,40,217,0.4)' }}
           >
-            <Plus size={18} />
-            Nueva categoría
+            <Plus size={17} />
+            <span className="hidden sm:inline">Nueva categoría</span>
+            <span className="sm:hidden">Nueva</span>
           </button>
         )}
       </div>
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : categories.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <Tag className="mx-auto mb-3" size={48} />
-          <p className="text-lg font-medium">No hay categorías</p>
+        <div className="text-center py-20">
+          <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
+            <Tag size={26} className="text-slate-300" />
+          </div>
+          <p className="text-base font-semibold text-slate-600">No hay categorías</p>
+          <p className="text-sm text-slate-400 mt-1">Crea la primera para organizar tus productos</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {categories.map((category) => {
             const isOpen = expanded.has(category.id)
             return (
-              <div key={category.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <div
+                key={category.id}
+                className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden transition-all duration-150"
+              >
                 {/* Header row */}
                 <div
-                  className="flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 transition-colors select-none"
+                  className="flex items-center gap-3 p-4 cursor-pointer hover:bg-slate-50/60 transition-colors select-none"
                   onClick={() => toggleExpand(category.id)}
                 >
-                  <div className="w-9 h-9 bg-violet-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Tag className="text-violet-600" size={16} />
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.14)' }}
+                  >
+                    <Tag className="text-violet-600" size={15} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900">{category.name}</h3>
+                    <h3 className="font-semibold text-slate-800 text-sm">{category.name}</h3>
                     {category.description && (
-                      <p className="text-sm text-gray-500 truncate">{category.description}</p>
+                      <p className="text-xs text-slate-400 truncate mt-0.5">{category.description}</p>
                     )}
                   </div>
+
                   {(canManage || canDelete) && (
-                    <div
-                      className="flex items-center gap-1"
-                      onClick={(e) => e.stopPropagation()}
-                    >
+                    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                       {canManage && (
                         <button
                           onClick={() => setEditing(category)}
-                          className="p-1.5 rounded-lg hover:bg-violet-50 text-gray-400 hover:text-violet-700 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-violet-50 text-slate-400 hover:text-violet-700 transition-colors"
                         >
-                          <Edit size={15} />
+                          <Edit size={14} />
                         </button>
                       )}
                       {canDelete && (
                         <button
                           onClick={() => setDeleting(category)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
                         >
-                          <Trash2 size={15} />
+                          <Trash2 size={14} />
                         </button>
                       )}
                     </div>
                   )}
-                  <span className="text-gray-400 ml-1">
-                    {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+
+                  <span className="text-slate-400 ml-1 flex-shrink-0">
+                    {isOpen ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
                   </span>
                 </div>
 
                 {/* Products list */}
                 {isOpen && (
-                  <div className="border-t border-gray-100 px-4 py-2">
+                  <div className="border-t border-slate-100 px-4 py-2">
                     <CategoryProducts categoryId={category.id} />
                   </div>
                 )}
