@@ -140,10 +140,10 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
           </>
         )}
 
-        {/* Active badge */}
+        {/* Status badge */}
         <div className="absolute top-2 right-2 z-10">
-          <Badge variant={product.active ? 'success' : 'error'}>
-            {product.active ? 'Activo' : 'Inactivo'}
+          <Badge variant={product.status === 'reparado' ? 'success' : product.status === 'en_progreso' ? 'warning' : 'error'}>
+            {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
           </Badge>
         </div>
       </div>

@@ -87,8 +87,8 @@ export default function ProductDetailPage() {
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{product.name}</h1>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <Badge variant={product.active ? 'success' : 'error'}>
-            {product.active ? 'Activo' : 'Inactivo'}
+          <Badge variant={product.status === 'reparado' ? 'success' : product.status === 'en_progreso' ? 'warning' : 'error'}>
+            {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
           </Badge>
           <Badge variant={product.paid ? 'success' : 'warning'}>
             {product.paid ? 'Pagado' : 'Pendiente'}
@@ -160,7 +160,6 @@ export default function ProductDetailPage() {
               <div className="space-y-2">
                 <div>
                   <p className="text-base font-semibold text-gray-900">{contact.name}</p>
-                  <p className="text-xs text-violet-700 font-medium">{contact.subdato}</p>
                 </div>
                 {contact.email && (
                   <a

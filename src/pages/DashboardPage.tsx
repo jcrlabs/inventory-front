@@ -149,12 +149,12 @@ function RecentProducts() {
                 </div>
                 <span
                   className={`text-[11px] flex-shrink-0 font-semibold px-2 py-0.5 rounded-full ${
-                    p.active
-                      ? 'bg-emerald-100 text-emerald-600'
-                      : 'bg-slate-100 text-slate-500'
+                    p.status === 'reparado' ? 'bg-emerald-100 text-emerald-600'
+                    : p.status === 'en_progreso' ? 'bg-amber-100 text-amber-600'
+                    : 'bg-slate-100 text-slate-500'
                   }`}
                 >
-                  {p.active ? 'En curso' : 'Cerrado'}
+                  {p.status === 'reparado' ? 'Reparado' : p.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
                 </span>
               </div>
             ))}
