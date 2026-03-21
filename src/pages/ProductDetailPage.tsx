@@ -244,11 +244,58 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Description */}
-          {product.description && (
+          {/* Repair Reference */}
+          {product.repair_reference && (
             <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-              <h2 className="text-sm font-semibold text-slate-700 mb-3">Descripción</h2>
-              <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{product.description}</p>
+              <h2 className="text-sm font-semibold text-slate-700 mb-2">Referencia de reparación</h2>
+              <p className="text-sm font-mono text-violet-700 bg-violet-50 px-3 py-1.5 rounded-lg inline-block">{product.repair_reference}</p>
+            </div>
+          )}
+
+          {/* Repair Description */}
+          {product.repair_description && (
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
+              <h2 className="text-sm font-semibold text-slate-700 mb-3">Descripción de reparación</h2>
+              <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{product.repair_description}</p>
+            </div>
+          )}
+
+          {/* Observations */}
+          {product.observations && (
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
+              <h2 className="text-sm font-semibold text-slate-700 mb-3">Observaciones</h2>
+              <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{product.observations}</p>
+            </div>
+          )}
+
+          {/* Workshop dates */}
+          {(product.entry_date || product.exit_date) && (
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
+              <h2 className="text-sm font-semibold text-slate-700 mb-4">Fechas de taller</h2>
+              <div className="space-y-3">
+                {product.entry_date && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-500 flex items-center gap-2">
+                      <Calendar size={13} className="text-slate-400" />
+                      Entrada en taller
+                    </span>
+                    <span className="font-medium text-slate-700">
+                      {new Date(product.entry_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                )}
+                {product.exit_date && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-500 flex items-center gap-2">
+                      <Calendar size={13} className="text-slate-400" />
+                      Salida del taller
+                    </span>
+                    <span className="font-medium text-slate-700">
+                      {new Date(product.exit_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

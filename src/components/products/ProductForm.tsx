@@ -38,7 +38,11 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
   } = useForm<CreateProductInput>({
     defaultValues: {
       name: '',
-      description: '',
+      repair_description: '',
+      repair_reference: '',
+      entry_date: '',
+      exit_date: '',
+      observations: '',
       price: 0,
       category_id: undefined,
       paid: false,
@@ -59,7 +63,11 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     if (product) {
       reset({
         name: product.name,
-        description: product.description,
+        repair_description: product.repair_description,
+        repair_reference: product.repair_reference ?? '',
+        entry_date: product.entry_date ? product.entry_date.substring(0, 10) : '',
+        exit_date: product.exit_date ? product.exit_date.substring(0, 10) : '',
+        observations: product.observations ?? '',
         price: product.price,
         category_id: product.category_id ?? undefined,
         paid: product.paid,
@@ -118,6 +126,10 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     const cleaned: CreateProductInput = {
       ...data,
       category_id: data.category_id || undefined,
+      repair_reference: data.repair_reference || undefined,
+      entry_date: data.entry_date || undefined,
+      exit_date: data.exit_date || undefined,
+      observations: data.observations || undefined,
     }
 
     const contactData = getContactValues()
@@ -150,15 +162,58 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
       </div>
 
-      {/* Description */}
+      {/* Repair Reference */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Referencia de reparación <span className="text-xs text-gray-400">(opcional)</span>
+        </label>
+        <input
+          {...register('repair_reference')}
+          className={inputClass}
+          placeholder="Ej: REP-2024-001"
+        />
+      </div>
+
+      {/* Repair Description */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción de reparación</label>
         <textarea
-          {...register('description')}
+          {...register('repair_description')}
           rows={3}
           className={`${inputClass} resize-none`}
-          placeholder="Descripción del producto"
+          placeholder="Descripción de la reparación"
         />
+      </div>
+
+      {/* Observations */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+        <textarea
+          {...register('observations')}
+          rows={2}
+          className={`${inputClass} resize-none`}
+          placeholder="Observaciones adicionales"
+        />
+      </div>
+
+      {/* Entry / Exit dates */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de entrada en taller</label>
+          <input
+            {...register('entry_date')}
+            type="date"
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de salida del taller</label>
+          <input
+            {...register('exit_date')}
+            type="date"
+            className={inputClass}
+          />
+        </div>
       </div>
 
       {/* Price + Paid */}
