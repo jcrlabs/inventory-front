@@ -288,6 +288,8 @@ export default function ProductsPage() {
                 <tr>
                   <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Producto</th>
                   <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Categoría</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">F. Entrada</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">F. Salida</th>
                   <th className="text-right px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Precio</th>
                   <th className="text-center px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Pago</th>
                   <th className="text-center px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Estado</th>
@@ -312,6 +314,12 @@ export default function ProductsPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-slate-500 text-sm">{product.category?.name ?? '—'}</td>
+                    <td className="px-4 py-3 text-slate-500 text-sm">
+                      {product.entry_date ? new Date(product.entry_date).toLocaleDateString('es-ES') : '—'}
+                    </td>
+                    <td className="px-4 py-3 text-slate-500 text-sm">
+                      {product.exit_date ? new Date(product.exit_date).toLocaleDateString('es-ES') : '—'}
+                    </td>
                     <td className="px-4 py-3 text-right font-semibold text-slate-800">
                       {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                     </td>
