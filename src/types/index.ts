@@ -46,7 +46,11 @@ export interface ProductImage {
 export interface Product {
   id: string
   name: string
-  description: string
+  repair_description: string
+  repair_reference?: string
+  entry_date?: string
+  exit_date?: string
+  observations?: string
   price: number
   sku: string
   image_url?: string
@@ -97,8 +101,12 @@ export interface ProductFilters {
 
 export interface CreateProductInput {
   name: string
-  description: string
-  price: number
+  repair_description: string
+  repair_reference?: string
+  entry_date?: string
+  exit_date?: string
+  observations?: string
+  price?: number
   category_id?: string
   paid?: boolean
   status?: ProductStatus

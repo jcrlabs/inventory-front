@@ -142,7 +142,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
 
       {/* ── Info ── */}
       <Link to={`/products/${product.id}`} className="block p-4">
-        <h3 className="font-semibold text-slate-800 text-sm leading-tight line-clamp-2 mb-1">
+        <h3 className="font-bold text-slate-900 text-base leading-tight line-clamp-2 mb-1">
           {product.name}
         </h3>
 
@@ -150,8 +150,8 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
           <p className="text-xs text-violet-600 font-medium mb-1.5">{product.category.name}</p>
         )}
 
-        {product.description && (
-          <p className="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed">{product.description}</p>
+        {product.repair_description && (
+          <p className="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed">{product.repair_description}</p>
         )}
 
         <div className="flex items-center justify-between mt-3">

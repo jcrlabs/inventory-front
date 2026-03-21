@@ -95,7 +95,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-[11px] relative z-10" style={{ color: 'rgba(148,163,184,0.28)' }}>
-          © {new Date().getFullYear()} jcrlabs · Inventory System
+          © {new Date().getFullYear()} jcrlabs · Sistema de Inventario
         </p>
       </div>
 
