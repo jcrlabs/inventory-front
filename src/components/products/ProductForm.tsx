@@ -219,14 +219,11 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       {/* Price + Paid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Precio <span className="text-red-500">*</span>
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">€</span>
             <input
               {...register('price', {
-                required: true,
                 valueAsNumber: true,
                 min: { value: 0, message: 'El precio debe ser ≥ 0' },
               })}

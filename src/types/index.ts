@@ -106,7 +106,7 @@ export interface CreateProductInput {
   entry_date?: string
   exit_date?: string
   observations?: string
-  price: number
+  price?: number
   category_id?: string
   paid?: boolean
   status?: ProductStatus
