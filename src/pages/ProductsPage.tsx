@@ -308,7 +308,7 @@ export default function ProductsPage() {
                             </div>
                           )}
                         </div>
-                        <p className="font-medium text-slate-800">{product.name}</p>
+                        <p className="font-bold text-slate-900 text-base">{product.name}</p>
                       </div>
                     </td>
                     <td className="px-4 py-3 text-slate-500 text-sm">{product.category?.name ?? '—'}</td>

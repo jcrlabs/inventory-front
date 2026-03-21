@@ -53,7 +53,7 @@ function UserForm({
           <input
             {...register('username', { required: !user, minLength: 3 })}
             className={inputClass}
-            placeholder="username"
+            placeholder="nombre de usuario"
           />
           {errors.username && <p className="mt-1.5 text-xs text-red-500">Mínimo 3 caracteres</p>}
         </div>
