@@ -97,14 +97,16 @@ export interface ProductFilters {
   paid?: boolean
   page?: number
   page_size?: number
+  sort_by?: 'entry_date' | 'exit_date' | 'created_at'
+  sort_order?: 'asc' | 'desc'
 }
 
 export interface CreateProductInput {
   name: string
   repair_description: string
   repair_reference?: string
-  entry_date?: string
-  exit_date?: string
+  entry_date?: string | null
+  exit_date?: string | null
   observations?: string
   price?: number
   category_id?: string

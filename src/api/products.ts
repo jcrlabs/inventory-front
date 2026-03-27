@@ -17,6 +17,8 @@ export const productsApi = {
     if (filters.paid !== undefined) params.set('paid', String(filters.paid))
     if (filters.page) params.set('page', String(filters.page))
     if (filters.page_size) params.set('page_size', String(filters.page_size))
+    if (filters.sort_by) params.set('sort_by', filters.sort_by)
+    if (filters.sort_order) params.set('sort_order', filters.sort_order)
 
     const res = await apiClient.get<PaginatedResponse<Product>>(`/products?${params}`)
     return res.data

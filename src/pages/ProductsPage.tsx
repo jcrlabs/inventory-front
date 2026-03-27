@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal } from 'lucide-react'
+import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal, ArrowUp, ArrowDown } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { productsApi } from '../api/products'
 import { contactsApi } from '../api/contacts'
@@ -100,7 +100,13 @@ export default function ProductsPage() {
   const total = data?.total ?? 0
   const categories = categoriesData?.data ?? []
 
-  const hasActiveFilters = !!(filters.category_id || filters.status || filters.paid !== undefined)
+  const hasActiveFilters = !!(
+    filters.category_id ||
+    filters.status ||
+    filters.paid !== undefined ||
+    (filters.sort_by && filters.sort_by !== 'created_at') ||
+    filters.sort_order === 'asc'
+  )
 
   const clearFilters = () => {
     setSearchInput('')
@@ -215,6 +221,30 @@ export default function ProductsPage() {
             <option value="true">Pagado</option>
             <option value="false">Pendiente</option>
           </select>
+
+          <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+            <select
+              value={filters.sort_by ?? 'created_at'}
+              onChange={(e) => setFilters((f) => ({ ...f, sort_by: (e.target.value as typeof f.sort_by) || undefined, page: 1 }))}
+              className={`${selectClass} flex-1`}
+            >
+              <option value="created_at">Fecha creación</option>
+              <option value="entry_date">Fecha entrada</option>
+              <option value="exit_date">Fecha salida</option>
+            </select>
+            <button
+              onClick={() => setFilters((f) => ({ ...f, sort_order: f.sort_order === 'asc' ? 'desc' : 'asc', page: 1 }))}
+              className={`flex items-center gap-1 px-2.5 py-2 border rounded-lg text-sm font-medium transition-colors ${
+                filters.sort_order === 'asc'
+                  ? 'bg-violet-50 border-violet-200 text-violet-700'
+                  : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+              title={filters.sort_order === 'asc' ? 'Ascendente' : 'Descendente'}
+            >
+              {filters.sort_order === 'asc' ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
+              <span className="hidden sm:inline text-xs">{filters.sort_order === 'asc' ? 'Asc' : 'Desc'}</span>
+            </button>
+          </div>
 
           <div className="flex items-center gap-2 sm:ml-auto">
             {/* Mobile view toggle */}
