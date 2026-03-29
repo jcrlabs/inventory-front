@@ -123,12 +123,13 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
   const categories = categoriesData?.data ?? []
 
   const onFormSubmit = (data: CreateProductInput) => {
+    const isEdit = !!product
     const cleaned: CreateProductInput = {
       ...data,
       category_id: data.category_id || undefined,
       repair_reference: data.repair_reference || undefined,
-      entry_date: data.entry_date || undefined,
-      exit_date: data.exit_date || undefined,
+      entry_date: isEdit ? (data.entry_date || null) : (data.entry_date || undefined),
+      exit_date: isEdit ? (data.exit_date || null) : (data.exit_date || undefined),
       observations: data.observations || undefined,
     }
 
