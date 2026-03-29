@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal } from 'lucide-react'
+import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal, ArrowUp, ArrowDown } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { productsApi } from '../api/products'
 import { contactsApi } from '../api/contacts'
@@ -20,6 +21,7 @@ const selectClass = "px-3 py-2 border border-slate-200 rounded-lg text-sm focus:
 
 export default function ProductsPage() {
   const { canManage, canDeleteProduct } = usePermissions()
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const [filters, setFilters] = useState<ProductFilters>({ page: 1, page_size: 12 })
@@ -98,7 +100,13 @@ export default function ProductsPage() {
   const total = data?.total ?? 0
   const categories = categoriesData?.data ?? []
 
-  const hasActiveFilters = !!(filters.category_id || filters.status || filters.paid !== undefined)
+  const hasActiveFilters = !!(
+    filters.category_id ||
+    filters.status ||
+    filters.paid !== undefined ||
+    (filters.sort_by && filters.sort_by !== 'created_at') ||
+    filters.sort_order === 'asc'
+  )
 
   const clearFilters = () => {
     setSearchInput('')
@@ -214,6 +222,30 @@ export default function ProductsPage() {
             <option value="false">Pendiente</option>
           </select>
 
+          <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+            <select
+              value={filters.sort_by ?? 'created_at'}
+              onChange={(e) => setFilters((f) => ({ ...f, sort_by: (e.target.value as typeof f.sort_by) || undefined, page: 1 }))}
+              className={`${selectClass} flex-1`}
+            >
+              <option value="created_at">Fecha creación</option>
+              <option value="entry_date">Fecha entrada</option>
+              <option value="exit_date">Fecha salida</option>
+            </select>
+            <button
+              onClick={() => setFilters((f) => ({ ...f, sort_order: f.sort_order === 'asc' ? 'desc' : 'asc', page: 1 }))}
+              className={`flex items-center gap-1 px-2.5 py-2 border rounded-lg text-sm font-medium transition-colors ${
+                filters.sort_order === 'asc'
+                  ? 'bg-violet-50 border-violet-200 text-violet-700'
+                  : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+              title={filters.sort_order === 'asc' ? 'Ascendente' : 'Descendente'}
+            >
+              {filters.sort_order === 'asc' ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
+              <span className="hidden sm:inline text-xs">{filters.sort_order === 'asc' ? 'Asc' : 'Desc'}</span>
+            </button>
+          </div>
+
           <div className="flex items-center gap-2 sm:ml-auto">
             {/* Mobile view toggle */}
             <div className="sm:hidden flex items-center gap-1 border border-slate-200 rounded-lg p-1">
@@ -298,7 +330,11 @@ export default function ProductsPage() {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {products.map((product) => (
-                  <tr key={product.id} className="hover:bg-slate-50/60 transition-colors">
+                  <tr
+                    key={product.id}
+                    className="hover:bg-violet-50/50 transition-colors cursor-pointer group"
+                    onClick={() => navigate(`/products/${product.id}`)}
+                  >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-slate-100 flex-shrink-0 overflow-hidden border border-slate-200/60">
@@ -310,7 +346,7 @@ export default function ProductsPage() {
                             </div>
                           )}
                         </div>
-                        <p className="font-bold text-slate-900 text-base">{product.name}</p>
+                        <p className="font-bold text-slate-900 text-base group-hover:text-violet-700 transition-colors">{product.name}</p>
                       </div>
                     </td>
                     <td className="px-4 py-3 text-slate-500 text-sm">{product.category?.name ?? '—'}</td>
@@ -341,14 +377,14 @@ export default function ProductsPage() {
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-3">
                           <button
-                            onClick={() => setEditingProduct(product)}
+                            onClick={(e) => { e.stopPropagation(); setEditingProduct(product) }}
                             className="text-xs font-semibold text-violet-600 hover:text-violet-800 transition-colors"
                           >
                             Editar
                           </button>
                           {canDeleteProduct(product) && (
                             <button
-                              onClick={() => setDeletingProduct(product)}
+                              onClick={(e) => { e.stopPropagation(); setDeletingProduct(product) }}
                               className="text-xs font-semibold text-red-500 hover:text-red-700 transition-colors"
                             >
                               Eliminar
