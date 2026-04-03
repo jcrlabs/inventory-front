@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  tag: develop-abc1234
+  pullPolicy: Always
+
+ingress:
+  host: tallerjcr-test.jcrlabs.net
+
+resources:
+  requests:
+    cpu: 15m
+    memory: 16Mi
+  limits:
+    cpu: 50m
+    memory: 32Mi
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 2
