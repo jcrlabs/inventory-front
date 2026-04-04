@@ -189,7 +189,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters row — always visible on sm+, toggleable on mobile */}
-        <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:items-center gap-2 mt-2.5 pt-2.5 border-t border-slate-100`}>
+        <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 mt-2.5 pt-2.5 border-t border-slate-100`}>
           <select
             value={filters.category_id ?? ''}
             onChange={(e) => setFilters((f) => ({ ...f, category_id: e.target.value || undefined, page: 1 }))}
