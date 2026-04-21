@@ -65,7 +65,7 @@ export default function ProductDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -73,9 +73,9 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <div className="p-8 text-center">
-        <Package className="mx-auto mb-3 text-slate-300" size={40} />
-        <p className="text-slate-500 font-medium">Producto no encontrado</p>
-        <Link to="/products" className="mt-4 inline-block text-sm font-semibold text-violet-600 hover:underline">
+        <Package className="mx-auto mb-3 text-zinc-600" size={40} />
+        <p className="text-zinc-400 font-medium">Producto no encontrado</p>
+        <Link to="/products" className="mt-4 inline-block text-sm font-semibold text-amber-600 hover:underline">
           Volver a productos
         </Link>
       </div>
@@ -93,7 +93,7 @@ export default function ProductDetailPage() {
         {/* Back link */}
         <Link
           to="/products"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 transition-colors mb-3"
+          className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-3"
         >
           <ArrowLeft size={15} />
           <span>Volver a productos</span>
@@ -102,11 +102,11 @@ export default function ProductDetailPage() {
         {/* Title row */}
         <div className="flex flex-col sm:flex-row sm:items-start gap-3">
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">{product.name}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-zinc-100 leading-tight">{product.name}</h1>
             {product.category && (
               <div className="flex items-center gap-1.5 mt-1.5">
-                <Tag size={12} className="text-violet-500" />
-                <span className="text-sm text-violet-600 font-medium">{product.category.name}</span>
+                <Tag size={12} className="text-amber-500" />
+                <span className="text-sm text-amber-600 font-medium">{product.category.name}</span>
               </div>
             )}
           </div>
@@ -132,7 +132,7 @@ export default function ProductDetailPage() {
             {canManage && (
               <button
                 onClick={() => setShowEdit(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 border border-zinc-700 rounded-lg text-sm font-medium text-zinc-300 hover:bg-zinc-900 transition-colors"
               >
                 <Edit size={14} />
                 <span className="hidden sm:inline">Editar</span>
@@ -157,68 +157,68 @@ export default function ProductDetailPage() {
         <div className="space-y-4">
           {/* Images */}
           {canManage ? (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-              <h2 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+              <h2 className="text-sm font-semibold text-zinc-300 mb-3 flex items-center gap-2">
                 Imágenes
                 {product.images && product.images.length > 0 && (
-                  <span className="text-xs font-normal text-slate-400">({product.images.length})</span>
+                  <span className="text-xs font-normal text-zinc-500">({product.images.length})</span>
                 )}
               </h2>
               <ImageUpload productId={product.id} images={product.images ?? []} />
             </div>
           ) : (product.images && product.images.length > 0) ? (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-4">
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-4">
               <div className="grid grid-cols-2 gap-2">
                 {product.images.map((img) => (
                   <img
                     key={img.id}
                     src={img.image_url}
                     alt={product.name}
-                    className="w-full aspect-square object-cover rounded-xl border border-slate-200/60"
+                    className="w-full aspect-square object-cover rounded-xl border border-zinc-700/60"
                   />
                 ))}
               </div>
             </div>
           ) : product.image_url ? (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden">
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
               <img src={product.image_url} alt={product.name} className="w-full aspect-video object-cover" />
             </div>
           ) : (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card aspect-video flex items-center justify-center">
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none aspect-video flex items-center justify-center">
               <Package className="text-slate-200" size={48} />
             </div>
           )}
 
           {/* Contact card */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-            <h2 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-              <UserRound size={14} className="text-slate-400" />
+          <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <h2 className="text-sm font-semibold text-zinc-300 mb-3 flex items-center gap-2">
+              <UserRound size={14} className="text-zinc-500" />
               Contacto del cliente
             </h2>
             {contact ? (
               <div className="space-y-2.5">
-                <p className="font-semibold text-slate-900">{contact.name}</p>
+                <p className="font-semibold text-zinc-100">{contact.name}</p>
                 {contact.email && (
                   <a
                     href={`mailto:${contact.email}`}
-                    className="flex items-center gap-2 text-sm text-slate-600 hover:text-violet-700 transition-colors"
+                    className="flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-700 transition-colors"
                   >
-                    <Mail size={13} className="text-slate-400 flex-shrink-0" />
+                    <Mail size={13} className="text-zinc-500 flex-shrink-0" />
                     <span className="truncate">{contact.email}</span>
                   </a>
                 )}
                 {contact.phone && (
                   <a
                     href={`tel:${contact.phone}`}
-                    className="flex items-center gap-2 text-sm text-slate-600 hover:text-violet-700 transition-colors"
+                    className="flex items-center gap-2 text-sm text-zinc-400 hover:text-amber-700 transition-colors"
                   >
-                    <Phone size={13} className="text-slate-400 flex-shrink-0" />
+                    <Phone size={13} className="text-zinc-500 flex-shrink-0" />
                     {contact.phone}
                   </a>
                 )}
               </div>
             ) : (
-              <p className="text-sm text-slate-400 italic">Sin contacto asignado</p>
+              <p className="text-sm text-zinc-500 italic">Sin contacto asignado</p>
             )}
           </div>
         </div>
@@ -226,18 +226,18 @@ export default function ProductDetailPage() {
         {/* Right column: details */}
         <div className="lg:col-span-2 space-y-4">
           {/* Price + category */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-            <h2 className="text-sm font-semibold text-slate-700 mb-4">Información General</h2>
+          <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <h2 className="text-sm font-semibold text-zinc-300 mb-4">Información General</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Precio</p>
-                <p className="text-2xl font-bold text-slate-900">
+                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Precio</p>
+                <p className="text-2xl font-bold text-zinc-100">
                   {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Categoría</p>
-                <p className="text-sm font-semibold text-slate-800 mt-2">
+                <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Categoría</p>
+                <p className="text-sm font-semibold text-zinc-200 mt-2">
                   {product.category?.name ?? '—'}
                 </p>
               </div>
@@ -246,51 +246,51 @@ export default function ProductDetailPage() {
 
           {/* Repair Reference */}
           {product.repair_reference && (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-              <h2 className="text-sm font-semibold text-slate-700 mb-2">Referencia de reparación</h2>
-              <p className="text-sm font-mono text-violet-700 bg-violet-50 px-3 py-1.5 rounded-lg inline-block">{product.repair_reference}</p>
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+              <h2 className="text-sm font-semibold text-zinc-300 mb-2">Referencia de reparación</h2>
+              <p className="text-sm font-mono text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg inline-block">{product.repair_reference}</p>
             </div>
           )}
 
           {/* Repair Description */}
           {product.repair_description && (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-              <h2 className="text-sm font-semibold text-slate-700 mb-3">Descripción de reparación</h2>
-              <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{product.repair_description}</p>
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+              <h2 className="text-sm font-semibold text-zinc-300 mb-3">Descripción de reparación</h2>
+              <p className="text-sm text-zinc-400 leading-relaxed whitespace-pre-wrap">{product.repair_description}</p>
             </div>
           )}
 
           {/* Observations */}
           {product.observations && (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-              <h2 className="text-sm font-semibold text-slate-700 mb-3">Observaciones</h2>
-              <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{product.observations}</p>
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+              <h2 className="text-sm font-semibold text-zinc-300 mb-3">Observaciones</h2>
+              <p className="text-sm text-zinc-400 leading-relaxed whitespace-pre-wrap">{product.observations}</p>
             </div>
           )}
 
           {/* Workshop dates */}
           {(product.entry_date || product.exit_date) && (
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-              <h2 className="text-sm font-semibold text-slate-700 mb-4">Fechas de taller</h2>
+            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+              <h2 className="text-sm font-semibold text-zinc-300 mb-4">Fechas de taller</h2>
               <div className="space-y-3">
                 {product.entry_date && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-500 flex items-center gap-2">
-                      <Calendar size={13} className="text-slate-400" />
+                    <span className="text-zinc-400 flex items-center gap-2">
+                      <Calendar size={13} className="text-zinc-500" />
                       Entrada en taller
                     </span>
-                    <span className="font-medium text-slate-700">
+                    <span className="font-medium text-zinc-300">
                       {new Date(product.entry_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}
                     </span>
                   </div>
                 )}
                 {product.exit_date && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-500 flex items-center gap-2">
-                      <Calendar size={13} className="text-slate-400" />
+                    <span className="text-zinc-400 flex items-center gap-2">
+                      <Calendar size={13} className="text-zinc-500" />
                       Salida del taller
                     </span>
-                    <span className="font-medium text-slate-700">
+                    <span className="font-medium text-zinc-300">
                       {new Date(product.exit_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}
                     </span>
                   </div>
@@ -300,33 +300,33 @@ export default function ProductDetailPage() {
           )}
 
           {/* Metadata */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5">
-            <h2 className="text-sm font-semibold text-slate-700 mb-4">Metadatos</h2>
+          <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <h2 className="text-sm font-semibold text-zinc-300 mb-4">Metadatos</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-500 flex items-center gap-2">
-                  <UserRound size={13} className="text-slate-400" />
+                <span className="text-zinc-400 flex items-center gap-2">
+                  <UserRound size={13} className="text-zinc-500" />
                   Creado por
                 </span>
-                <span className="font-semibold text-slate-800">{product.created_by?.username ?? '—'}</span>
+                <span className="font-semibold text-zinc-200">{product.created_by?.username ?? '—'}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-500 flex items-center gap-2">
-                  <Calendar size={13} className="text-slate-400" />
+                <span className="text-zinc-400 flex items-center gap-2">
+                  <Calendar size={13} className="text-zinc-500" />
                   Fecha creación
                 </span>
-                <span className="font-medium text-slate-700">
+                <span className="font-medium text-zinc-300">
                   {new Date(product.created_at).toLocaleDateString('es-ES', {
                     year: 'numeric', month: 'short', day: 'numeric',
                   })}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-500 flex items-center gap-2">
-                  <Clock size={13} className="text-slate-400" />
+                <span className="text-zinc-400 flex items-center gap-2">
+                  <Clock size={13} className="text-zinc-500" />
                   Última actualización
                 </span>
-                <span className="font-medium text-slate-700">
+                <span className="font-medium text-zinc-300">
                   {new Date(product.updated_at).toLocaleDateString('es-ES', {
                     year: 'numeric', month: 'short', day: 'numeric',
                   })}

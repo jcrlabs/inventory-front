@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Package, Tag, Users, LayoutDashboard, LogOut, Boxes, Settings, X } from 'lucide-react'
+import { Package, Tag, Users, LayoutDashboard, LogOut, Settings, X, Wrench } from 'lucide-react'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
 import { usePermissions } from '../../hooks/usePermissions'
@@ -8,7 +8,7 @@ import ProfileModal from '../profile/ProfileModal'
 
 const navItems = [
   { to: '/products', icon: Package, label: 'Productos', roles: ['admin', 'manager', 'viewer'] },
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['admin', 'manager', 'viewer'] },
+  { to: '/dashboard', icon: LayoutDashboard, label: 'Panel de control', roles: ['admin', 'manager', 'viewer'] },
   { to: '/categories', icon: Tag, label: 'Categorías', roles: ['admin', 'manager', 'viewer'] },
   { to: '/users', icon: Users, label: 'Usuarios', roles: ['admin'] },
 ] as const
@@ -16,7 +16,7 @@ const navItems = [
 const roleColors: Record<string, string> = {
   admin: 'bg-rose-500/20 text-rose-400',
   manager: 'bg-amber-500/20 text-amber-400',
-  viewer: 'bg-slate-500/20 text-slate-400',
+  viewer: 'bg-slate-500/20 text-zinc-500',
 }
 
 const roleLabels: Record<string, string> = {
@@ -54,8 +54,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           md:translate-x-0
         `}
         style={{
-          background: 'linear-gradient(180deg, #0c1424 0%, #0e1830 100%)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
+          background: '#111111',
+          borderRight: '1px solid rgba(255,255,255,0.07)',
         }}
       >
         {/* Brand */}
@@ -64,20 +64,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{
-                background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
-                boxShadow: '0 4px 14px -2px rgba(109,40,217,0.6)',
+                background: '#1e1e1e',
+                border: '1px solid rgba(245,158,11,0.25)',
+                boxShadow: '0 0 14px -4px rgba(245,158,11,0.3)',
               }}
             >
-              <Boxes size={15} className="text-white" />
+              <Wrench size={15} className="text-amber-500" />
             </div>
             <div>
-              <p className="font-semibold text-white text-sm leading-tight tracking-tight">Inventory</p>
+              <p className="font-semibold text-white text-sm leading-tight tracking-tight">Taller</p>
               <p className="text-[10px] leading-tight font-medium" style={{ color: 'rgba(148,163,184,0.45)' }}>jcrlabs</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-colors"
+            className="md:hidden p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X size={15} />
           </button>
@@ -104,21 +105,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     `flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
                       isActive
                         ? 'text-white'
-                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                        : 'text-zinc-500 hover:text-white hover:bg-white/5'
                     }`
                   }
                   style={({ isActive }) =>
                     isActive
                       ? {
-                          background: 'linear-gradient(135deg, rgba(139,92,246,0.22), rgba(109,40,217,0.12))',
-                          boxShadow: 'inset 0 0 0 1px rgba(139,92,246,0.18)',
+                          background: 'linear-gradient(135deg, rgba(245,158,11,0.12), rgba(180,83,9,0.06))',
+                          boxShadow: 'inset 0 0 0 1px rgba(245,158,11,0.18)',
                         }
                       : {}
                   }
                 >
                   {({ isActive }) => (
                     <>
-                      <Icon size={15} className={isActive ? 'text-violet-400' : 'text-slate-500'} />
+                      <Icon size={15} className={isActive ? 'text-amber-400' : 'text-zinc-400'} />
                       {label}
                     </>
                   )}
@@ -135,7 +136,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <div className="flex items-center gap-2.5 px-2 py-2.5 rounded-xl mb-1">
             <div
               className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold"
-              style={{ background: 'linear-gradient(135deg, #a78bfa, #7c3aed)' }}
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
             >
               {initial}
             </div>
@@ -150,7 +151,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <button
               onClick={() => setShowProfile(true)}
               title="Editar perfil"
-              className="flex-shrink-0 p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-white/10 transition-all duration-150"
+              className="flex-shrink-0 p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-150"
             >
               <Settings size={13} />
             </button>
@@ -158,9 +159,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-150"
+            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium text-zinc-500 hover:text-white hover:bg-white/5 transition-all duration-150"
           >
-            <LogOut size={14} className="text-slate-500" />
+            <LogOut size={14} className="text-zinc-400" />
             Cerrar sesión
           </button>
         </div>

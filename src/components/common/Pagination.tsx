@@ -12,7 +12,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
   if (totalPages <= 1) return null
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border-t">
+    <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 border-t">
       <p className="text-sm text-gray-500">
         Mostrando {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, total)} de {total}
       </p>
@@ -40,7 +40,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
                 onClick={() => onChange(p as number)}
                 className={`w-8 h-8 rounded-lg text-sm font-medium ${
                   p === page
-                    ? 'bg-violet-600 text-white'
+                    ? 'bg-amber-600 text-white'
                     : 'hover:bg-gray-100 text-gray-700'
                 }`}
               >

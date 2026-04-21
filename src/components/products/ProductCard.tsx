@@ -70,11 +70,11 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
   const status = statusConfig[product.status as keyof typeof statusConfig] ?? statusConfig.no_reparado
 
   return (
-    <div className="group relative bg-white rounded-2xl border border-slate-200/80 overflow-hidden transition-all duration-200 hover:shadow-card-md hover:-translate-y-0.5">
+    <div className="group relative bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden transition-all duration-200 hover:shadow-none-md hover:-translate-y-0.5">
 
       {/* ── Carousel ── */}
       <div
-        className="relative aspect-video bg-slate-100 overflow-hidden cursor-pointer"
+        className="relative aspect-video bg-zinc-800 overflow-hidden cursor-pointer"
         onClick={handleImageClick}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
@@ -95,7 +95,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Package className="text-slate-200 group-hover:text-slate-300 transition-colors" size={44} />
+            <Package className="text-slate-200 group-hover:text-zinc-600 transition-colors" size={44} />
           </div>
         )}
 
@@ -122,7 +122,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
                   key={i}
                   onClick={(e) => goTo(e, i)}
                   aria-label={`Ir a imagen ${i + 1}`}
-                  className={`rounded-full transition-all ${i === currentIndex ? 'w-3 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'}`}
+                  className={`rounded-full transition-all ${i === currentIndex ? 'w-3 h-1.5 bg-zinc-800' : 'w-1.5 h-1.5 bg-zinc-800/50 hover:bg-zinc-800/80'}`}
                 />
               ))}
             </div>
@@ -142,21 +142,21 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
 
       {/* ── Info ── */}
       <Link to={`/products/${product.id}`} className="block p-4">
-        <h3 className="font-bold text-slate-900 text-base leading-tight line-clamp-2 mb-1">
+        <h3 className="font-bold text-zinc-100 text-base leading-tight line-clamp-2 mb-1">
           {product.name}
         </h3>
 
         {product.category && (
-          <p className="text-xs text-violet-600 font-medium mb-1.5">{product.category.name}</p>
+          <p className="text-xs text-amber-600 font-medium mb-1.5">{product.category.name}</p>
         )}
 
         {product.repair_description && (
-          <p className="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed">{product.repair_description}</p>
+          <p className="text-xs text-zinc-500 mb-3 line-clamp-2 leading-relaxed">{product.repair_description}</p>
         )}
 
         <div className="flex items-center justify-between mt-3">
           <div>
-            <p className="text-base font-bold text-slate-900">
+            <p className="text-base font-bold text-zinc-100">
               {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
             </p>
             <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full mt-1 ${
@@ -172,7 +172,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
               {canManage && (
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(product) }}
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-violet-100 text-slate-500 hover:text-violet-700 transition-colors"
+                  className="p-2 rounded-xl bg-zinc-800 hover:bg-amber-100 text-zinc-400 hover:text-amber-700 transition-colors"
                   title="Editar"
                 >
                   <Edit size={13} />
@@ -181,7 +181,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
               {canDelete && (
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(product) }}
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-600 transition-colors"
+                  className="p-2 rounded-xl bg-zinc-800 hover:bg-red-100 text-zinc-400 hover:text-red-600 transition-colors"
                   title="Eliminar"
                 >
                   <Trash2 size={13} />

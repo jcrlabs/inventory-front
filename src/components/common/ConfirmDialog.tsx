@@ -24,7 +24,7 @@ export default function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+      <div className="relative bg-zinc-800 rounded-xl shadow-xl w-full max-w-md p-6">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
             <AlertTriangle className="text-red-600" size={20} />
@@ -38,7 +38,7 @@ export default function ConfirmDialog({
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-zinc-800 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
           >
             Cancelar
           </button>

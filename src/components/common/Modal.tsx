@@ -35,12 +35,12 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" onClick={onClose} />
-      <div className={`relative bg-white sm:rounded-2xl rounded-t-2xl shadow-card-md border border-slate-200/60 w-full ${sizeClasses[size]} max-h-[92vh] sm:max-h-[90vh] flex flex-col`}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <h2 className="text-[15px] font-semibold text-slate-900">{title}</h2>
+      <div className={`relative bg-zinc-800 sm:rounded-2xl rounded-t-2xl shadow-none-md border border-zinc-700/60 w-full ${sizeClasses[size]} max-h-[92vh] sm:max-h-[90vh] flex flex-col`}>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+          <h2 className="text-[15px] font-semibold text-zinc-100">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+            className="p-1 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors"
           >
             <X size={20} />
           </button>

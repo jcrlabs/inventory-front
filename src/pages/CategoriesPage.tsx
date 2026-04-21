@@ -12,7 +12,7 @@ import { usePermissions } from '../hooks/usePermissions'
 import { getErrorMessage } from '../api/client'
 import type { Category, CreateCategoryInput } from '../types'
 
-const inputClass = "w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
 
 function CategoryForm({
   category,
@@ -30,7 +30,7 @@ function CategoryForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+        <label className="block text-sm font-medium text-zinc-300 mb-1.5">
           Nombre <span className="text-red-500">*</span>
         </label>
         <input
@@ -41,7 +41,7 @@ function CategoryForm({
         {errors.name && <p className="mt-1.5 text-xs text-red-500">{errors.name.message}</p>}
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">Descripción</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descripción</label>
         <textarea
           {...register('description')}
           rows={3}
@@ -75,39 +75,39 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-6">
-        <span className="w-5 h-5 border-2 border-violet-400 border-t-transparent rounded-full animate-spin" />
+        <span className="w-5 h-5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   if (products.length === 0) {
-    return <p className="text-sm text-slate-400 italic py-4 text-center">Sin productos en esta categoría</p>
+    return <p className="text-sm text-zinc-500 italic py-4 text-center">Sin productos en esta categoría</p>
   }
 
   return (
-    <div className="divide-y divide-slate-50">
+    <div className="divide-y divide-zinc-800">
       {products.map((product) => {
         const firstImage = product.images?.[0]?.image_url ?? product.image_url
         return (
           <Link
             key={product.id}
             to={`/products/${product.id}`}
-            className="flex items-center gap-3 py-2.5 px-1 hover:bg-violet-50/50 rounded-xl transition-colors group"
+            className="flex items-center gap-3 py-2.5 px-1 hover:bg-amber-50/50 rounded-xl transition-colors group"
           >
-            <div className="w-9 h-9 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden border border-slate-200/50">
+            <div className="w-9 h-9 rounded-xl bg-zinc-800 flex-shrink-0 overflow-hidden border border-zinc-700/50">
               {firstImage ? (
                 <img src={firstImage} alt={product.name} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Package className="text-slate-300" size={15} />
+                  <Package className="text-zinc-600" size={15} />
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-slate-800 truncate group-hover:text-violet-700 transition-colors">
+              <p className="text-sm font-medium text-zinc-200 truncate group-hover:text-amber-700 transition-colors">
                 {product.name}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-zinc-500">
                 {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                 {' · '}
                 <span className={product.paid ? 'text-emerald-600' : 'text-amber-600'}>
@@ -188,9 +188,9 @@ export default function CategoriesPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-violet-500 mb-0.5">Inventario</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Categorías</h1>
-          <p className="text-sm text-slate-400 mt-0.5">{data?.total ?? 0} categorías</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Inventario</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Categorías</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">{data?.total ?? 0} categorías</p>
         </div>
         {canManage && (
           <button
@@ -207,15 +207,15 @@ export default function CategoriesPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : categories.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
-            <Tag size={26} className="text-slate-300" />
+          <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto mb-4">
+            <Tag size={26} className="text-zinc-600" />
           </div>
-          <p className="text-base font-semibold text-slate-600">No hay categorías</p>
-          <p className="text-sm text-slate-400 mt-1">Crea la primera para organizar tus productos</p>
+          <p className="text-base font-semibold text-zinc-400">No hay categorías</p>
+          <p className="text-sm text-zinc-500 mt-1">Crea la primera para organizar tus productos</p>
         </div>
       ) : (
         <div className="space-y-2.5">
@@ -224,23 +224,23 @@ export default function CategoriesPage() {
             return (
               <div
                 key={category.id}
-                className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden transition-all duration-150"
+                className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden transition-all duration-150"
               >
                 {/* Header row */}
                 <div
-                  className="flex items-center gap-3 p-4 cursor-pointer hover:bg-slate-50/60 transition-colors select-none"
+                  className="flex items-center gap-3 p-4 cursor-pointer hover:bg-zinc-900/60 transition-colors select-none"
                   onClick={() => toggleExpand(category.id)}
                 >
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.14)' }}
                   >
-                    <Tag className="text-violet-600" size={15} />
+                    <Tag className="text-amber-600" size={15} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-slate-800 text-sm">{category.name}</h3>
+                    <h3 className="font-semibold text-zinc-200 text-sm">{category.name}</h3>
                     {category.description && (
-                      <p className="text-xs text-slate-400 truncate mt-0.5">{category.description}</p>
+                      <p className="text-xs text-zinc-500 truncate mt-0.5">{category.description}</p>
                     )}
                   </div>
 
@@ -249,7 +249,7 @@ export default function CategoriesPage() {
                       {canManage && (
                         <button
                           onClick={() => setEditing(category)}
-                          className="p-1.5 rounded-lg hover:bg-violet-50 text-slate-400 hover:text-violet-700 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-amber-50 text-zinc-500 hover:text-amber-700 transition-colors"
                         >
                           <Edit size={14} />
                         </button>
@@ -257,7 +257,7 @@ export default function CategoriesPage() {
                       {canDelete && (
                         <button
                           onClick={() => setDeleting(category)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-500 hover:text-red-600 transition-colors"
                         >
                           <Trash2 size={14} />
                         </button>
@@ -265,14 +265,14 @@ export default function CategoriesPage() {
                     </div>
                   )}
 
-                  <span className="text-slate-400 ml-1 flex-shrink-0">
+                  <span className="text-zinc-500 ml-1 flex-shrink-0">
                     {isOpen ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
                   </span>
                 </div>
 
                 {/* Products list */}
                 {isOpen && (
-                  <div className="border-t border-slate-100 px-4 py-2">
+                  <div className="border-t border-zinc-800 px-4 py-2">
                     <CategoryProducts categoryId={category.id} />
                   </div>
                 )}

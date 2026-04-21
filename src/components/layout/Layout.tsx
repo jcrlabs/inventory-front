@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Menu, Boxes } from 'lucide-react'
+import { Menu, Wrench } from 'lucide-react'
 import Sidebar from './Sidebar'
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-[#111111]">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -24,13 +24,13 @@ export default function Layout() {
         <header
           className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3"
           style={{
-            background: '#0c1424',
+            background: '#0d0d0d',
             borderBottom: '1px solid rgba(255,255,255,0.07)',
           }}
         >
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors"
             aria-label="Abrir menú"
           >
             <Menu size={20} />
@@ -39,13 +39,14 @@ export default function Layout() {
             <div
               className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
               style={{
-                background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
-                boxShadow: '0 2px 8px rgba(109,40,217,0.5)',
+                background: '#1e1e1e',
+                border: '1px solid rgba(245,158,11,0.2)',
+                boxShadow: '0 0 12px -4px rgba(245,158,11,0.25)',
               }}
             >
-              <Boxes size={13} className="text-white" />
+              <Wrench size={13} className="text-amber-500" />
             </div>
-            <span className="text-white text-sm font-semibold tracking-tight">Inventory</span>
+            <span className="text-white text-sm font-semibold tracking-tight">Taller</span>
           </div>
         </header>
 

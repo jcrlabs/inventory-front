@@ -23,7 +23,7 @@ const roleLabels: Record<Role, string> = {
   viewer: 'Visualizador',
 }
 
-const inputClass = "w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
 
 function UserForm({
   user,
@@ -47,7 +47,7 @@ function UserForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
             Usuario <span className="text-red-500">*</span>
           </label>
           <input
@@ -58,7 +58,7 @@ function UserForm({
           {errors.username && <p className="mt-1.5 text-xs text-red-500">Mínimo 3 caracteres</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
             Email <span className="text-red-500">*</span>
           </label>
           <input
@@ -72,9 +72,9 @@ function UserForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">
+        <label className="block text-sm font-medium text-zinc-300 mb-1.5">
           Contraseña {!user && <span className="text-red-500">*</span>}
-          {user && <span className="text-slate-400 font-normal text-xs ml-1">(dejar vacío para no cambiar)</span>}
+          {user && <span className="text-zinc-500 font-normal text-xs ml-1">(dejar vacío para no cambiar)</span>}
         </label>
         <input
           {...register('password', { required: !user, minLength: user ? 0 : 8 })}
@@ -86,10 +86,10 @@ function UserForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1.5">Rol</label>
+        <label className="block text-sm font-medium text-zinc-300 mb-1.5">Rol</label>
         <select
           {...register('role', { required: true })}
-          className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+          className="w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 text-zinc-300 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
         >
           <option value="viewer">Visualizador</option>
           <option value="manager">Gestor</option>
@@ -161,9 +161,9 @@ export default function UsersPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-violet-500 mb-0.5">Administración</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Usuarios</h1>
-          <p className="text-sm text-slate-400 mt-0.5">{data?.total ?? 0} usuarios registrados</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Administración</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Usuarios</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">{data?.total ?? 0} usuarios registrados</p>
         </div>
         <button
           onClick={() => setShowCreate(true)}
@@ -178,25 +178,25 @@ export default function UsersPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden">
+        <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[580px]">
               <thead style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
                 <tr>
-                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Usuario</th>
-                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>
-                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Rol</th>
-                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden md:table-cell">Estado</th>
-                  <th className="text-left px-5 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide hidden lg:table-cell">Último acceso</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Usuario</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Rol</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden md:table-cell">Estado</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden lg:table-cell">Último acceso</th>
                   <th className="px-5 py-3" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-zinc-800">
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-slate-50/60 transition-colors">
+                  <tr key={user.id} className="hover:bg-zinc-900/60 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
                         <div
@@ -206,16 +206,16 @@ export default function UsersPage() {
                           {user.username?.[0]?.toUpperCase() ?? '?'}
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-800">{user.username}</p>
+                          <p className="font-semibold text-zinc-200">{user.username}</p>
                           {user.id === currentUser?.id && (
-                            <span className="text-xs text-violet-500 font-medium">(tú)</span>
+                            <span className="text-xs text-amber-500 font-medium">(tú)</span>
                           )}
                           {/* Email shown below name on small screens */}
-                          <p className="text-xs text-slate-400 sm:hidden mt-0.5">{user.email}</p>
+                          <p className="text-xs text-zinc-500 sm:hidden mt-0.5">{user.email}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-500 hidden sm:table-cell">{user.email}</td>
+                    <td className="px-5 py-3.5 text-zinc-400 hidden sm:table-cell">{user.email}</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-1.5">
                         <Shield size={12} className={
@@ -232,7 +232,7 @@ export default function UsersPage() {
                         {user.active ? 'Activo' : 'Inactivo'}
                       </Badge>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-400 text-xs hidden lg:table-cell">
+                    <td className="px-5 py-3.5 text-zinc-500 text-xs hidden lg:table-cell">
                       {user.last_login
                         ? new Date(user.last_login).toLocaleDateString('es-ES')
                         : 'Nunca'}
@@ -241,7 +241,7 @@ export default function UsersPage() {
                       <div className="flex items-center justify-end gap-3">
                         <button
                           onClick={() => setEditing(user)}
-                          className="text-xs font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+                          className="text-xs font-semibold text-amber-600 hover:text-amber-800 transition-colors"
                         >
                           Editar
                         </button>
@@ -261,7 +261,7 @@ export default function UsersPage() {
                   <tr>
                     <td colSpan={6} className="px-6 py-14 text-center">
                       <Users className="mx-auto mb-3 text-slate-200" size={36} />
-                      <p className="text-slate-500 font-medium">No hay usuarios</p>
+                      <p className="text-zinc-400 font-medium">No hay usuarios</p>
                     </td>
                   </tr>
                 )}

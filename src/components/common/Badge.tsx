@@ -9,8 +9,8 @@ const variantClasses = {
   success: 'bg-emerald-100 text-emerald-700',
   error: 'bg-rose-100 text-rose-600',
   warning: 'bg-amber-100 text-amber-600',
-  info: 'bg-violet-100 text-violet-700',
-  default: 'bg-slate-100 text-slate-600',
+  info: 'bg-amber-100 text-amber-700',
+  default: 'bg-zinc-800 text-zinc-400',
 }
 
 export default function Badge({ children, variant = 'default' }: BadgeProps) {

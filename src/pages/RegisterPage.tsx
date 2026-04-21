@@ -46,28 +46,28 @@ export default function RegisterPage() {
     }
   }
 
-  const inputClass = "w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+  const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-10 bg-slate-50">
+    <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-10 bg-zinc-900">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center"
           style={{ background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)', boxShadow: '0 4px 12px rgba(109,40,217,0.4)' }}>
           <BrandIcon />
         </div>
-        <span className="font-bold text-slate-900 text-lg">Inventory</span>
+        <span className="font-bold text-zinc-100 text-lg">Inventory</span>
       </div>
 
       <div className="w-full max-w-sm">
         <div className="mb-7">
-          <h1 className="text-2xl font-bold text-slate-900">Crear cuenta</h1>
-          <p className="text-sm text-slate-500 mt-1">Regístrate para empezar</p>
+          <h1 className="text-2xl font-bold text-zinc-100">Crear cuenta</h1>
+          <p className="text-sm text-zinc-400 mt-1">Regístrate para empezar</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Usuario</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Usuario</label>
             <input
               {...register('username', {
                 required: 'Campo obligatorio',
@@ -82,7 +82,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Email</label>
             <input
               {...register('email', {
                 required: 'Campo obligatorio',
@@ -97,7 +97,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Contraseña</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Contraseña</label>
             <div className="relative">
               <input
                 {...register('password', {
@@ -111,7 +111,7 @@ export default function RegisterPage() {
                 autoComplete="new-password"
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors">
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
@@ -119,7 +119,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Confirmar contraseña</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Confirmar contraseña</label>
             <div className="relative">
               <input
                 {...register('confirmPassword', {
@@ -132,15 +132,15 @@ export default function RegisterPage() {
                 autoComplete="new-password"
               />
               <button type="button" onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors">
                 {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
             {errors.confirmPassword && <p className="mt-1.5 text-xs text-red-500">{errors.confirmPassword.message}</p>}
           </div>
 
-          <p className="text-xs text-slate-500 bg-slate-100 rounded-lg px-3 py-2.5 border border-slate-200">
-            La cuenta se creará con rol de <strong className="text-slate-700">Visor</strong>. Un administrador puede cambiar el rol posteriormente.
+          <p className="text-xs text-zinc-400 bg-zinc-800 rounded-lg px-3 py-2.5 border border-zinc-700">
+            La cuenta se creará con rol de <strong className="text-zinc-300">Visor</strong>. Un administrador puede cambiar el rol posteriormente.
           </p>
 
           <button
@@ -158,9 +158,9 @@ export default function RegisterPage() {
             }
           </button>
 
-          <p className="text-center text-sm text-slate-500 pt-1">
+          <p className="text-center text-sm text-zinc-400 pt-1">
             ¿Ya tienes cuenta?{' '}
-            <Link to="/login" className="text-violet-600 font-semibold hover:text-violet-700 transition-colors">
+            <Link to="/login" className="text-amber-600 font-semibold hover:text-amber-700 transition-colors">
               Inicia sesión
             </Link>
           </p>

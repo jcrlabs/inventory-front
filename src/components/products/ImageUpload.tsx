@@ -74,10 +74,10 @@ export default function ImageUpload({ productId, images }: ImageUploadProps) {
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={isBusy}
-        className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-violet-500 hover:text-violet-600 transition-colors disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-amber-500 hover:text-amber-600 transition-colors disabled:opacity-50"
       >
         {isAdding ? (
-          <span className="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+          <span className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
         ) : (
           <ImagePlus size={18} />
         )}

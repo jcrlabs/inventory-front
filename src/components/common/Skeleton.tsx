@@ -10,7 +10,7 @@ function Skeleton({ className = '' }: SkeletonProps) {
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/70 overflow-hidden shadow-card">
+    <div className="bg-zinc-800 rounded-2xl border border-zinc-700/70 overflow-hidden shadow-none">
       <Skeleton className="aspect-video rounded-none" />
       <div className="p-4 space-y-2">
         <Skeleton className="h-4 w-3/4" />
@@ -28,7 +28,7 @@ export function ProductCardSkeleton() {
 
 export function StatCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/70 shadow-card p-5">
+    <div className="bg-zinc-800 rounded-2xl border border-zinc-700/70 shadow-none p-5">
       <Skeleton className="h-10 w-10 rounded-xl mb-4" />
       <Skeleton className="h-8 w-24 mb-1.5" />
       <Skeleton className="h-4 w-32" />

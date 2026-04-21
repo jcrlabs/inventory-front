@@ -31,20 +31,20 @@ function StatsGrid() {
       value: stats?.total_products ?? 0,
       sub: `${stats?.active_products ?? 0} activas`,
       icon: Package,
-      color: '#8b5cf6',
-      glow: 'rgba(139,92,246,0.18)',
-      bg: 'rgba(139,92,246,0.07)',
-      border: 'rgba(139,92,246,0.14)',
+      color: '#f59e0b',
+      glow: 'rgba(245,158,11,0.2)',
+      bg: 'rgba(245,158,11,0.08)',
+      border: 'rgba(245,158,11,0.15)',
       to: '/products',
     },
     {
       label: 'Categorías',
       value: stats?.total_categories ?? 0,
       icon: Tag,
-      color: '#d946ef',
-      glow: 'rgba(217,70,239,0.14)',
-      bg: 'rgba(217,70,239,0.07)',
-      border: 'rgba(217,70,239,0.13)',
+      color: '#22d3ee',
+      glow: 'rgba(34,211,238,0.14)',
+      bg: 'rgba(34,211,238,0.06)',
+      border: 'rgba(34,211,238,0.12)',
       to: '/categories',
     },
     ...(isAdmin
@@ -67,7 +67,7 @@ function StatsGrid() {
         <Link
           key={label}
           to={to}
-          className="group relative rounded-2xl p-4 sm:p-5 bg-white overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
+          className="group relative rounded-2xl p-4 sm:p-5 bg-zinc-800 overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
           style={{
             border: `1px solid ${border}`,
             boxShadow: `0 2px 12px -4px ${glow}, 0 1px 3px rgba(0,0,0,0.04)`,
@@ -86,9 +86,9 @@ function StatsGrid() {
               style={{ color: 'rgba(148,163,184,0.5)' }}
             />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold text-slate-900 leading-none tabular-nums">{value}</p>
-          <p className="text-xs sm:text-[13px] text-slate-500 mt-1.5 font-medium">{label}</p>
-          {sub && <p className="text-[11px] text-slate-400 mt-0.5">{sub}</p>}
+          <p className="text-2xl sm:text-3xl font-bold text-zinc-100 leading-none tabular-nums">{value}</p>
+          <p className="text-xs sm:text-[13px] text-zinc-400 mt-1.5 font-medium">{label}</p>
+          {sub && <p className="text-[11px] text-zinc-500 mt-0.5">{sub}</p>}
         </Link>
       ))}
     </div>
@@ -111,38 +111,38 @@ function RecentProducts() {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+    <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
         <div>
-          <h2 className="text-sm font-semibold text-slate-800">Últimas Reparaciones</h2>
-          <p className="text-xs text-slate-400 mt-0.5">Actividad reciente del taller</p>
+          <h2 className="text-sm font-semibold text-zinc-200">Últimas Reparaciones</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">Actividad reciente del taller</p>
         </div>
         <Link
           to="/products"
-          className="flex items-center gap-1 text-xs font-semibold text-violet-600 hover:text-violet-700 transition-colors"
+          className="flex items-center gap-1 text-xs font-semibold text-amber-500 hover:text-amber-400 transition-colors"
         >
           Ver todas
           <ArrowUpRight size={13} />
         </Link>
       </div>
 
-      <div className="divide-y divide-slate-50">
+      <div className="divide-y divide-zinc-800">
         {isLoading ? (
           Array.from({ length: 5 }, (_, i) => (
             <div key={i} className="flex items-center gap-3 px-5 py-3.5 animate-pulse">
-              <div className="w-9 h-9 rounded-xl bg-slate-100 flex-shrink-0" />
+              <div className="w-9 h-9 rounded-xl bg-zinc-800 flex-shrink-0" />
               <div className="flex-1 space-y-1.5">
-                <div className="h-3 bg-slate-100 rounded w-3/5" />
-                <div className="h-2.5 bg-slate-100 rounded w-1/4" />
+                <div className="h-3 bg-zinc-800 rounded w-3/5" />
+                <div className="h-2.5 bg-zinc-800 rounded w-1/4" />
               </div>
-              <div className="h-5 w-20 bg-slate-100 rounded-full" />
+              <div className="h-5 w-20 bg-zinc-800 rounded-full" />
             </div>
           ))
         ) : products.length === 0 ? (
           <div className="py-14 text-center">
-            <Package className="mx-auto mb-3 text-slate-300" size={36} />
-            <p className="text-sm text-slate-400 font-medium">No hay reparaciones aún</p>
-            <Link to="/products" className="mt-3 inline-block text-xs font-semibold text-violet-600 hover:underline">
+            <Package className="mx-auto mb-3 text-zinc-600" size={36} />
+            <p className="text-sm text-zinc-500 font-medium">No hay reparaciones aún</p>
+            <Link to="/products" className="mt-3 inline-block text-xs font-semibold text-amber-600 hover:underline">
               Crear primera reparación
             </Link>
           </div>
@@ -154,27 +154,27 @@ function RecentProducts() {
               <Link
                 key={p.id}
                 to={`/products/${p.id}`}
-                className="flex items-center gap-3.5 px-5 py-3.5 hover:bg-slate-50/60 transition-colors group"
+                className="flex items-center gap-3.5 px-5 py-3.5 hover:bg-zinc-900/60 transition-colors group"
               >
-                <div className="w-9 h-9 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden border border-slate-200/50">
+                <div className="w-9 h-9 rounded-xl bg-zinc-800 flex-shrink-0 overflow-hidden border border-zinc-700/50">
                   {p.image_url ? (
                     <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Package className="text-slate-300" size={15} />
+                      <Package className="text-zinc-600" size={15} />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-800 truncate group-hover:text-violet-700 transition-colors">
+                  <p className="text-sm font-medium text-zinc-200 truncate group-hover:text-amber-400 transition-colors">
                     {p.name}
                   </p>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-zinc-500 mt-0.5">
                     {p.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                     {p.category && (
                       <>
-                        <span className="mx-1.5 text-slate-300">·</span>
-                        <span className="text-violet-500">{p.category.name}</span>
+                        <span className="mx-1.5 text-zinc-600">·</span>
+                        <span className="text-amber-500">{p.category.name}</span>
                       </>
                     )}
                   </p>
@@ -201,12 +201,12 @@ export default function DashboardPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-6 sm:mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-violet-500 mb-1">Panel de control</p>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+        <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-1">Panel de control</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-zinc-100 leading-tight">
           Bienvenido,{' '}
           <span className="text-gradient">{user?.username ?? '—'}</span>
         </h1>
-        <p className="text-sm text-slate-400 mt-1">Aquí tienes un resumen de tu taller</p>
+        <p className="text-sm text-zinc-500 mt-1">Aquí tienes un resumen de tu taller</p>
       </div>
 
       <ErrorBoundary>

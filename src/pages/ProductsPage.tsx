@@ -17,7 +17,7 @@ import { useDebounce } from '../hooks/useDebounce'
 import { getErrorMessage } from '../api/client'
 import type { Product, CreateProductInput, UpsertContactInput, ProductFilters } from '../types'
 
-const selectClass = "px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 bg-white text-slate-700 transition-colors"
+const selectClass = "px-3 py-2 border border-zinc-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 bg-zinc-800 text-zinc-300 transition-colors"
 
 export default function ProductsPage() {
   const { canManage, canDeleteProduct } = usePermissions()
@@ -118,12 +118,12 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-violet-500 mb-0.5">Inventario</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Productos</h1>
-          <p className="text-sm text-slate-400 mt-0.5">
+          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Inventario</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Productos</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">
             {total} {total === 1 ? 'artículo' : 'artículos'}
             {isFetching && !isLoading && (
-              <span className="ml-2 inline-block w-3 h-3 border-2 border-violet-400 border-t-transparent rounded-full animate-spin align-middle" />
+              <span className="ml-2 inline-block w-3 h-3 border-2 border-amber-400 border-t-transparent rounded-full animate-spin align-middle" />
             )}
           </p>
         </div>
@@ -141,16 +141,16 @@ export default function ProductsPage() {
       </div>
 
       {/* Filter bar */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-3 sm:p-4 mb-5 sm:mb-6">
+      <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-3 sm:p-4 mb-5 sm:mb-6">
         {/* Search row — always visible */}
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={15} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={15} />
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Buscar por nombre, SKU..."
-              className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/25 focus:border-violet-400 transition-colors"
+              className="w-full pl-9 pr-4 py-2 border border-zinc-700 rounded-lg text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
             />
           </div>
 
@@ -159,28 +159,28 @@ export default function ProductsPage() {
             onClick={() => setShowFilters(!showFilters)}
             className={`sm:hidden flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${
               showFilters || hasActiveFilters
-                ? 'bg-violet-50 border-violet-200 text-violet-700'
-                : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                ? 'bg-amber-50 border-amber-200 text-amber-700'
+                : 'border-zinc-700 text-zinc-400 hover:bg-zinc-900'
             }`}
           >
             <SlidersHorizontal size={15} />
             {hasActiveFilters && (
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-500 absolute mt-[-8px] ml-4" />
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 absolute mt-[-8px] ml-4" />
             )}
           </button>
 
           {/* View toggle */}
-          <div className="hidden sm:flex items-center gap-1 border border-slate-200 rounded-lg p-1">
+          <div className="hidden sm:flex items-center gap-1 border border-zinc-700 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               title="Vista cuadrícula"
             >
               <LayoutGrid size={15} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               title="Vista lista"
             >
               <List size={15} />
@@ -189,7 +189,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters row — always visible on sm+, toggleable on mobile */}
-        <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 mt-2.5 pt-2.5 border-t border-slate-100`}>
+        <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 mt-2.5 pt-2.5 border-t border-zinc-800`}>
           <select
             value={filters.category_id ?? ''}
             onChange={(e) => setFilters((f) => ({ ...f, category_id: e.target.value || undefined, page: 1 }))}
@@ -236,8 +236,8 @@ export default function ProductsPage() {
               onClick={() => setFilters((f) => ({ ...f, sort_order: f.sort_order === 'asc' ? 'desc' : 'asc', page: 1 }))}
               className={`flex items-center gap-1 px-2.5 py-2 border rounded-lg text-sm font-medium transition-colors ${
                 filters.sort_order === 'asc'
-                  ? 'bg-violet-50 border-violet-200 text-violet-700'
-                  : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-amber-50 border-amber-200 text-amber-700'
+                  : 'border-zinc-700 text-zinc-400 hover:bg-zinc-900'
               }`}
               title={filters.sort_order === 'asc' ? 'Ascendente' : 'Descendente'}
             >
@@ -248,16 +248,16 @@ export default function ProductsPage() {
 
           <div className="flex items-center gap-2 sm:ml-auto">
             {/* Mobile view toggle */}
-            <div className="sm:hidden flex items-center gap-1 border border-slate-200 rounded-lg p-1">
+            <div className="sm:hidden flex items-center gap-1 border border-zinc-700 rounded-lg p-1">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               >
                 <LayoutGrid size={15} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               >
                 <List size={15} />
               </button>
@@ -266,7 +266,7 @@ export default function ProductsPage() {
             {(hasActiveFilters || searchInput) && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm text-slate-500 hover:text-slate-800 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-zinc-400 hover:text-zinc-200 border border-zinc-700 rounded-lg hover:bg-zinc-900 transition-colors"
               >
                 <X size={13} />
                 Limpiar
@@ -282,12 +282,12 @@ export default function ProductsPage() {
           {Array.from({ length: 8 }, (_, i) => <ProductCardSkeleton key={i} />)}
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-20 text-slate-400">
-          <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
-            <Package size={28} className="text-slate-300" />
+        <div className="text-center py-20 text-zinc-500">
+          <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto mb-4">
+            <Package size={28} className="text-zinc-600" />
           </div>
-          <p className="text-base font-semibold text-slate-600">No se encontraron productos</p>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-base font-semibold text-zinc-400">No se encontraron productos</p>
+          <p className="text-sm text-zinc-500 mt-1">
             {hasActiveFilters || searchInput ? 'Prueba a cambiar los filtros' : 'Aún no hay productos creados'}
           </p>
           {canManage && !hasActiveFilters && !searchInput && (
@@ -313,50 +313,50 @@ export default function ProductsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden">
+        <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[560px]">
               <thead style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
                 <tr>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Producto</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Categoría</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">F. Entrada</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">F. Salida</th>
-                  <th className="text-right px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Precio</th>
-                  <th className="text-center px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Pago</th>
-                  <th className="text-center px-4 py-3 font-semibold text-slate-600 text-xs uppercase tracking-wide">Estado</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Producto</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Categoría</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">F. Entrada</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">F. Salida</th>
+                  <th className="text-right px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Precio</th>
+                  <th className="text-center px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Pago</th>
+                  <th className="text-center px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Estado</th>
                   {canManage && <th className="px-4 py-3" />}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-zinc-800">
                 {products.map((product) => (
                   <tr
                     key={product.id}
-                    className="hover:bg-violet-50/50 transition-colors cursor-pointer group"
+                    className="hover:bg-amber-50/50 transition-colors cursor-pointer group"
                     onClick={() => navigate(`/products/${product.id}`)}
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-slate-100 flex-shrink-0 overflow-hidden border border-slate-200/60">
+                        <div className="w-8 h-8 rounded-lg bg-zinc-800 flex-shrink-0 overflow-hidden border border-zinc-700/60">
                           {product.image_url ? (
                             <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <Package className="text-slate-300" size={13} />
+                              <Package className="text-zinc-600" size={13} />
                             </div>
                           )}
                         </div>
-                        <p className="font-bold text-slate-900 text-base group-hover:text-violet-700 transition-colors">{product.name}</p>
+                        <p className="font-bold text-zinc-100 text-base group-hover:text-amber-700 transition-colors">{product.name}</p>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-500 text-sm">{product.category?.name ?? '—'}</td>
-                    <td className="px-4 py-3 text-slate-500 text-sm">
+                    <td className="px-4 py-3 text-zinc-400 text-sm">{product.category?.name ?? '—'}</td>
+                    <td className="px-4 py-3 text-zinc-400 text-sm">
                       {product.entry_date ? new Date(product.entry_date).toLocaleDateString('es-ES') : '—'}
                     </td>
-                    <td className="px-4 py-3 text-slate-500 text-sm">
+                    <td className="px-4 py-3 text-zinc-400 text-sm">
                       {product.exit_date ? new Date(product.exit_date).toLocaleDateString('es-ES') : '—'}
                     </td>
-                    <td className="px-4 py-3 text-right font-semibold text-slate-800">
+                    <td className="px-4 py-3 text-right font-semibold text-zinc-200">
                       {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -378,7 +378,7 @@ export default function ProductsPage() {
                         <div className="flex items-center justify-end gap-3">
                           <button
                             onClick={(e) => { e.stopPropagation(); setEditingProduct(product) }}
-                            className="text-xs font-semibold text-violet-600 hover:text-violet-800 transition-colors"
+                            className="text-xs font-semibold text-amber-600 hover:text-amber-800 transition-colors"
                           >
                             Editar
                           </button>
@@ -408,7 +408,7 @@ export default function ProductsPage() {
       )}
 
       {viewMode === 'grid' && total > (filters.page_size ?? 12) && (
-        <div className="mt-5 bg-white rounded-2xl border border-slate-200/80 shadow-card">
+        <div className="mt-5 bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none">
           <Pagination
             page={filters.page ?? 1}
             pageSize={filters.page_size ?? 12}
