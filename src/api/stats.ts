@@ -3,6 +3,8 @@ import { apiClient } from './client'
 export interface InventoryStats {
   total_products: number
   active_products: number
+  repaired_products: number
+  paid_products: number
   total_categories: number
   total_users: number
 }

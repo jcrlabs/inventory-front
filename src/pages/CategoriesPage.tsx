@@ -188,7 +188,7 @@ export default function CategoriesPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Inventario</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Electroteca</p>
           <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Categorías</h1>
           <p className="text-sm text-zinc-500 mt-0.5">{data?.total ?? 0} categorías</p>
         </div>

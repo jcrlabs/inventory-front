@@ -67,7 +67,7 @@ export default function LoginPage() {
           >
             <WrenchLogo />
           </div>
-          <h1 className="text-lg font-bold text-zinc-100 tracking-tight">Taller Inventario</h1>
+          <h1 className="text-lg font-bold text-zinc-100 tracking-tight">Electroteca</h1>
           <p className="text-xs text-zinc-600 mt-1 tracking-wide uppercase">Gestión de reparaciones</p>
         </div>
 

@@ -8,6 +8,12 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-[#111111]">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-amber-500 focus:text-black focus:font-semibold focus:text-sm"
+      >
+        Saltar al contenido
+      </a>
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -30,7 +36,7 @@ export default function Layout() {
         >
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             aria-label="Abrir menú"
           >
             <Menu size={20} />
@@ -46,11 +52,11 @@ export default function Layout() {
             >
               <Wrench size={13} className="text-amber-500" />
             </div>
-            <span className="text-white text-sm font-semibold tracking-tight">Taller</span>
+            <span className="text-white text-sm font-semibold tracking-tight">Electroteca</span>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto">
+        <main id="main-content" className="flex-1 overflow-auto">
           <Outlet />
         </main>
       </div>

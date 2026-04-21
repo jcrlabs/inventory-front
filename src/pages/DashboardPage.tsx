@@ -29,7 +29,7 @@ function StatsGrid() {
     {
       label: 'Total Reparaciones',
       value: stats?.total_products ?? 0,
-      sub: `${stats?.active_products ?? 0} activas`,
+      sub: `${stats?.repaired_products ?? 0} reparadas · ${stats?.paid_products ?? 0} pagadas`,
       icon: Package,
       color: '#f59e0b',
       glow: 'rgba(245,158,11,0.2)',
@@ -115,7 +115,7 @@ function RecentProducts() {
       <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
         <div>
           <h2 className="text-sm font-semibold text-zinc-200">Últimas Reparaciones</h2>
-          <p className="text-xs text-zinc-500 mt-0.5">Actividad reciente del taller</p>
+          <p className="text-xs text-zinc-500 mt-0.5">Actividad reciente de la electroteca</p>
         </div>
         <Link
           to="/products"
@@ -206,7 +206,7 @@ export default function DashboardPage() {
           Bienvenido,{' '}
           <span className="text-gradient">{user?.username ?? '—'}</span>
         </h1>
-        <p className="text-sm text-zinc-500 mt-1">Aquí tienes un resumen de tu taller</p>
+        <p className="text-sm text-zinc-500 mt-1">Aquí tienes un resumen de tu electroteca</p>
       </div>
 
       <ErrorBoundary>

@@ -271,13 +271,13 @@ export default function ProductDetailPage() {
           {/* Workshop dates */}
           {(product.entry_date || product.exit_date) && (
             <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
-              <h2 className="text-sm font-semibold text-zinc-300 mb-4">Fechas de taller</h2>
+              <h2 className="text-sm font-semibold text-zinc-300 mb-4">Fechas de electroteca</h2>
               <div className="space-y-3">
                 {product.entry_date && (
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-zinc-400 flex items-center gap-2">
                       <Calendar size={13} className="text-zinc-500" />
-                      Entrada en taller
+                      Entrada en electroteca
                     </span>
                     <span className="font-medium text-zinc-300">
                       {new Date(product.entry_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}
@@ -288,7 +288,7 @@ export default function ProductDetailPage() {
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-zinc-400 flex items-center gap-2">
                       <Calendar size={13} className="text-zinc-500" />
-                      Salida del taller
+                      Salida de electroteca
                     </span>
                     <span className="font-medium text-zinc-300">
                       {new Date(product.exit_date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' })}

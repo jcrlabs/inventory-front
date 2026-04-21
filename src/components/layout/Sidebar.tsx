@@ -72,13 +72,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               <Wrench size={15} className="text-amber-500" />
             </div>
             <div>
-              <p className="font-semibold text-white text-sm leading-tight tracking-tight">Taller</p>
+              <p className="font-semibold text-white text-sm leading-tight tracking-tight">Electroteca</p>
               <p className="text-[10px] leading-tight font-medium" style={{ color: 'rgba(148,163,184,0.45)' }}>jcrlabs</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="md:hidden p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Cerrar menú"
+            className="md:hidden p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
           >
             <X size={15} />
           </button>
@@ -150,8 +151,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
             <button
               onClick={() => setShowProfile(true)}
-              title="Editar perfil"
-              className="flex-shrink-0 p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-150"
+              aria-label="Editar perfil"
+              className="flex-shrink-0 p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             >
               <Settings size={13} />
             </button>

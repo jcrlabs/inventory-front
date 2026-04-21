@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal, ArrowUp, ArrowDown } from 'lucide-react'
+import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal, ArrowUp, ArrowDown, Tag } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { productsApi } from '../api/products'
 import { contactsApi } from '../api/contacts'
@@ -118,12 +118,12 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Inventario</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Electroteca</p>
           <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Productos</h1>
-          <p className="text-sm text-zinc-500 mt-0.5">
+          <p className="text-sm text-zinc-500 mt-0.5" aria-live="polite">
             {total} {total === 1 ? 'artículo' : 'artículos'}
             {isFetching && !isLoading && (
-              <span className="ml-2 inline-block w-3 h-3 border-2 border-amber-400 border-t-transparent rounded-full animate-spin align-middle" />
+              <span className="ml-2 inline-block w-3 h-3 border-2 border-amber-400 border-t-transparent rounded-full animate-spin align-middle" role="status" aria-label="Cargando" />
             )}
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function ProductsPage() {
           <button
             onClick={() => setShowCreate(true)}
             className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-150 hover:opacity-90 active:scale-[0.98]"
-            style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px -3px rgba(109,40,217,0.4)' }}
+            style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.35)' }}
           >
             <Plus size={17} />
             <span className="hidden sm:inline">Nuevo producto</span>
@@ -159,7 +159,7 @@ export default function ProductsPage() {
             onClick={() => setShowFilters(!showFilters)}
             className={`sm:hidden flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${
               showFilters || hasActiveFilters
-                ? 'bg-amber-50 border-amber-200 text-amber-700'
+                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
                 : 'border-zinc-700 text-zinc-400 hover:bg-zinc-900'
             }`}
           >
@@ -187,6 +187,25 @@ export default function ProductsPage() {
             </button>
           </div>
         </div>
+
+        {/* Category suggestion chips */}
+        {searchInput.trim().length >= 1 && categories.filter(c => c.name.toLowerCase().includes(searchInput.toLowerCase())).length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5 mt-2">
+            <span className="text-xs text-zinc-500">Categoría:</span>
+            {categories
+              .filter(c => c.name.toLowerCase().includes(searchInput.toLowerCase()))
+              .map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => { setFilters(f => ({ ...f, category_id: cat.id, page: 1 })); setSearchInput('') }}
+                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                >
+                  <Tag size={10} />
+                  {cat.name}
+                </button>
+              ))}
+          </div>
+        )}
 
         {/* Filters row — always visible on sm+, toggleable on mobile */}
         <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 mt-2.5 pt-2.5 border-t border-zinc-800`}>
@@ -236,7 +255,7 @@ export default function ProductsPage() {
               onClick={() => setFilters((f) => ({ ...f, sort_order: f.sort_order === 'asc' ? 'desc' : 'asc', page: 1 }))}
               className={`flex items-center gap-1 px-2.5 py-2 border rounded-lg text-sm font-medium transition-colors ${
                 filters.sort_order === 'asc'
-                  ? 'bg-amber-50 border-amber-200 text-amber-700'
+                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
                   : 'border-zinc-700 text-zinc-400 hover:bg-zinc-900'
               }`}
               title={filters.sort_order === 'asc' ? 'Ascendente' : 'Descendente'}
@@ -294,7 +313,7 @@ export default function ProductsPage() {
             <button
               onClick={() => setShowCreate(true)}
               className="mt-5 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
             >
               <Plus size={16} />
               Crear el primero
@@ -316,7 +335,8 @@ export default function ProductsPage() {
         <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[560px]">
-              <thead style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+              <caption className="sr-only">Lista de productos</caption>
+              <thead style={{ background: 'rgba(24,24,27,0.7)', borderBottom: '1px solid rgba(63,63,70,0.6)' }}>
                 <tr>
                   <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Producto</th>
                   <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Categoría</th>
@@ -332,7 +352,7 @@ export default function ProductsPage() {
                 {products.map((product) => (
                   <tr
                     key={product.id}
-                    className="hover:bg-amber-50/50 transition-colors cursor-pointer group"
+                    className="hover:bg-amber-500/5 transition-colors cursor-pointer group"
                     onClick={() => navigate(`/products/${product.id}`)}
                   >
                     <td className="px-4 py-3">
@@ -346,7 +366,7 @@ export default function ProductsPage() {
                             </div>
                           )}
                         </div>
-                        <p className="font-bold text-zinc-100 text-base group-hover:text-amber-700 transition-colors">{product.name}</p>
+                        <p className="font-bold text-zinc-100 text-base group-hover:text-amber-400 transition-colors">{product.name}</p>
                       </div>
                     </td>
                     <td className="px-4 py-3 text-zinc-400 text-sm">{product.category?.name ?? '—'}</td>
@@ -360,15 +380,15 @@ export default function ProductsPage() {
                       {product.price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${product.paid ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${product.paid ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
                         {product.paid ? 'Pagado' : 'Pendiente'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
-                        product.status === 'reparado' ? 'bg-emerald-50 text-emerald-600'
-                        : product.status === 'en_progreso' ? 'bg-amber-50 text-amber-600'
-                        : 'bg-red-50 text-red-600'
+                        product.status === 'reparado' ? 'bg-emerald-500/10 text-emerald-400'
+                        : product.status === 'en_progreso' ? 'bg-amber-500/10 text-amber-400'
+                        : 'bg-red-500/10 text-red-400'
                       }`}>
                         {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
                       </span>
