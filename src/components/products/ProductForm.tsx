@@ -11,13 +11,22 @@ interface ProductFormProps {
   isLoading: boolean
 }
 
+const inputCls = [
+  'w-full px-3 py-2.5 rounded-xl text-sm',
+  'bg-zinc-900 text-zinc-100 placeholder-zinc-600',
+  'border border-zinc-700',
+  'focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600/50',
+  'transition-colors',
+].join(' ')
+
+const labelCls = 'block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1.5'
+
 export default function ProductForm({ product, onSubmit, isLoading }: ProductFormProps) {
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoriesApi.list(),
   })
 
-  // Multi-image state
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<{ url: string; isExisting: boolean }[]>(() => {
     if (product) {
@@ -81,11 +90,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       setImageFiles([])
 
       if (product.contact) {
-        resetContact({
-          name: product.contact.name,
-          email: product.contact.email ?? '',
-          phone: product.contact.phone ?? '',
-        })
+        resetContact({ name: product.contact.name, email: product.contact.email ?? '', phone: product.contact.phone ?? '' })
       } else {
         resetContact({ name: '', email: '', phone: '' })
       }
@@ -95,29 +100,21 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     if (!files.length) return
-    const newFiles = [...imageFiles, ...files]
-    const newPreviews = [
-      ...imagePreviews,
+    setImageFiles((prev) => [...prev, ...files])
+    setImagePreviews((prev) => [
+      ...prev,
       ...files.map((f) => ({ url: URL.createObjectURL(f), isExisting: false })),
-    ]
-    setImageFiles(newFiles)
-    setImagePreviews(newPreviews)
-    // Reset input so same file can be selected again
+    ])
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   const removeImage = (index: number) => {
     const preview = imagePreviews[index]
     if (!preview.isExisting) {
-      // Track how many non-existing previews are before this index to find the file
       const newFileIndex = imagePreviews.slice(0, index).filter((p) => !p.isExisting).length
-      const newFiles = [...imageFiles]
-      newFiles.splice(newFileIndex, 1)
-      setImageFiles(newFiles)
+      setImageFiles((prev) => { const n = [...prev]; n.splice(newFileIndex, 1); return n })
     }
-    const newPreviews = [...imagePreviews]
-    newPreviews.splice(index, 1)
-    setImagePreviews(newPreviews)
+    setImagePreviews((prev) => { const n = [...prev]; n.splice(index, 1); return n })
   }
 
   const categories = categoriesData?.data ?? []
@@ -132,130 +129,127 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       exit_date: isEdit ? (data.exit_date || null) : (data.exit_date || undefined),
       observations: data.observations || undefined,
     }
-
     const contactData = getContactValues()
     const hasContact = contactData.name.trim() !== ''
     const contact: UpsertContactInput | undefined = hasContact
-      ? {
-          name: contactData.name.trim(),
-          email: contactData.email?.trim() || undefined,
-          phone: contactData.phone?.trim() || undefined,
-        }
+      ? { name: contactData.name.trim(), email: contactData.email?.trim() || undefined, phone: contactData.phone?.trim() || undefined }
       : undefined
-
     return onSubmit(cleaned, contact, imageFiles.length > 0 ? imageFiles : undefined)
   }
 
-  const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-600"
-
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
-      {/* Name */}
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-5" noValidate>
+
+      {/* ── Nombre ── */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Nombre <span className="text-red-500">*</span>
+        <label htmlFor="pf-name" className={labelCls}>
+          Nombre <span className="text-red-400 normal-case tracking-normal">*</span>
         </label>
         <input
+          id="pf-name"
           {...register('name', { required: 'El nombre es obligatorio' })}
-          className={inputClass}
-          placeholder="Nombre del producto"
+          className={inputCls}
+          placeholder="Ej: Lavadora Bosch WAN28163ES"
+          aria-required="true"
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? 'pf-name-err' : undefined}
         />
-        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+        {errors.name && (
+          <p id="pf-name-err" role="alert" className="mt-1.5 text-xs text-red-400">{errors.name.message}</p>
+        )}
       </div>
 
-      {/* Repair Reference */}
+      {/* ── Referencia ── */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Referencia de reparación <span className="text-xs text-gray-400">(opcional)</span>
+        <label htmlFor="pf-ref" className={labelCls}>
+          Referencia <span className="text-zinc-600 normal-case tracking-normal font-normal">(opcional)</span>
         </label>
         <input
+          id="pf-ref"
           {...register('repair_reference')}
-          className={inputClass}
+          className={inputCls}
           placeholder="Ej: REP-2024-001"
         />
       </div>
 
-      {/* Repair Description */}
+      {/* ── Descripción ── */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Descripción de reparación</label>
+        <label htmlFor="pf-desc" className={labelCls}>Descripción de reparación</label>
         <textarea
+          id="pf-desc"
           {...register('repair_description')}
           rows={3}
-          className={`${inputClass} resize-none`}
-          placeholder="Descripción de la reparación"
+          className={`${inputCls} resize-none`}
+          placeholder="Describe el problema o la reparación a realizar"
         />
       </div>
 
-      {/* Observations */}
+      {/* ── Observaciones ── */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+        <label htmlFor="pf-obs" className={labelCls}>Observaciones</label>
         <textarea
+          id="pf-obs"
           {...register('observations')}
           rows={2}
-          className={`${inputClass} resize-none`}
-          placeholder="Observaciones adicionales"
+          className={`${inputCls} resize-none`}
+          placeholder="Notas adicionales"
         />
       </div>
 
-      {/* Entry / Exit dates */}
+      {/* ── Fechas ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de entrada en taller</label>
-          <input
-            {...register('entry_date')}
-            type="date"
-            className={inputClass}
-          />
+          <label htmlFor="pf-entry" className={labelCls}>Fecha de entrada</label>
+          <input id="pf-entry" {...register('entry_date')} type="date" className={inputCls}
+            style={{ colorScheme: 'dark' }} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de salida del taller</label>
-          <input
-            {...register('exit_date')}
-            type="date"
-            className={inputClass}
-          />
+          <label htmlFor="pf-exit" className={labelCls}>Fecha de salida</label>
+          <input id="pf-exit" {...register('exit_date')} type="date" className={inputCls}
+            style={{ colorScheme: 'dark' }} />
         </div>
       </div>
 
-      {/* Price + Paid */}
+      {/* ── Precio + Pagado ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+          <label htmlFor="pf-price" className={labelCls}>Precio (€)</label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">€</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm font-medium select-none">€</span>
             <input
-              {...register('price', {
-                valueAsNumber: true,
-                min: { value: 0, message: 'El precio debe ser ≥ 0' },
-              })}
+              id="pf-price"
+              {...register('price', { valueAsNumber: true, min: { value: 0, message: 'El precio debe ser ≥ 0' } })}
               type="number"
               step="0.01"
-              className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-600"
+              className={`${inputCls} pl-7`}
               placeholder="0.00"
+              aria-invalid={!!errors.price}
+              aria-describedby={errors.price ? 'pf-price-err' : undefined}
             />
           </div>
-          {errors.price && <p className="mt-1 text-xs text-red-500">{errors.price.message}</p>}
+          {errors.price && (
+            <p id="pf-price-err" role="alert" className="mt-1.5 text-xs text-red-400">{errors.price.message}</p>
+          )}
         </div>
 
-        <div className="flex items-center gap-2 pt-6">
+        <div className="flex items-center gap-3 pt-7">
           <input
             {...register('paid')}
             type="checkbox"
-            id="paid"
-            className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-600"
+            id="pf-paid"
+            className="w-4 h-4 rounded accent-amber-500 cursor-pointer"
           />
-          <label htmlFor="paid" className="text-sm text-gray-700">Pagado</label>
+          <label htmlFor="pf-paid" className="text-sm text-zinc-300 cursor-pointer select-none">
+            Marcado como pagado
+          </label>
         </div>
       </div>
 
-      {/* Category + Status */}
+      {/* ── Categoría + Estado ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
-          <select
-            {...register('category_id')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-600 bg-zinc-800"
-          >
+          <label htmlFor="pf-cat" className={labelCls}>Categoría</label>
+          <select id="pf-cat" {...register('category_id')} className={inputCls}>
             <option value="">Sin categoría</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -263,11 +257,8 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-          <select
-            {...register('status')}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-600 bg-zinc-800"
-          >
+          <label htmlFor="pf-status" className={labelCls}>Estado</label>
+          <select id="pf-status" {...register('status')} className={inputCls}>
             <option value="en_progreso">En progreso</option>
             <option value="reparado">Reparado</option>
             <option value="no_reparado">No reparado</option>
@@ -275,30 +266,26 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
         </div>
       </div>
 
-      {/* Images — multi-upload */}
+      {/* ── Imágenes ── */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className={labelCls}>
           Imágenes
           {imagePreviews.length > 0 && (
-            <span className="ml-1.5 text-xs font-normal text-gray-400">({imagePreviews.length})</span>
+            <span className="ml-1.5 normal-case tracking-normal font-normal text-zinc-600">({imagePreviews.length})</span>
           )}
         </label>
 
-        {/* Preview grid */}
         {imagePreviews.length > 0 && (
           <div className="grid grid-cols-3 gap-2 mb-2">
             {imagePreviews.map((preview, i) => (
-              <div key={i} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
-                <img
-                  src={preview.url}
-                  alt={`imagen ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
+              <div key={i} className="relative group aspect-square rounded-xl overflow-hidden border border-zinc-700/60 bg-zinc-900">
+                <img src={preview.url} alt={`Imagen ${i + 1}`} className="w-full h-full object-cover" />
                 {!preview.isExisting && (
                   <button
                     type="button"
                     onClick={() => removeImage(i)}
-                    className="absolute top-1 right-1 p-0.5 bg-black/60 hover:bg-red-600 text-white rounded-full transition-colors"
+                    aria-label={`Eliminar imagen ${i + 1}`}
+                    className="absolute top-1 right-1 p-0.5 bg-black/70 hover:bg-red-600 text-white rounded-full transition-colors"
                   >
                     <X size={12} />
                   </button>
@@ -308,15 +295,26 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           </div>
         )}
 
-        {/* Add more images button */}
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="w-full h-20 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-1.5 text-gray-400 hover:border-amber-500 hover:text-amber-500 transition-colors"
+          className="w-full h-[72px] rounded-xl flex flex-col items-center justify-center gap-1.5 text-zinc-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+          style={{
+            border: '1.5px dashed rgba(255,255,255,0.12)',
+            background: 'rgba(255,255,255,0.02)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(245,158,11,0.4)'
+            e.currentTarget.style.color = '#f59e0b'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'
+            e.currentTarget.style.color = ''
+          }}
         >
           <ImagePlus size={20} />
-          <span className="text-xs">
-            {imagePreviews.length > 0 ? 'Añadir más imágenes' : 'Haz clic para subir imágenes'}
+          <span className="text-xs font-medium">
+            {imagePreviews.length > 0 ? 'Añadir más imágenes' : 'Haz clic para añadir imágenes'}
           </span>
         </button>
         <input
@@ -326,72 +324,82 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           multiple
           className="hidden"
           onChange={handleFileChange}
+          aria-hidden="true"
         />
       </div>
 
-      {/* Contact section */}
-      <div className="border-t border-gray-200 pt-4">
-        <div className="flex items-center gap-2 mb-3">
-          <UserRound size={16} className="text-gray-500" />
-          <h3 className="text-sm font-semibold text-gray-700">Contacto</h3>
-          <span className="text-xs text-gray-400">(opcional)</span>
+      {/* ── Contacto ── */}
+      <div
+        className="rounded-xl p-4 space-y-3"
+        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+      >
+        <div className="flex items-center gap-2 mb-1">
+          <UserRound size={15} className="text-zinc-500" />
+          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Contacto</h3>
+          <span className="text-[11px] text-zinc-600">(opcional)</span>
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">
-              Nombre <span className="text-red-500">*</span>
-            </label>
-            <input
-              {...registerContact('name', {
-                validate: (val) => {
-                  if (getContactValues('email') || getContactValues('phone')) {
-                    if (!val.trim()) return 'El nombre es obligatorio si hay email o teléfono'
-                  }
-                  return true
-                },
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-amber-600 bg-zinc-800"
-              placeholder="Nombre del contacto"
-            />
-            {contactErrors.name && (
-              <p className="mt-1 text-xs text-red-500">{contactErrors.name.message}</p>
-            )}
-          </div>
+        <div>
+          <label htmlFor="pf-cname" className={labelCls}>Nombre del cliente</label>
+          <input
+            id="pf-cname"
+            {...registerContact('name', {
+              validate: (val) => {
+                if (getContactValues('email') || getContactValues('phone')) {
+                  if (!val.trim()) return 'El nombre es obligatorio si hay email o teléfono'
+                }
+                return true
+              },
+            })}
+            className={inputCls}
+            placeholder="Nombre del contacto"
+            aria-invalid={!!contactErrors.name}
+            aria-describedby={contactErrors.name ? 'pf-cname-err' : undefined}
+          />
+          {contactErrors.name && (
+            <p id="pf-cname-err" role="alert" className="mt-1.5 text-xs text-red-400">{contactErrors.name.message}</p>
+          )}
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Email</label>
-              <input
-                {...registerContact('email')}
-                type="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-amber-600 bg-zinc-800"
-                placeholder="contacto@ejemplo.com"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Teléfono</label>
-              <input
-                {...registerContact('phone')}
-                type="tel"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-amber-600 bg-zinc-800"
-                placeholder="+34 600 000 000"
-              />
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label htmlFor="pf-cemail" className={labelCls}>Email</label>
+            <input
+              id="pf-cemail"
+              {...registerContact('email')}
+              type="email"
+              className={inputCls}
+              placeholder="contacto@ejemplo.com"
+            />
+          </div>
+          <div>
+            <label htmlFor="pf-cphone" className={labelCls}>Teléfono</label>
+            <input
+              id="pf-cphone"
+              {...registerContact('phone')}
+              type="tel"
+              className={inputCls}
+              placeholder="+34 600 000 000"
+            />
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 pt-2">
+      {/* ── Submit ── */}
+      <div className="flex justify-end pt-2">
         <button
           type="submit"
           disabled={isLoading}
-          className="px-6 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 disabled:opacity-50 flex items-center gap-2"
+          className="px-6 py-2.5 rounded-xl text-sm font-bold text-zinc-900 transition-all hover:opacity-90 active:scale-[0.99] disabled:opacity-50 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+          style={{
+            background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+            boxShadow: '0 4px 16px -4px rgba(245,158,11,0.35)',
+          }}
         >
           {isLoading && (
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-zinc-900/30 border-t-zinc-900 rounded-full animate-spin" role="status" aria-label="Guardando" />
           )}
-          {product ? 'Actualizar' : 'Crear'} producto
+          {product ? 'Actualizar producto' : 'Crear producto'}
         </button>
       </div>
     </form>
