@@ -139,11 +139,23 @@ function RecentProducts() {
             </div>
           ))
         ) : products.length === 0 ? (
-          <div className="py-14 text-center">
-            <Package className="mx-auto mb-3 text-zinc-600" size={36} />
-            <p className="text-sm text-zinc-500 font-medium">No hay reparaciones aún</p>
-            <Link to="/products" className="mt-3 inline-block text-xs font-semibold text-amber-600 hover:underline">
+          <div className="py-16 text-center">
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.12)' }}
+            >
+              <Package className="text-amber-500/70" size={22} />
+            </div>
+            <p className="text-sm font-semibold text-zinc-300 mb-1">Todo despejado</p>
+            <p className="text-xs text-zinc-500 max-w-[200px] mx-auto leading-relaxed">
+              Aún no hay reparaciones registradas en la electroteca
+            </p>
+            <Link
+              to="/products"
+              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-amber-500 hover:text-amber-400 transition-colors"
+            >
               Crear primera reparación
+              <ArrowUpRight size={12} />
             </Link>
           </div>
         ) : (
@@ -195,18 +207,24 @@ function RecentProducts() {
   )
 }
 
+function getGreeting() {
+  const h = new Date().getHours()
+  if (h < 13) return 'Buenos días'
+  if (h < 20) return 'Buenas tardes'
+  return 'Buenas noches'
+}
+
 export default function DashboardPage() {
   const user = useAuthStore((s) => s.user)
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-6 sm:mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-1">Panel de control</p>
-        <h1 className="text-xl sm:text-2xl font-bold text-zinc-100 leading-tight">
-          Bienvenido,{' '}
+        <p className="text-xs font-semibold uppercase tracking-widest text-amber-500/70 mb-2 tabular">{getGreeting()}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 leading-tight tracking-tight">
           <span className="text-gradient">{user?.username ?? '—'}</span>
         </h1>
-        <p className="text-sm text-zinc-500 mt-1">Aquí tienes un resumen de tu electroteca</p>
+        <p className="text-sm text-zinc-500 mt-1.5">Resumen de actividad de tu electroteca</p>
       </div>
 
       <ErrorBoundary>
