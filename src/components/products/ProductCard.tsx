@@ -70,7 +70,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
   const status = statusConfig[product.status as keyof typeof statusConfig] ?? statusConfig.no_reparado
 
   return (
-    <div className="group relative bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden transition-all duration-200 hover:shadow-none-md hover:-translate-y-0.5">
+    <div className="group relative bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-600/80 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
       <div className="absolute left-0 top-0 bottom-0 w-1 z-10" style={{ background: status.color }} />
 
       {/* ── Carousel ── */}

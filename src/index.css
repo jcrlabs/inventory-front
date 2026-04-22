@@ -37,6 +37,25 @@
   }
 }
 
+@layer base {
+  /* Global focus ring — amber, consistent across all interactive elements */
+  :focus-visible {
+    outline: 2px solid rgba(245, 158, 11, 0.6);
+    outline-offset: 2px;
+  }
+
+  /* Inputs / selects / textareas — no browser default outline, handled via ring */
+  input, select, textarea {
+    color: #e4e4e7;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(245, 158, 11, 0.25);
+    color: #fef3c7;
+  }
+}
+
 @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
@@ -54,6 +73,12 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Tabular numbers for prices / stats */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
   }
 
   /* Show card action buttons on touch devices (no hover available) */
