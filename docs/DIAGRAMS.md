@@ -717,7 +717,7 @@ erDiagram
 
     contacts {
         UUID id PK
-        UUID product_id FK UK "unique → 1:1"
+        UUID product_id FK "unique - 1:1 con product"
         VARCHAR name
         VARCHAR subdato "legacy, nullable"
         VARCHAR email "nullable"
