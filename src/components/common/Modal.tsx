@@ -69,31 +69,32 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
       {/* Panel */}
       <div
         ref={containerRef}
-        className={`relative sm:rounded-2xl rounded-t-2xl w-full ${sizeClasses[size]} max-h-[92vh] sm:max-h-[90vh] flex flex-col`}
+        className={`relative sm:rounded-2xl rounded-t-2xl w-full ${sizeClasses[size]} flex flex-col overflow-x-hidden`}
         style={{
           background: '#1a1a1a',
           border: '1px solid rgba(255,255,255,0.09)',
           boxShadow: '0 24px 64px -12px rgba(0,0,0,0.8)',
+          maxHeight: 'min(92svh, 92vh)',
         }}
       >
-        {/* Header */}
+        {/* Header — always visible, never shrinks */}
         <div
-          className="flex items-center justify-between px-6 py-4 flex-shrink-0"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+          className="flex items-center justify-between px-5 py-3.5 flex-shrink-0 sticky top-0 z-10"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1a' }}
         >
-          <h2 id={titleId} className="text-[15px] font-semibold text-zinc-100">{title}</h2>
+          <h2 id={titleId} className="text-[15px] font-semibold text-zinc-100 truncate pr-3">{title}</h2>
           <button
             ref={firstFocusRef}
             onClick={onClose}
             aria-label="Cerrar"
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-200 hover:bg-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+            className="flex-shrink-0 p-2 rounded-lg text-zinc-500 hover:text-zinc-200 hover:bg-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* Scrollable content */}
-        <div className="overflow-y-auto flex-1 px-6 py-5">
+        {/* Scrollable content — min-h-0 prevents flex overflow bug on iOS/Android */}
+        <div className="overflow-y-auto flex-1 min-h-0 px-5 py-5">
           {children}
         </div>
       </div>

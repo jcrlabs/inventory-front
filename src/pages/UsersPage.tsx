@@ -77,12 +77,17 @@ function UserForm({
           {user && <span className="text-zinc-500 font-normal text-xs ml-1">(dejar vacío para no cambiar)</span>}
         </label>
         <input
-          {...register('password', { required: !user, minLength: user ? 0 : 8 })}
+          {...register('password', {
+            required: !user ? 'Campo obligatorio' : false,
+            minLength: !user ? { value: 8, message: 'Mínimo 8 caracteres' } : undefined,
+            pattern: !user ? { value: /^(?=.*[a-zA-Z])(?=.*\d)/, message: 'Debe contener letras y números' } : undefined,
+          })}
           type="password"
           className={inputClass}
           placeholder="••••••••"
         />
-        {errors.password && <p className="mt-1.5 text-xs text-red-500">Mínimo 8 caracteres</p>}
+        {!user && <p className="mt-1.5 text-xs text-zinc-500">Mínimo 8 caracteres, debe incluir letras y números</p>}
+        {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
       </div>
 
       <div>

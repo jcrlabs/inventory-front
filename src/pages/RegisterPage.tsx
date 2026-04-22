@@ -115,7 +115,8 @@ export default function RegisterPage() {
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
-            {errors.password && <p className="mt-1.5 text-xs text-red-500">{errors.password.message}</p>}
+            <p className="mt-1.5 text-xs text-zinc-500">Mínimo 8 caracteres, debe incluir letras y números</p>
+            {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
           </div>
 
           <div>
