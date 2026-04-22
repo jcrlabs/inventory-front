@@ -9,6 +9,7 @@ import ProductForm from '../components/products/ProductForm'
 import ImageUpload from '../components/products/ImageUpload'
 import Modal from '../components/common/Modal'
 import ConfirmDialog from '../components/common/ConfirmDialog'
+import { ProductDetailSkeleton } from '../components/common/Skeleton'
 import { usePermissions } from '../hooks/usePermissions'
 import { getErrorMessage } from '../api/client'
 import type { CreateProductInput, UpsertContactInput } from '../types'
@@ -63,11 +64,7 @@ export default function ProductDetailPage() {
   })
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <ProductDetailSkeleton />
   }
 
   if (!product) {
@@ -343,6 +340,7 @@ export default function ProductDetailPage() {
           onSubmit={async (data, contact, imageFiles) => {
             await updateMutation.mutateAsync({ data, contact, imageFiles })
           }}
+          onCancel={() => setShowEdit(false)}
           isLoading={updateMutation.isPending}
         />
       </Modal>

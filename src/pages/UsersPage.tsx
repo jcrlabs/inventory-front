@@ -7,6 +7,7 @@ import { usersApi } from '../api/users'
 import Modal from '../components/common/Modal'
 import ConfirmDialog from '../components/common/ConfirmDialog'
 import Badge from '../components/common/Badge'
+import { TableRowSkeleton } from '../components/common/Skeleton'
 import { getErrorMessage } from '../api/client'
 import { useAuthStore } from '../store/authStore'
 import type { User, CreateUserInput, UpdateUserInput, Role } from '../types'
@@ -28,10 +29,12 @@ const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-
 function UserForm({
   user,
   onSubmit,
+  onCancel,
   isLoading,
 }: {
   user?: User
   onSubmit: (data: CreateUserInput | UpdateUserInput) => Promise<void>
+  onCancel?: () => void
   isLoading: boolean
 }) {
   const { register, handleSubmit, formState: { errors } } = useForm<CreateUserInput>({
@@ -102,7 +105,17 @@ function UserForm({
         </select>
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-2">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700/50 transition-colors disabled:opacity-50"
+          >
+            Cancelar
+          </button>
+        )}
         <button
           type="submit"
           disabled={isLoading}
@@ -182,8 +195,23 @@ export default function UsersPage() {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[580px]">
+              <thead style={{ background: 'rgba(24,24,27,0.7)', borderBottom: '1px solid rgba(63,63,70,0.6)' }}>
+                <tr>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Usuario</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Rol</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden md:table-cell">Estado</th>
+                  <th className="px-5 py-3" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                {Array.from({ length: 4 }, (_, i) => <TableRowSkeleton key={i} cols={5} />)}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
@@ -282,6 +310,7 @@ export default function UsersPage() {
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Usuario" size="sm">
         <UserForm
           onSubmit={async (data) => { await createMutation.mutateAsync(data as CreateUserInput) }}
+          onCancel={() => setShowCreate(false)}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -291,6 +320,7 @@ export default function UsersPage() {
           <UserForm
             user={editing}
             onSubmit={async (data) => { await updateMutation.mutateAsync({ id: editing.id, data }) }}
+            onCancel={() => setEditing(null)}
             isLoading={updateMutation.isPending}
           />
         )}
