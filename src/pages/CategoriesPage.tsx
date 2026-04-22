@@ -8,6 +8,7 @@ import { categoriesApi } from '../api/categories'
 import { productsApi } from '../api/products'
 import Modal from '../components/common/Modal'
 import ConfirmDialog from '../components/common/ConfirmDialog'
+import Skeleton from '../components/common/Skeleton'
 import { usePermissions } from '../hooks/usePermissions'
 import { getErrorMessage } from '../api/client'
 import type { Category, CreateCategoryInput } from '../types'
@@ -17,10 +18,12 @@ const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-
 function CategoryForm({
   category,
   onSubmit,
+  onCancel,
   isLoading,
 }: {
   category?: Category
   onSubmit: (data: CreateCategoryInput) => Promise<void>
+  onCancel?: () => void
   isLoading: boolean
 }) {
   const { register, handleSubmit, formState: { errors } } = useForm<CreateCategoryInput>({
@@ -49,7 +52,17 @@ function CategoryForm({
           placeholder="Descripción de la categoría"
         />
       </div>
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-2">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700/50 transition-colors disabled:opacity-50"
+          >
+            Cancelar
+          </button>
+        )}
         <button
           type="submit"
           disabled={isLoading}
@@ -74,8 +87,17 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-6">
-        <span className="w-5 h-5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+      <div className="space-y-1.5 py-2 animate-pulse">
+        {Array.from({ length: 3 }, (_, i) => (
+          <div key={i} className="flex items-center gap-3 py-2.5 px-1">
+            <div className="w-9 h-9 rounded-xl bg-zinc-700/50 flex-shrink-0" />
+            <div className="flex-1 space-y-1.5">
+              <div className="h-3.5 bg-zinc-700/50 rounded w-2/5" />
+              <div className="h-2.5 bg-zinc-700/50 rounded w-1/4" />
+            </div>
+            <div className="h-5 w-16 bg-zinc-700/50 rounded-full" />
+          </div>
+        ))}
       </div>
     )
   }
@@ -227,8 +249,18 @@ export default function CategoriesPage() {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+        <div className="space-y-2.5">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i} className="bg-zinc-800 rounded-2xl border border-zinc-700/80 p-4 animate-pulse">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-zinc-700/50 flex-shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-1/3" />
+                  <Skeleton className="h-3 w-1/2" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : categories.length === 0 ? (
         <div className="text-center py-20">
@@ -306,6 +338,7 @@ export default function CategoriesPage() {
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nueva Categoría" size="sm">
         <CategoryForm
           onSubmit={async (data) => { await createMutation.mutateAsync(data) }}
+          onCancel={() => setShowCreate(false)}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -315,6 +348,7 @@ export default function CategoriesPage() {
           <CategoryForm
             category={editing}
             onSubmit={async (data) => { await updateMutation.mutateAsync({ id: editing.id, data }) }}
+            onCancel={() => setEditing(null)}
             isLoading={updateMutation.isPending}
           />
         )}

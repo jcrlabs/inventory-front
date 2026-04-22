@@ -441,6 +441,7 @@ export default function ProductsPage() {
       <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Producto">
         <ProductForm
           onSubmit={async (data, contact, imageFiles) => { await createMutation.mutateAsync({ data, contact, imageFiles }) }}
+          onCancel={() => setShowCreate(false)}
           isLoading={createMutation.isPending}
         />
       </Modal>
@@ -450,6 +451,7 @@ export default function ProductsPage() {
           <ProductForm
             product={editingProduct}
             onSubmit={async (data, contact, imageFiles) => { await updateMutation.mutateAsync({ id: editingProduct.id, data, contact, imageFiles }) }}
+            onCancel={() => setEditingProduct(null)}
             isLoading={updateMutation.isPending}
           />
         )}

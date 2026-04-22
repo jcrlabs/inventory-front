@@ -8,6 +8,7 @@ import type { Product, CreateProductInput, UpsertContactInput, ProductStatus } f
 interface ProductFormProps {
   product?: Product
   onSubmit: (data: CreateProductInput, contact?: UpsertContactInput, imageFiles?: File[]) => Promise<void>
+  onCancel?: () => void
   isLoading: boolean
 }
 
@@ -21,7 +22,7 @@ const inputCls = [
 
 const labelCls = 'block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1.5'
 
-export default function ProductForm({ product, onSubmit, isLoading }: ProductFormProps) {
+export default function ProductForm({ product, onSubmit, onCancel, isLoading }: ProductFormProps) {
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoriesApi.list(),
@@ -232,15 +233,16 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           )}
         </div>
 
-        <div className="flex items-center gap-3 pt-7">
-          <input
-            {...register('paid')}
-            type="checkbox"
-            id="pf-paid"
-            className="w-4 h-4 rounded accent-amber-500 cursor-pointer"
-          />
-          <label htmlFor="pf-paid" className="text-sm text-zinc-300 cursor-pointer select-none">
-            Marcado como pagado
+        <div className="flex flex-col justify-end">
+          <label className={labelCls}>Pago</label>
+          <label htmlFor="pf-paid" className="flex items-center gap-2.5 h-[42px] cursor-pointer select-none">
+            <input
+              {...register('paid')}
+              type="checkbox"
+              id="pf-paid"
+              className="w-4 h-4 rounded accent-amber-500 cursor-pointer flex-shrink-0"
+            />
+            <span className="text-sm text-zinc-300">Marcado como pagado</span>
           </label>
         </div>
       </div>
@@ -386,7 +388,17 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       </div>
 
       {/* ── Submit ── */}
-      <div className="flex justify-end pt-2">
+      <div className="flex items-center justify-end gap-2 pt-2">
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700/50 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+          >
+            Cancelar
+          </button>
+        )}
         <button
           type="submit"
           disabled={isLoading}
