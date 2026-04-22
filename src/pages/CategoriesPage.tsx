@@ -263,12 +263,42 @@ export default function CategoriesPage() {
           ))}
         </div>
       ) : categories.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto mb-4">
-            <Tag size={26} className="text-zinc-600" />
+        <div className="text-center py-24">
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+            style={{
+              background: searchInput ? 'rgba(113,113,122,0.08)' : 'rgba(245,158,11,0.07)',
+              border: searchInput ? '1px solid rgba(113,113,122,0.15)' : '1px solid rgba(245,158,11,0.12)',
+            }}
+          >
+            <Tag size={26} className={searchInput ? 'text-zinc-500' : 'text-amber-500/70'} />
           </div>
-          <p className="text-base font-semibold text-zinc-400">{searchInput ? 'Sin resultados' : 'No hay categorías'}</p>
-          <p className="text-sm text-zinc-500 mt-1">{searchInput ? 'Ninguna categoría coincide con la búsqueda' : 'Crea la primera para organizar tus productos'}</p>
+          <p className="text-base font-semibold text-zinc-300 mb-1.5">
+            {searchInput ? 'Sin resultados' : 'Sin categorías'}
+          </p>
+          <p className="text-sm text-zinc-500 max-w-xs mx-auto leading-relaxed">
+            {searchInput
+              ? `Ninguna categoría coincide con "${searchInput}"`
+              : 'Organiza tus reparaciones creando categorías por tipo de producto'}
+          </p>
+          {searchInput ? (
+            <button
+              onClick={() => setSearchInput('')}
+              className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-zinc-300 border border-zinc-700 hover:bg-zinc-800 transition-colors"
+            >
+              <X size={14} />
+              Limpiar búsqueda
+            </button>
+          ) : canManage && (
+            <button
+              onClick={() => setShowCreate(true)}
+              className="mt-5 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.3)' }}
+            >
+              <Plus size={16} />
+              Crear primera categoría
+            </button>
+          )}
         </div>
       ) : (
         <div className="space-y-2.5">

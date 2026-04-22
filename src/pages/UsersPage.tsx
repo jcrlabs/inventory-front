@@ -292,10 +292,21 @@ export default function UsersPage() {
                 ))}
                 {users.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-6 py-14 text-center">
-                      <Users className="mx-auto mb-3 text-zinc-600" size={36} />
-                      <p className="text-zinc-400 font-medium">No hay usuarios</p>
-                      <button onClick={() => setShowCreate(true)} className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-amber-500 hover:text-amber-400 transition-colors">
+                    <td colSpan={6} className="px-6 py-20 text-center">
+                      <div
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                        style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.12)' }}
+                      >
+                        <Users className="text-amber-500/70" size={24} />
+                      </div>
+                      <p className="text-sm font-semibold text-zinc-300 mb-1">Sin usuarios registrados</p>
+                      <p className="text-xs text-zinc-500 mb-4">Añade el primer usuario para gestionar el acceso</p>
+                      <button
+                        onClick={() => setShowCreate(true)}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+                        style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
+                      >
+                        <Plus size={14} />
                         Crear primer usuario
                       </button>
                     </td>

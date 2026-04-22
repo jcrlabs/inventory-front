@@ -301,22 +301,47 @@ export default function ProductsPage() {
           {Array.from({ length: 8 }, (_, i) => <ProductCardSkeleton key={i} />)}
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-20 text-zinc-500">
-          <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto mb-4">
-            <Package size={28} className="text-zinc-600" />
+        <div className="text-center py-24">
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+            style={{
+              background: hasActiveFilters || searchInput
+                ? 'rgba(113,113,122,0.08)'
+                : 'rgba(245,158,11,0.07)',
+              border: hasActiveFilters || searchInput
+                ? '1px solid rgba(113,113,122,0.15)'
+                : '1px solid rgba(245,158,11,0.12)',
+            }}
+          >
+            <Package
+              size={28}
+              className={hasActiveFilters || searchInput ? 'text-zinc-500' : 'text-amber-500/70'}
+            />
           </div>
-          <p className="text-base font-semibold text-zinc-400">No se encontraron productos</p>
-          <p className="text-sm text-zinc-500 mt-1">
-            {hasActiveFilters || searchInput ? 'Prueba a cambiar los filtros' : 'Aún no hay productos creados'}
+          <p className="text-base font-semibold text-zinc-300 mb-1.5">
+            {hasActiveFilters || searchInput ? 'Sin resultados' : 'Electroteca vacía'}
           </p>
-          {canManage && !hasActiveFilters && !searchInput && (
+          <p className="text-sm text-zinc-500 max-w-xs mx-auto leading-relaxed">
+            {hasActiveFilters || searchInput
+              ? 'Ningún producto coincide con los filtros actuales'
+              : 'Registra tu primera reparación para empezar a gestionar la electroteca'}
+          </p>
+          {(hasActiveFilters || searchInput) ? (
+            <button
+              onClick={clearFilters}
+              className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-zinc-300 border border-zinc-700 hover:bg-zinc-800 transition-colors"
+            >
+              <X size={14} />
+              Limpiar filtros
+            </button>
+          ) : canManage && (
             <button
               onClick={() => setShowCreate(true)}
               className="mt-5 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.3)' }}
             >
               <Plus size={16} />
-              Crear el primero
+              Crear primera reparación
             </button>
           )}
         </div>
