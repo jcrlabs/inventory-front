@@ -20,7 +20,7 @@ function StatsGrid() {
   if (isLoading) {
     return (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-        {Array.from({ length: 4 }, (_, i) => <StatCardSkeleton key={i} />)}
+        {Array.from({ length: isAdmin ? 4 : 2 }, (_, i) => <StatCardSkeleton key={i} />)}
       </div>
     )
   }
@@ -126,7 +126,7 @@ function RecentProducts() {
         </Link>
       </div>
 
-      <div className="divide-y divide-zinc-800">
+      <div className="divide-y divide-zinc-700/60">
         {isLoading ? (
           Array.from({ length: 5 }, (_, i) => (
             <div key={i} className="flex items-center gap-3 px-5 py-3.5 animate-pulse">

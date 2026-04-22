@@ -62,7 +62,7 @@ export default function ProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setShowCreate(false)
-      toast.success('Producto creado')
+      toast.success('Reparación creada')
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -81,7 +81,7 @@ export default function ProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setEditingProduct(null)
-      toast.success('Producto actualizado')
+      toast.success('Reparación actualizada')
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -91,7 +91,7 @@ export default function ProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setDeletingProduct(null)
-      toast.success('Producto eliminado')
+      toast.success('Reparación eliminada')
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })

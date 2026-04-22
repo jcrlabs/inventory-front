@@ -92,7 +92,7 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
           <Link
             key={product.id}
             to={`/products/${product.id}`}
-            className="flex items-center gap-3 py-2.5 px-1 hover:bg-amber-50/50 rounded-xl transition-colors group"
+            className="flex items-center gap-3 py-2.5 px-1 hover:bg-zinc-900/60 rounded-xl transition-colors group"
           >
             <div className="w-9 h-9 rounded-xl bg-zinc-800 flex-shrink-0 overflow-hidden border border-zinc-700/50">
               {firstImage ? (
@@ -104,7 +104,7 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-zinc-200 truncate group-hover:text-amber-700 transition-colors">
+              <p className="text-sm font-medium text-zinc-200 truncate group-hover:text-amber-400 transition-colors">
                 {product.name}
               </p>
               <p className="text-xs text-zinc-500">
@@ -116,9 +116,9 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
               </p>
             </div>
             <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-semibold ${
-              product.status === 'reparado' ? 'bg-emerald-50 text-emerald-600'
-              : product.status === 'en_progreso' ? 'bg-amber-50 text-amber-600'
-              : 'bg-red-50 text-red-600'
+              product.status === 'reparado' ? 'bg-emerald-500/10 text-emerald-400'
+              : product.status === 'en_progreso' ? 'bg-amber-500/10 text-amber-400'
+              : 'bg-red-500/10 text-red-400'
             }`}>
               {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
             </span>
@@ -235,8 +235,8 @@ export default function CategoriesPage() {
           <div className="w-14 h-14 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto mb-4">
             <Tag size={26} className="text-zinc-600" />
           </div>
-          <p className="text-base font-semibold text-zinc-400">No hay categorías</p>
-          <p className="text-sm text-zinc-500 mt-1">Crea la primera para organizar tus productos</p>
+          <p className="text-base font-semibold text-zinc-400">{searchInput ? 'Sin resultados' : 'No hay categorías'}</p>
+          <p className="text-sm text-zinc-500 mt-1">{searchInput ? 'Ninguna categoría coincide con la búsqueda' : 'Crea la primera para organizar tus productos'}</p>
         </div>
       ) : (
         <div className="space-y-2.5">

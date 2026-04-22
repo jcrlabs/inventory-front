@@ -126,7 +126,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
                   key={i}
                   onClick={(e) => goTo(e, i)}
                   aria-label={`Ir a imagen ${i + 1}`}
-                  className={`rounded-full transition-all ${i === currentIndex ? 'w-3 h-1.5 bg-zinc-800' : 'w-1.5 h-1.5 bg-zinc-800/50 hover:bg-zinc-800/80'}`}
+                  className={`rounded-full transition-all ${i === currentIndex ? 'w-3 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'}`}
                 />
               ))}
             </div>
@@ -172,7 +172,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
 
           {/* Action buttons — visible on hover (desktop) or always on touch devices */}
           {(canManage || canDelete) && (
-            <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity touch-always-visible">
+            <div className="flex items-center gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
               {canManage && (
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(product) }}

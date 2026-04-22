@@ -47,7 +47,7 @@ export default function ProductDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['product', id] })
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setShowEdit(false)
-      toast.success('Producto actualizado')
+      toast.success('Reparación actualizada')
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
     mutationFn: () => productsApi.delete(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
-      toast.success('Producto eliminado')
+      toast.success('Reparación eliminada')
       navigate('/products')
     },
     onError: (err) => toast.error(getErrorMessage(err)),
@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
 
             {/* Paid badge */}
             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
-              product.paid ? 'bg-emerald-50 text-emerald-600 border border-emerald-200/60' : 'bg-amber-50 text-amber-600 border border-amber-200/60'
+              product.paid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
             }`}>
               {product.paid ? 'Pagado' : 'Pendiente'}
             </span>
@@ -141,7 +141,7 @@ export default function ProductDetailPage() {
             {product && canDeleteProduct(product) && (
               <button
                 onClick={() => setShowDelete(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg text-sm font-medium text-red-600 hover:bg-red-100 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/20 transition-colors"
               >
                 <Trash2 size={14} />
                 <span className="hidden sm:inline">Eliminar</span>
@@ -185,7 +185,7 @@ export default function ProductDetailPage() {
             </div>
           ) : (
             <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none aspect-video flex items-center justify-center">
-              <Package className="text-slate-200" size={48} />
+              <Package className="text-zinc-600" size={48} />
             </div>
           )}
 
@@ -248,7 +248,7 @@ export default function ProductDetailPage() {
           {product.repair_reference && (
             <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
               <h2 className="text-sm font-semibold text-zinc-300 mb-2">Referencia de reparación</h2>
-              <p className="text-sm font-mono text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg inline-block">{product.repair_reference}</p>
+              <p className="text-sm font-mono text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-lg inline-block border border-amber-500/20">{product.repair_reference}</p>
             </div>
           )}
 

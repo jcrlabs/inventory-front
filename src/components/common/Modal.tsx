@@ -41,8 +41,12 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
 
     document.addEventListener('keydown', handler)
     document.body.style.overflow = 'hidden'
-    // Auto-focus close button on open
-    setTimeout(() => firstFocusRef.current?.focus(), 50)
+    // Auto-focus first input/textarea/select, fallback to close button
+    setTimeout(() => {
+      const firstInput = containerRef.current?.querySelector<HTMLElement>('input, textarea, select')
+      if (firstInput) firstInput.focus()
+      else firstFocusRef.current?.focus()
+    }, 50)
 
     return () => {
       document.removeEventListener('keydown', handler)

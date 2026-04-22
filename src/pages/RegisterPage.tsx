@@ -53,10 +53,10 @@ export default function RegisterPage() {
       {/* Logo */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-          style={{ background: 'linear-gradient(135deg, #8b5cf6, #6d28d9)', boxShadow: '0 4px 12px rgba(109,40,217,0.4)' }}>
+          style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 12px rgba(245,158,11,0.4)' }}>
           <BrandIcon />
         </div>
-        <span className="font-bold text-zinc-100 text-lg">Inventory</span>
+        <span className="font-bold text-zinc-100 text-lg">Electroteca</span>
       </div>
 
       <div className="w-full max-w-sm">
@@ -149,8 +149,8 @@ export default function RegisterPage() {
             disabled={isLoading}
             className="w-full py-2.5 flex items-center justify-center gap-2 rounded-xl text-sm font-semibold text-white transition-all duration-150 disabled:opacity-60 hover:opacity-90 active:scale-[0.99]"
             style={{
-              background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
-              boxShadow: '0 4px 14px -3px rgba(109,40,217,0.45)',
+              background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+              boxShadow: '0 4px 14px -3px rgba(245,158,11,0.35)',
             }}
           >
             {isLoading

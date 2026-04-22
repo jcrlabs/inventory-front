@@ -12,15 +12,15 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
   if (totalPages <= 1) return null
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 border-t">
-      <p className="text-sm text-gray-500">
+    <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 border-t border-zinc-700/80">
+      <p className="text-sm text-zinc-400">
         Mostrando {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, total)} de {total}
       </p>
       <div className="flex items-center gap-1">
         <button
           onClick={() => onChange(page - 1)}
           disabled={page === 1}
-          className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="p-1.5 rounded-lg text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft size={18} />
         </button>
@@ -33,15 +33,15 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
           }, [])
           .map((p, idx) =>
             p === 'ellipsis' ? (
-              <span key={`e-${idx}`} className="px-2 text-gray-400">…</span>
+              <span key={`e-${idx}`} className="px-2 text-zinc-500">…</span>
             ) : (
               <button
                 key={p}
                 onClick={() => onChange(p as number)}
-                className={`w-8 h-8 rounded-lg text-sm font-medium ${
+                className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
                   p === page
                     ? 'bg-amber-600 text-white'
-                    : 'hover:bg-gray-100 text-gray-700'
+                    : 'text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100'
                 }`}
               >
                 {p}
@@ -51,7 +51,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
         <button
           onClick={() => onChange(page + 1)}
           disabled={page === totalPages}
-          className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="p-1.5 rounded-lg text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronRight size={18} />
         </button>

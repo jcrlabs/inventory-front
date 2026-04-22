@@ -206,7 +206,7 @@ export default function UsersPage() {
                       <div className="flex items-center gap-3">
                         <div
                           className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold"
-                          style={{ background: 'linear-gradient(135deg, #a78bfa, #7c3aed)' }}
+                          style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
                         >
                           {user.username?.[0]?.toUpperCase() ?? '?'}
                         </div>
@@ -265,8 +265,11 @@ export default function UsersPage() {
                 {users.length === 0 && (
                   <tr>
                     <td colSpan={6} className="px-6 py-14 text-center">
-                      <Users className="mx-auto mb-3 text-slate-200" size={36} />
+                      <Users className="mx-auto mb-3 text-zinc-600" size={36} />
                       <p className="text-zinc-400 font-medium">No hay usuarios</p>
+                      <button onClick={() => setShowCreate(true)} className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-amber-500 hover:text-amber-400 transition-colors">
+                        Crear primer usuario
+                      </button>
                     </td>
                   </tr>
                 )}
