@@ -65,7 +65,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/70 backdrop-blur-[2px] animate-fade-in"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -73,7 +73,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
       {/* Panel */}
       <div
         ref={containerRef}
-        className={`relative sm:rounded-2xl rounded-t-2xl w-full ${sizeClasses[size]} flex flex-col overflow-x-hidden`}
+        className={`relative sm:rounded-2xl rounded-t-2xl w-full ${sizeClasses[size]} flex flex-col overflow-x-hidden animate-scale-in`}
         style={{
           background: '#1a1a1a',
           border: '1px solid rgba(255,255,255,0.09)',

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Menu, Wrench } from 'lucide-react'
 import Sidebar from './Sidebar'
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const location = useLocation()
 
   return (
     <div className="min-h-screen bg-[#111111]">
@@ -57,7 +58,9 @@ export default function Layout() {
         </header>
 
         <main id="main-content" className="flex-1 overflow-auto">
-          <Outlet />
+          <div key={location.pathname} className="animate-slide-up-sm">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
