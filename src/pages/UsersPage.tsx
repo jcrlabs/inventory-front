@@ -107,7 +107,7 @@ function UserForm({
           type="submit"
           disabled={isLoading}
           className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center gap-2 transition-all hover:opacity-90 disabled:opacity-60"
-          style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}
+          style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
         >
           {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
           {user ? 'Actualizar' : 'Crear'} usuario
@@ -173,7 +173,7 @@ export default function UsersPage() {
         <button
           onClick={() => setShowCreate(true)}
           className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px -3px rgba(109,40,217,0.4)' }}
+          style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.35)' }}
         >
           <Plus size={17} />
           <span className="hidden sm:inline">Nuevo usuario</span>
@@ -189,7 +189,7 @@ export default function UsersPage() {
         <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[580px]">
-              <thead style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+              <thead style={{ background: 'rgba(24,24,27,0.7)', borderBottom: '1px solid rgba(63,63,70,0.6)' }}>
                 <tr>
                   <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Usuario</th>
                   <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>

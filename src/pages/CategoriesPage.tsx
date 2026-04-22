@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Plus, Tag, Edit, Trash2, ChevronDown, ChevronRight, Package } from 'lucide-react'
+import { Plus, Tag, Edit, Trash2, ChevronDown, ChevronRight, Package, Search, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -54,7 +54,7 @@ function CategoryForm({
           type="submit"
           disabled={isLoading}
           className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center gap-2 transition-all hover:opacity-90 disabled:opacity-60"
-          style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}
+          style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
         >
           {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
           {category ? 'Actualizar' : 'Crear'} categoría
@@ -136,6 +136,7 @@ export default function CategoriesPage() {
   const [deleting, setDeleting] = useState<Category | null>(null)
   const [showCreate, setShowCreate] = useState(false)
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
+  const [searchInput, setSearchInput] = useState('')
 
   const { data, isLoading } = useQuery({
     queryKey: ['categories'],
@@ -181,7 +182,9 @@ export default function CategoriesPage() {
     })
   }
 
-  const categories = data?.data ?? []
+  const categories = (data?.data ?? []).filter((c) =>
+    !searchInput.trim() || c.name.toLowerCase().includes(searchInput.toLowerCase()) || c.description?.toLowerCase().includes(searchInput.toLowerCase())
+  )
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -196,13 +199,31 @@ export default function CategoriesPage() {
           <button
             onClick={() => setShowCreate(true)}
             className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
-            style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px -3px rgba(109,40,217,0.4)' }}
+            style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.35)' }}
           >
             <Plus size={17} />
             <span className="hidden sm:inline">Nueva categoría</span>
             <span className="sm:hidden">Nueva</span>
           </button>
         )}
+      </div>
+
+      {/* Search bar */}
+      <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 p-3 sm:p-4 mb-5 sm:mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={15} />
+          <input
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Buscar categoría..."
+            className="w-full pl-9 pr-8 py-2 border border-zinc-700 rounded-lg text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
+          />
+          {searchInput && (
+            <button onClick={() => setSearchInput('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
+              <X size={14} />
+            </button>
+          )}
+        </div>
       </div>
 
       {isLoading ? (
@@ -233,9 +254,9 @@ export default function CategoriesPage() {
                 >
                   <div
                     className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.14)' }}
+                    style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.14)' }}
                   >
-                    <Tag className="text-amber-600" size={15} />
+                    <Tag className="text-amber-500" size={15} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-zinc-200 text-sm">{category.name}</h3>
@@ -249,7 +270,7 @@ export default function CategoriesPage() {
                       {canManage && (
                         <button
                           onClick={() => setEditing(category)}
-                          className="p-1.5 rounded-lg hover:bg-amber-50 text-zinc-500 hover:text-amber-700 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-amber-500/10 text-zinc-500 hover:text-amber-400 transition-colors"
                         >
                           <Edit size={14} />
                         </button>
@@ -257,7 +278,7 @@ export default function CategoriesPage() {
                       {canDelete && (
                         <button
                           onClick={() => setDeleting(category)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-zinc-500 hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-red-500/10 text-zinc-500 hover:text-red-400 transition-colors"
                         >
                           <Trash2 size={14} />
                         </button>
