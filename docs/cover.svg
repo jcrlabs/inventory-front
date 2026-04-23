@@ -19,12 +19,8 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="dot-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <filter id="circle-bg" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18"/>
     </filter>
 
     <!-- PCB grid in wrench local coords -->
@@ -68,10 +64,10 @@
              L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
           fill="#f59e0b" fill-opacity="0.12" filter="url(#logo-glow)"/>
 
-    <!-- PCB substrate -->
-    <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
-             L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
-          fill="#0c0b00"/>
+    <!-- Circular blurred background -->
+    <circle cx="0" cy="0" r="44" fill="#1c1600" filter="url(#circle-bg)"/>
+    <!-- Solid circle core -->
+    <circle cx="0" cy="0" r="28" fill="#111000"/>
 
     <!-- Circuit traces + vias -->
     <g clip-path="url(#wrench-clip)">
@@ -102,15 +98,15 @@
 
 
   <!-- ── TITLE ── -->
-  <text x="400" y="490"
+  <text x="400" y="558"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="86" font-weight="800"
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <rect x="308" y="506" width="184" height="2.5" rx="1.25"
+  <rect x="308" y="574" width="184" height="2.5" rx="1.25"
         fill="#f59e0b" opacity="0.55"/>
 
-  <text x="400" y="542"
+  <text x="400" y="610"
         font-family="Inter, -apple-system, sans-serif"
         font-size="18" font-weight="400"
         fill="#52525b" text-anchor="middle" letter-spacing="0.2">
