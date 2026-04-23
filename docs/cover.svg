@@ -4,186 +4,165 @@
       <stop offset="0%" stop-color="#0a0a0a"/>
       <stop offset="100%" stop-color="#141414"/>
     </linearGradient>
-    <radialGradient id="amber-glow" cx="50%" cy="22%" r="45%">
-      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.09"/>
+    <radialGradient id="amber-glow" cx="50%" cy="25%" r="45%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
       <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="wrench-fill" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="wrench-stroke" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#fbbf24"/>
       <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
-    <filter id="wrench-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+    <filter id="logo-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="hex-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+
+    <!-- PCB grid — tiles in wrench local coords -->
+    <pattern id="pcb-grid" x="-26" y="-44" width="13" height="13"
+             patternUnits="userSpaceOnUse">
+      <line x1="0" y1="13" x2="13" y2="13"
+            stroke="#f59e0b" stroke-width="0.75" opacity="0.36"/>
+      <line x1="13" y1="0" x2="13" y2="13"
+            stroke="#f59e0b" stroke-width="0.75" opacity="0.36"/>
+      <circle cx="13" cy="13" r="1.5" fill="#f59e0b" opacity="0.52"/>
+    </pattern>
+
+    <clipPath id="wrench-clip">
+      <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
+               L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"/>
+    </clipPath>
   </defs>
 
   <!-- ── BACKGROUND ── -->
   <rect width="800" height="1100" fill="url(#bg-grad)"/>
   <rect width="800" height="1100" fill="url(#amber-glow)"/>
 
-  <!-- Dot grid -->
   <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-    <circle cx="20" cy="20" r="1" fill="#f59e0b" opacity="0.055"/>
+    <circle cx="20" cy="20" r="1" fill="#f59e0b" opacity="0.05"/>
   </pattern>
   <rect width="800" height="1100" fill="url(#dots)"/>
 
-  <!-- Outer border -->
   <rect x="32" y="32" width="736" height="1036" rx="16"
-        stroke="#f59e0b" stroke-width="1" stroke-opacity="0.1" fill="none"/>
+        stroke="#f59e0b" stroke-width="1" stroke-opacity="0.09" fill="none"/>
 
 
-  <!-- ── LOGOMARK — Hexagon (K8s ref) + wrench (repair) + circuit nodes ── -->
-  <g transform="translate(400, 205)">
+  <!-- ══ LOGO — PCB wrench, scale 2.9 ══ -->
+  <g transform="translate(400,240) scale(2.9) translate(-11.25,6.25)">
 
     <!-- Glow halo -->
-    <polygon points="0,-75 64.95,-37.5 64.95,37.5 0,75 -64.95,37.5 -64.95,-37.5"
-             fill="#f59e0b" fill-opacity="0.05" filter="url(#hex-glow)"/>
+    <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
+             L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
+          fill="#f59e0b" fill-opacity="0.12" filter="url(#logo-glow)"/>
 
-    <!-- Hexagon face -->
-    <polygon points="0,-68 58.9,-34 58.9,34 0,68 -58.9,34 -58.9,-34"
-             fill="#111111"/>
+    <!-- PCB substrate -->
+    <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
+             L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
+          fill="#0c0b00"/>
 
-    <!-- Hexagon stroke -->
-    <polygon points="0,-68 58.9,-34 58.9,34 0,68 -58.9,34 -58.9,-34"
-             fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.28"/>
+    <!-- Circuit traces + vias clipped to wrench -->
+    <g clip-path="url(#wrench-clip)">
+      <rect x="-30" y="-50" width="85" height="90" fill="url(#pcb-grid)"/>
 
-    <!-- Circuit nodes at each vertex -->
-    <circle cx="0"     cy="-68"  r="3.5" fill="#f59e0b" opacity="0.45"/>
-    <circle cx="58.9"  cy="-34"  r="3.5" fill="#f59e0b" opacity="0.45"/>
-    <circle cx="58.9"  cy="34"   r="3.5" fill="#f59e0b" opacity="0.45"/>
-    <circle cx="0"     cy="68"   r="3.5" fill="#f59e0b" opacity="0.45"/>
-    <circle cx="-58.9" cy="34"   r="3.5" fill="#f59e0b" opacity="0.45"/>
-    <circle cx="-58.9" cy="-34"  r="3.5" fill="#f59e0b" opacity="0.45"/>
+      <!-- Accent signal paths -->
+      <line x1="-26" y1="-18" x2="10" y2="-18"
+            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <line x1="10" y1="-18" x2="10" y2="-5"
+            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <circle cx="10" cy="-18" r="2.4" fill="#f59e0b" opacity="0.8"/>
+      <circle cx="10" cy="-5"  r="2.4" fill="#f59e0b" opacity="0.8"/>
 
-    <!-- Short circuit traces from midpoints of sides (tech detail) -->
-    <line x1="29.45" y1="-51" x2="29.45" y2="-60" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.18"/>
-    <line x1="58.9"  y1="0"   x2="68"   y2="0"   stroke="#f59e0b" stroke-width="1" stroke-opacity="0.18"/>
-    <line x1="-58.9" y1="0"   x2="-68"  y2="0"   stroke="#f59e0b" stroke-width="1" stroke-opacity="0.18"/>
-    <line x1="29.45" y1="51"  x2="29.45" y2="60"  stroke="#f59e0b" stroke-width="1" stroke-opacity="0.18"/>
-
-    <!-- Wrench — centered inside hexagon -->
-    <g transform="translate(-8, 4) scale(0.7)" filter="url(#wrench-glow)">
-      <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
-            fill="url(#wrench-fill)"/>
-      <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
-      <circle cx="-18" cy="24" r="3.5" fill="#0a0a0a" opacity="0.6"/>
+      <line x1="-2" y1="10" x2="32" y2="10"
+            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <line x1="32" y1="10" x2="32" y2="-4"
+            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <circle cx="-2"  cy="10"  r="2.4" fill="#f59e0b" opacity="0.8"/>
+      <circle cx="32"  cy="10"  r="2.4" fill="#f59e0b" opacity="0.8"/>
+      <circle cx="32"  cy="-4"  r="2.4" fill="#f59e0b" opacity="0.8"/>
     </g>
 
+    <!-- Wrench outline -->
+    <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
+             L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
+          fill="none" stroke="url(#wrench-stroke)" stroke-width="1.3" stroke-opacity="0.95"/>
+
+    <!-- Nut hole -->
+    <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
+    <circle cx="-18" cy="24" r="3.8" fill="#0a0900" opacity="0.9"/>
+    <circle cx="-18" cy="24" r="6.5" fill="none"
+            stroke="#f59e0b" stroke-width="0.8" stroke-opacity="0.32"/>
   </g>
 
 
   <!-- ── TITLE ── -->
-  <text x="400" y="342"
+  <text x="400" y="408"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="86" font-weight="800"
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <!-- Amber accent line -->
-  <rect x="308" y="357" width="184" height="2.5" rx="1.25"
+  <rect x="308" y="424" width="184" height="2.5" rx="1.25"
         fill="#f59e0b" opacity="0.55"/>
 
-  <!-- ── SUBTITLE ── -->
-  <text x="400" y="396"
+  <text x="400" y="462"
         font-family="Inter, -apple-system, sans-serif"
-        font-size="19" font-weight="400"
+        font-size="18" font-weight="400"
         fill="#52525b" text-anchor="middle" letter-spacing="0.2">
     Sistema de gestión de reparaciones
   </text>
 
 
   <!-- ── DIVIDER ── -->
-  <line x1="80" y1="438" x2="720" y2="438"
+  <line x1="160" y1="680" x2="640" y2="680"
         stroke="#27272a" stroke-width="1"/>
 
 
-  <!-- ── TECH STACK — 3 rows of 4, compact ── -->
-  <g font-family="Inter, monospace" font-size="12" font-weight="600" text-anchor="middle">
+  <!-- ── TECH STACK — 6 principales, 2 filas de 3, pequeñas ── -->
+  <g font-family="Inter, monospace" font-size="11" font-weight="600" text-anchor="middle">
 
     <!-- Row 1 -->
-    <g transform="translate(130, 479)">
-      <rect x="-40" y="-16" width="80" height="30" rx="6"
+    <g transform="translate(222,716)">
+      <rect x="-38" y="-14" width="76" height="27" rx="5"
             fill="#00ACD7" fill-opacity="0.08" stroke="#00ACD7" stroke-opacity="0.22" stroke-width="1"/>
       <text y="5" fill="#00ACD7">Go · Gin</text>
     </g>
-    <g transform="translate(283, 479)">
-      <rect x="-36" y="-16" width="72" height="30" rx="6"
-            fill="#00ACD7" fill-opacity="0.06" stroke="#00ACD7" stroke-opacity="0.15" stroke-width="1"/>
-      <text y="5" fill="#4FC3D9">GORM</text>
+    <g transform="translate(400,716)">
+      <rect x="-36" y="-14" width="72" height="27" rx="5"
+            fill="#61DAFB" fill-opacity="0.07" stroke="#61DAFB" stroke-opacity="0.20" stroke-width="1"/>
+      <text y="5" fill="#61DAFB">React</text>
     </g>
-    <g transform="translate(450, 479)">
-      <rect x="-46" y="-16" width="92" height="30" rx="6"
-            fill="#336791" fill-opacity="0.1" stroke="#336791" stroke-opacity="0.22" stroke-width="1"/>
-      <text y="5" fill="#6FA8D0">PostgreSQL</text>
-    </g>
-    <g transform="translate(628, 479)">
-      <rect x="-36" y="-16" width="72" height="30" rx="6"
-            fill="#C72C48" fill-opacity="0.08" stroke="#C72C48" stroke-opacity="0.2" stroke-width="1"/>
-      <text y="5" fill="#E05572">MinIO</text>
+    <g transform="translate(578,716)">
+      <rect x="-46" y="-14" width="92" height="27" rx="5"
+            fill="#326CE5" fill-opacity="0.08" stroke="#326CE5" stroke-opacity="0.20" stroke-width="1"/>
+      <text y="5" fill="#6B9FEF">Kubernetes</text>
     </g>
 
     <!-- Row 2 -->
-    <g transform="translate(130, 523)">
-      <rect x="-38" y="-16" width="76" height="30" rx="6"
-            fill="#61DAFB" fill-opacity="0.07" stroke="#61DAFB" stroke-opacity="0.2" stroke-width="1"/>
-      <text y="5" fill="#61DAFB">React</text>
+    <g transform="translate(222,754)">
+      <rect x="-46" y="-14" width="92" height="27" rx="5"
+            fill="#336791" fill-opacity="0.10" stroke="#336791" stroke-opacity="0.22" stroke-width="1"/>
+      <text y="5" fill="#6FA8D0">PostgreSQL</text>
     </g>
-    <g transform="translate(283, 523)">
-      <rect x="-46" y="-16" width="92" height="30" rx="6"
-            fill="#3178C6" fill-opacity="0.08" stroke="#3178C6" stroke-opacity="0.2" stroke-width="1"/>
+    <g transform="translate(400,754)">
+      <rect x="-34" y="-14" width="68" height="27" rx="5"
+            fill="#C72C48" fill-opacity="0.08" stroke="#C72C48" stroke-opacity="0.20" stroke-width="1"/>
+      <text y="5" fill="#E05572">MinIO</text>
+    </g>
+    <g transform="translate(578,754)">
+      <rect x="-44" y="-14" width="88" height="27" rx="5"
+            fill="#3178C6" fill-opacity="0.08" stroke="#3178C6" stroke-opacity="0.20" stroke-width="1"/>
       <text y="5" fill="#6B9FEF">TypeScript</text>
-    </g>
-    <g transform="translate(450, 523)">
-      <rect x="-36" y="-16" width="72" height="30" rx="6"
-            fill="#646CFF" fill-opacity="0.07" stroke="#646CFF" stroke-opacity="0.18" stroke-width="1"/>
-      <text y="5" fill="#9096FF">Vite</text>
-    </g>
-    <g transform="translate(628, 523)">
-      <rect x="-42" y="-16" width="84" height="30" rx="6"
-            fill="#06B6D4" fill-opacity="0.07" stroke="#06B6D4" stroke-opacity="0.18" stroke-width="1"/>
-      <text y="5" fill="#22D3EE">Tailwind</text>
-    </g>
-
-    <!-- Row 3 -->
-    <g transform="translate(130, 567)">
-      <rect x="-48" y="-16" width="96" height="30" rx="6"
-            fill="#326CE5" fill-opacity="0.08" stroke="#326CE5" stroke-opacity="0.2" stroke-width="1"/>
-      <text y="5" fill="#6B9FEF">Kubernetes</text>
-    </g>
-    <g transform="translate(283, 567)">
-      <rect x="-40" y="-16" width="80" height="30" rx="6"
-            fill="#EF7B4D" fill-opacity="0.08" stroke="#EF7B4D" stroke-opacity="0.2" stroke-width="1"/>
-      <text y="5" fill="#EF7B4D">ArgoCD</text>
-    </g>
-    <g transform="translate(450, 567)">
-      <rect x="-32" y="-16" width="64" height="30" rx="6"
-            fill="#4F5BD5" fill-opacity="0.08" stroke="#4F5BD5" stroke-opacity="0.18" stroke-width="1"/>
-      <text y="5" fill="#8B91EF">Helm</text>
-    </g>
-    <g transform="translate(628, 567)">
-      <rect x="-32" y="-16" width="64" height="30" rx="6"
-            fill="#ffffff" fill-opacity="0.04" stroke="#fff" stroke-opacity="0.1" stroke-width="1"/>
-      <text y="5" fill="#71717a">GHCR</text>
     </g>
 
   </g>
 
-  <!-- ── DIVIDER after stack ── -->
-  <line x1="80" y1="605" x2="720" y2="605"
+  <!-- Divider after stack -->
+  <line x1="160" y1="784" x2="640" y2="784"
         stroke="#27272a" stroke-width="1"/>
 
 
-  <!-- ── FOOTER — muy abajo ── -->
+  <!-- ── FOOTER ── -->
   <text x="400" y="1032"
         font-family="Inter, -apple-system, sans-serif"
         font-size="16" font-weight="600"
