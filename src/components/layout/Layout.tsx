@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { Menu, Wrench } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import Sidebar from './Sidebar'
 
 export default function Layout() {
@@ -43,16 +43,12 @@ export default function Layout() {
             <Menu size={20} />
           </button>
           <div className="flex items-center gap-2.5">
-            <div
-              className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{
-                background: '#1e1e1e',
-                border: '1px solid rgba(245,158,11,0.2)',
-                boxShadow: '0 0 12px -4px rgba(245,158,11,0.25)',
-              }}
-            >
-              <Wrench size={13} className="text-amber-500" />
-            </div>
+            <img
+              src="/icon.svg"
+              alt="Electroteca"
+              className="w-7 h-7 flex-shrink-0"
+              style={{ filter: 'drop-shadow(0 0 4px rgba(245,158,11,0.2))' }}
+            />
             <span className="text-white text-sm font-semibold tracking-tight">Electroteca</span>
           </div>
         </header>

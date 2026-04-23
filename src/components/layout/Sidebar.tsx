@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Package, Tag, Users, LayoutDashboard, LogOut, Settings, X, Wrench } from 'lucide-react'
+import { Package, Tag, Users, LayoutDashboard, LogOut, Settings, X } from 'lucide-react'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
 import { usePermissions } from '../../hooks/usePermissions'
@@ -61,16 +61,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Brand */}
         <div className="px-4 pt-5 pb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{
-                background: '#1e1e1e',
-                border: '1px solid rgba(245,158,11,0.25)',
-                boxShadow: '0 0 14px -4px rgba(245,158,11,0.3)',
-              }}
-            >
-              <Wrench size={15} className="text-amber-500" />
-            </div>
+            <img
+              src="/icon.svg"
+              alt="Electroteca"
+              className="w-8 h-8 flex-shrink-0"
+              style={{ filter: 'drop-shadow(0 0 5px rgba(245,158,11,0.22))' }}
+            />
             <div>
               <p className="font-semibold text-white text-sm leading-tight tracking-tight">Electroteca</p>
               <p className="text-[10px] leading-tight font-medium" style={{ color: 'rgba(148,163,184,0.45)' }}>jcrlabs</p>
