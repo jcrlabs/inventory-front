@@ -63,59 +63,6 @@
   -->
   <g transform="translate(400,255) scale(2.9) translate(-11.25,6.25)">
 
-    <!-- ── Orbit ring (dashed, amber) ── -->
-    <circle cx="0" cy="0" r="47"
-            fill="none" stroke="#f59e0b" stroke-width="0.5"
-            stroke-opacity="0.20" stroke-dasharray="2.5 4.5"/>
-
-    <!-- Connector lines from wrench edge to each dot -->
-    <line x1="0"   y1="-37" x2="0"   y2="-41"  stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
-    <line x1="32"  y1="-18" x2="38"  y2="-22"  stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
-    <line x1="32"  y1="15"  x2="38"  y2="22"   stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
-    <line x1="0"   y1="31"  x2="0"   y2="41"   stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
-    <line x1="-26" y1="15"  x2="-38" y2="22"   stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
-    <line x1="-26" y1="-18" x2="-38" y2="-22"  stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
-
-    <!-- ── Tech dots — 6 nodes at 60° intervals, r=47 ── -->
-
-    <!-- Go — 0° top (12 o'clock) -->
-    <circle cx="0" cy="-47" r="6.5" fill="#00ACD7" fill-opacity="0.18" filter="url(#dot-glow)"/>
-    <circle cx="0" cy="-47" r="5.5" fill="#00ACD7" fill-opacity="0.85"/>
-    <text x="0" y="-44.8" font-size="5.2" fill="white" text-anchor="middle"
-          font-weight="800" font-family="Inter, sans-serif">G</text>
-
-    <!-- TypeScript — 60° top-right -->
-    <circle cx="40.7" cy="-23.5" r="6.5" fill="#3178C6" fill-opacity="0.18" filter="url(#dot-glow)"/>
-    <circle cx="40.7" cy="-23.5" r="5.5" fill="#3178C6" fill-opacity="0.85"/>
-    <text x="40.7" y="-21.3" font-size="5.2" fill="white" text-anchor="middle"
-          font-weight="800" font-family="Inter, sans-serif">T</text>
-
-    <!-- React — 120° bottom-right -->
-    <circle cx="40.7" cy="23.5" r="6.5" fill="#61DAFB" fill-opacity="0.18" filter="url(#dot-glow)"/>
-    <circle cx="40.7" cy="23.5" r="5.5" fill="#1a9dbf" fill-opacity="0.90"/>
-    <text x="40.7" y="25.7" font-size="5.2" fill="white" text-anchor="middle"
-          font-weight="800" font-family="Inter, sans-serif">R</text>
-
-    <!-- Kubernetes — 180° bottom (6 o'clock) -->
-    <circle cx="0" cy="47" r="6.5" fill="#326CE5" fill-opacity="0.18" filter="url(#dot-glow)"/>
-    <circle cx="0" cy="47" r="5.5" fill="#326CE5" fill-opacity="0.85"/>
-    <text x="0" y="49.2" font-size="5.2" fill="white" text-anchor="middle"
-          font-weight="800" font-family="Inter, sans-serif">K</text>
-
-    <!-- PostgreSQL — 240° bottom-left -->
-    <circle cx="-40.7" cy="23.5" r="6.5" fill="#336791" fill-opacity="0.18" filter="url(#dot-glow)"/>
-    <circle cx="-40.7" cy="23.5" r="5.5" fill="#336791" fill-opacity="0.90"/>
-    <text x="-40.7" y="25.7" font-size="5.2" fill="white" text-anchor="middle"
-          font-weight="800" font-family="Inter, sans-serif">P</text>
-
-    <!-- MinIO — 300° top-left -->
-    <circle cx="-40.7" cy="-23.5" r="6.5" fill="#C72C48" fill-opacity="0.18" filter="url(#dot-glow)"/>
-    <circle cx="-40.7" cy="-23.5" r="5.5" fill="#C72C48" fill-opacity="0.90"/>
-    <text x="-40.7" y="-21.3" font-size="5.2" fill="white" text-anchor="middle"
-          font-weight="800" font-family="Inter, sans-serif">M</text>
-
-    <!-- ── PCB wrench (on top of orbit) ── -->
-
     <!-- Amber glow halo -->
     <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
              L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
@@ -155,15 +102,15 @@
 
 
   <!-- ── TITLE ── -->
-  <text x="400" y="428"
+  <text x="400" y="490"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="86" font-weight="800"
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <rect x="308" y="444" width="184" height="2.5" rx="1.25"
+  <rect x="308" y="506" width="184" height="2.5" rx="1.25"
         fill="#f59e0b" opacity="0.55"/>
 
-  <text x="400" y="482"
+  <text x="400" y="542"
         font-family="Inter, -apple-system, sans-serif"
         font-size="18" font-weight="400"
         fill="#52525b" text-anchor="middle" letter-spacing="0.2">
