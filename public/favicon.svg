@@ -1,33 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
   <defs>
-    <radialGradient id="g" cx="45%" cy="38%" r="55%">
-      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.16"/>
+    <linearGradient id="wg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <radialGradient id="gl" cx="45%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.18"/>
       <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="32" height="32" rx="7" fill="#111"/>
-  <rect width="32" height="32" rx="7" fill="url(#g)"/>
-
-  <!-- Gopher head (Go blue, geometric) -->
-  <ellipse cx="13" cy="17" rx="9" ry="8.5" fill="#00ACD7"/>
-  <!-- Ears -->
-  <ellipse cx="6.5" cy="11.5" rx="3.5" ry="4.5" fill="#00ACD7"/>
-  <ellipse cx="6.5" cy="11.5" rx="2" ry="3" fill="#0d0d0d" opacity="0.4"/>
-  <ellipse cx="19.5" cy="11.5" rx="3.5" ry="4.5" fill="#00ACD7"/>
-  <ellipse cx="19.5" cy="11.5" rx="2" ry="3" fill="#0d0d0d" opacity="0.4"/>
-  <!-- Eyes -->
-  <circle cx="9.5" cy="15.5" r="3.2" fill="white"/>
-  <circle cx="16.5" cy="15.5" r="3.2" fill="white"/>
-  <circle cx="10" cy="15.8" r="1.6" fill="#111"/>
-  <circle cx="17" cy="15.8" r="1.6" fill="#111"/>
-  <circle cx="10.6" cy="14.9" r="0.7" fill="white"/>
-  <circle cx="17.6" cy="14.9" r="0.7" fill="white"/>
-  <!-- Muzzle -->
-  <ellipse cx="13" cy="21" rx="5" ry="3.5" fill="#B2DDE8"/>
-  <!-- Nose -->
-  <ellipse cx="13" cy="18.8" rx="2" ry="1.4" fill="#0d3040"/>
-
-  <!-- Wrench (top-right, amber, small) -->
-  <path d="M25.5 5.5a3.3 3.3 0 0 0-3.7 4.5l-4.2 4.2a1.2 1.2 0 1 0 1.7 1.7l4.2-4.2a3.3 3.3 0 0 0 4.5-3.7l-1.8 1.8-1.3-1.3 1.8-1.8z"
-        fill="#f59e0b"/>
+  <rect width="32" height="32" rx="7" fill="url(#gl)"/>
+  <!-- Wrench -->
+  <path d="M22.4 7.6a5.2 5.2 0 0 0-5.8 7L9 22.2a1.9 1.9 0 1 0 2.7 2.7l7.6-7.6a5.2 5.2 0 0 0 7-5.8l-3 3-2-2 3-3z"
+        fill="url(#wg)"/>
+  <!-- Circuit node accent -->
+  <circle cx="10.6" cy="22" r="1.3" fill="#92400e"/>
+  <circle cx="25" cy="7.5" r="1" fill="#fbbf24" opacity="0.5"/>
 </svg>

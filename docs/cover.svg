@@ -1,236 +1,198 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" fill="none">
   <defs>
-    <radialGradient id="amber-top" cx="50%" cy="0%" r="60%">
-      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.1"/>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </linearGradient>
+    <radialGradient id="amber-center" cx="50%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.10"/>
       <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="blue-mid" cx="50%" cy="42%" r="35%">
-      <stop offset="0%" stop-color="#00ACD7" stop-opacity="0.06"/>
-      <stop offset="100%" stop-color="#00ACD7" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="eye-iris" cx="38%" cy="36%" r="55%">
-      <stop offset="0%" stop-color="#1adff5"/>
-      <stop offset="100%" stop-color="#007EA8"/>
-    </radialGradient>
+    <linearGradient id="wrench-fill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="wrench-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="soft-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="800" height="1100" fill="#0f0f0f"/>
-  <rect width="800" height="1100" fill="url(#amber-top)"/>
-  <rect width="800" height="1100" fill="url(#blue-mid)"/>
+  <!-- ── BACKGROUND ── -->
+  <rect width="800" height="1100" fill="url(#bg-grad)"/>
+  <rect width="800" height="1100" fill="url(#amber-center)"/>
 
-  <!-- Outer frame -->
-  <rect x="20" y="20" width="760" height="1060" rx="18"
-        stroke="#f59e0b" stroke-width="1" stroke-opacity="0.12" fill="none"/>
+  <!-- Subtle dot grid -->
+  <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="20" cy="20" r="1" fill="#f59e0b" opacity="0.06"/>
+  </pattern>
+  <rect width="800" height="1100" fill="url(#dots)"/>
 
-  <!-- ── HEADER BAR ── -->
-  <rect x="20" y="20" width="760" height="64" rx="18" fill="#161616"/>
-  <rect x="20" y="66" width="760" height="18" fill="#161616"/>
-  <line x1="20" y1="84" x2="780" y2="84" stroke="#f59e0b" stroke-opacity="0.1" stroke-width="1"/>
+  <!-- Outer border -->
+  <rect x="32" y="32" width="736" height="1036" rx="16"
+        stroke="#f59e0b" stroke-width="1" stroke-opacity="0.1" fill="none"/>
 
-  <!-- Logo mark in header -->
-  <rect x="44" y="34" width="36" height="36" rx="9" fill="#1a1a1a"
-        stroke="#f59e0b" stroke-opacity="0.22" stroke-width="1"/>
-  <!-- mini gopher eyes in header logo -->
-  <circle cx="55" cy="49" r="5" fill="white"/>
-  <circle cx="69" cy="49" r="5" fill="white"/>
-  <circle cx="55.8" cy="49.5" r="2.5" fill="#007EA8"/>
-  <circle cx="69.8" cy="49.5" r="2.5" fill="#007EA8"/>
-  <circle cx="56.8" cy="48.2" r="1.1" fill="white"/>
-  <circle cx="70.8" cy="48.2" r="1.1" fill="white"/>
-  <!-- muzzle -->
-  <ellipse cx="62" cy="55" rx="7" ry="5" fill="#9DD8E5"/>
-  <circle cx="59" cy="51.5" r="1.5" fill="#0a2530"/>
-  <circle cx="65" cy="51.5" r="1.5" fill="#0a2530"/>
-  <!-- wrench mini -->
-  <path d="M72 36 a4 4 0 0 0-4.5 5.4 l-4 4 a1.4 1.4 0 1 0 2 2 l4-4 a4 4 0 0 0 5.4-4.5l-2.1 2.1 -1.5-1.5 2.1-2.1z" fill="#f59e0b"/>
 
-  <text x="92" y="55" font-family="Inter,-apple-system,sans-serif"
-        font-size="15" font-weight="700" fill="white" opacity="0.9">Electroteca</text>
-  <text x="92" y="71" font-family="Inter,-apple-system,sans-serif"
-        font-size="10" font-weight="400" fill="#52525b" letter-spacing="0.3">jcrlabs · Documentación técnica</text>
-
-  <!-- Version pill -->
-  <rect x="672" y="38" width="88" height="28" rx="7"
-        fill="#f59e0b" fill-opacity="0.08" stroke="#f59e0b" stroke-opacity="0.2" stroke-width="1"/>
-  <text x="716" y="56" font-family="Inter,monospace" font-size="11" font-weight="600"
-        fill="#f59e0b" text-anchor="middle">v0.2 · 2026</text>
-
-  <!-- ── GOPHER CHARACTER (center, proportional) ── -->
-  <g transform="translate(400, 390)">
-
-    <!-- Hard hat — cleaner, flatter -->
-    <ellipse cx="0" cy="-148" rx="76" ry="13" fill="#f59e0b"/>
-    <rect x="-68" y="-158" width="136" height="24" rx="6" fill="#f59e0b"/>
-    <rect x="-58" y="-157" width="116" height="15" rx="5" fill="#d97706"/>
-    <ellipse cx="0" cy="-153" rx="52" ry="5" fill="#fbbf24" opacity="0.28"/>
-    <!-- strap -->
-    <line x1="-34" y1="-134" x2="-42" y2="-115" stroke="#b45309" stroke-width="2.5" opacity="0.7"/>
-    <line x1="34" y1="-134" x2="42" y2="-115" stroke="#b45309" stroke-width="2.5" opacity="0.7"/>
-
-    <!-- Ears -->
-    <ellipse cx="-82" cy="-88" rx="19" ry="24" fill="#00ACD7"/>
-    <ellipse cx="-82" cy="-88" rx="11" ry="15" fill="#111" opacity="0.26"/>
-    <ellipse cx="82" cy="-88" rx="19" ry="24" fill="#00ACD7"/>
-    <ellipse cx="82" cy="-88" rx="11" ry="15" fill="#111" opacity="0.26"/>
-
-    <!-- Head -->
-    <ellipse cx="0" cy="-70" rx="70" ry="72" fill="#00ACD7"/>
-
-    <!-- Eyes — Go-proportioned, large but not exaggerated -->
-    <ellipse cx="-24" cy="-82" rx="22" ry="23" fill="white"/>
-    <ellipse cx="24" cy="-82" rx="22" ry="23" fill="white"/>
-    <!-- Iris -->
-    <circle cx="-23" cy="-80" r="14" fill="url(#eye-iris)"/>
-    <circle cx="23" cy="-80" r="14" fill="url(#eye-iris)"/>
-    <!-- Pupil -->
-    <circle cx="-22" cy="-79" r="7" fill="#081520"/>
-    <circle cx="22" cy="-79" r="7" fill="#081520"/>
-    <!-- Specular -->
-    <circle cx="-18" cy="-85" r="4" fill="white" opacity="0.9"/>
-    <circle cx="26" cy="-85" r="4" fill="white" opacity="0.9"/>
-
-    <!-- Muzzle — flat, proportioned -->
-    <ellipse cx="0" cy="-44" rx="32" ry="22" fill="#9DD8E5"/>
-    <!-- Nostrils -->
-    <circle cx="-9" cy="-55" r="5" fill="#0a2530"/>
-    <circle cx="9" cy="-55" r="5" fill="#0a2530"/>
-    <!-- Philtrum -->
-    <line x1="0" y1="-50" x2="0" y2="-42" stroke="#7ABFCF" stroke-width="1.5" opacity="0.45"/>
-
-    <!-- Body / torso -->
-    <ellipse cx="0" cy="58" rx="62" ry="70" fill="#00ACD7"/>
-    <!-- Belly highlight -->
-    <ellipse cx="0" cy="65" rx="38" ry="48" fill="#9DD8E5" opacity="0.5"/>
-
-    <!-- Left arm — natural hang -->
-    <path d="M-58 20 Q-90 28 -94 54" stroke="#00ACD7" stroke-width="20" stroke-linecap="round" fill="none"/>
-    <circle cx="-94" cy="55" r="11" fill="#00ACD7"/>
-
-    <!-- Right arm — raised holding wrench -->
-    <path d="M58 15 Q94 5 102 -24" stroke="#00ACD7" stroke-width="20" stroke-linecap="round" fill="none"/>
-
-    <!-- Wrench (right hand, clean) -->
-    <g transform="translate(115, -50) rotate(-30)">
-      <path d="M16 -36 a13 13 0 0 0-14.5 17.5 l-17 17 a5 5 0 1 0 7 7 l17-17 a13 13 0 0 0 17.5-14.5 l-7.5 7.5 -5-5 7.5-7.5z"
-            fill="#f59e0b"/>
-      <circle cx="-6" cy="2" r="3" fill="#92400e"/>
-    </g>
-
-    <!-- Feet -->
-    <ellipse cx="-26" cy="126" rx="20" ry="12" fill="#007EA8"/>
-    <ellipse cx="26" cy="126" rx="20" ry="12" fill="#007EA8"/>
-
-    <!-- Subtle lightning left -->
-    <path d="M-130 -10 l9-15 -5 0 9-15" stroke="#f59e0b" stroke-width="3"
-          stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.35"/>
+  <!-- ── LOGOMARK (centered, upper third) ── -->
+  <g transform="translate(400, 260)">
+    <!-- Outer ring glow -->
+    <circle cx="0" cy="0" r="88" fill="#f59e0b" fill-opacity="0.04" filter="url(#soft-glow)"/>
+    <!-- Ring -->
+    <circle cx="0" cy="0" r="80" fill="#161616"
+            stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.2"/>
+    <!-- Wrench mark centered -->
+    <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
+          fill="url(#wrench-fill)" filter="url(#wrench-glow)"/>
+    <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
+    <circle cx="-18" cy="24" r="3.5" fill="#111" opacity="0.5"/>
   </g>
 
-  <!-- ── TITLE BLOCK ── -->
-  <text x="400" y="696" font-family="Inter,-apple-system,sans-serif"
-        font-size="80" font-weight="800" fill="white"
-        text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <!-- Amber underline -->
-  <rect x="260" y="710" width="280" height="2" rx="1" fill="#f59e0b" opacity="0.5"/>
+  <!-- ── TITLE ── -->
+  <text x="400" y="418"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+        font-size="86" font-weight="800"
+        fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <!-- Subtitle -->
-  <text x="400" y="752" font-family="Inter,-apple-system,sans-serif"
-        font-size="18" font-weight="400" fill="#71717a"
-        text-anchor="middle" letter-spacing="0.3">Sistema de gestión de reparaciones electrónicas</text>
+  <!-- Amber accent line under title -->
+  <rect x="308" y="434" width="184" height="2.5" rx="1.25"
+        fill="#f59e0b" opacity="0.55"/>
+
+
+  <!-- ── SUBTITLE ── -->
+  <text x="400" y="478"
+        font-family="Inter, -apple-system, sans-serif"
+        font-size="19" font-weight="400"
+        fill="#71717a" text-anchor="middle" letter-spacing="0.2">
+    Sistema de gestión de reparaciones
+  </text>
+
+
+  <!-- ── DIVIDER ── -->
+  <line x1="80" y1="550" x2="720" y2="550"
+        stroke="#27272a" stroke-width="1"/>
+
 
   <!-- ── TECH STACK ── -->
   <!-- Row 1 -->
-  <g font-family="Inter,monospace" font-size="12" font-weight="600">
+  <g font-family="Inter, monospace" font-size="12" font-weight="600" text-anchor="middle">
 
-    <!-- Go -->
-    <rect x="116" y="800" width="68" height="32" rx="7"
-          fill="#00ACD7" fill-opacity="0.09" stroke="#00ACD7" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="150" y="821" fill="#00ACD7" text-anchor="middle">Go + Gin</text>
+    <g transform="translate(118, 596)">
+      <rect x="-38" y="-16" width="76" height="30" rx="6"
+            fill="#00ACD7" fill-opacity="0.08" stroke="#00ACD7" stroke-opacity="0.2" stroke-width="1"/>
+      <text y="5" fill="#00ACD7">Go · Gin</text>
+    </g>
 
-    <!-- GORM -->
-    <rect x="196" y="800" width="60" height="32" rx="7"
-          fill="#00ACD7" fill-opacity="0.07" stroke="#00ACD7" stroke-opacity="0.18" stroke-width="1"/>
-    <text x="226" y="821" fill="#4FC3D9" text-anchor="middle">GORM</text>
+    <g transform="translate(218, 596)">
+      <rect x="-34" y="-16" width="68" height="30" rx="6"
+            fill="#00ACD7" fill-opacity="0.06" stroke="#00ACD7" stroke-opacity="0.14" stroke-width="1"/>
+      <text y="5" fill="#4FC3D9">GORM</text>
+    </g>
 
-    <!-- React -->
-    <rect x="268" y="800" width="68" height="32" rx="7"
-          fill="#61DAFB" fill-opacity="0.08" stroke="#61DAFB" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="302" y="821" fill="#61DAFB" text-anchor="middle">React</text>
+    <g transform="translate(318, 596)">
+      <rect x="-44" y="-16" width="88" height="30" rx="6"
+            fill="#336791" fill-opacity="0.1" stroke="#336791" stroke-opacity="0.22" stroke-width="1"/>
+      <text y="5" fill="#6FA8D0">PostgreSQL</text>
+    </g>
 
-    <!-- TypeScript -->
-    <rect x="348" y="800" width="90" height="32" rx="7"
-          fill="#3178C6" fill-opacity="0.09" stroke="#3178C6" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="393" y="821" fill="#6B9FEF" text-anchor="middle">TypeScript</text>
+    <g transform="translate(432, 596)">
+      <rect x="-34" y="-16" width="68" height="30" rx="6"
+            fill="#C72C48" fill-opacity="0.08" stroke="#C72C48" stroke-opacity="0.2" stroke-width="1"/>
+      <text y="5" fill="#E05572">MinIO</text>
+    </g>
 
-    <!-- PostgreSQL -->
-    <rect x="450" y="800" width="94" height="32" rx="7"
-          fill="#336791" fill-opacity="0.1" stroke="#336791" stroke-opacity="0.25" stroke-width="1"/>
-    <text x="497" y="821" fill="#6FA8D0" text-anchor="middle">PostgreSQL</text>
+    <g transform="translate(524, 596)">
+      <rect x="-36" y="-16" width="72" height="30" rx="6"
+            fill="#61DAFB" fill-opacity="0.07" stroke="#61DAFB" stroke-opacity="0.2" stroke-width="1"/>
+      <text y="5" fill="#61DAFB">React</text>
+    </g>
 
-    <!-- MinIO -->
-    <rect x="556" y="800" width="60" height="32" rx="7"
-          fill="#C72C48" fill-opacity="0.09" stroke="#C72C48" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="586" y="821" fill="#E05572" text-anchor="middle">MinIO</text>
-
-    <!-- Vite -->
-    <rect x="628" y="800" width="56" height="32" rx="7"
-          fill="#646CFF" fill-opacity="0.09" stroke="#646CFF" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="656" y="821" fill="#9096FF" text-anchor="middle">Vite</text>
+    <g transform="translate(622, 596)">
+      <rect x="-44" y="-16" width="88" height="30" rx="6"
+            fill="#3178C6" fill-opacity="0.08" stroke="#3178C6" stroke-opacity="0.2" stroke-width="1"/>
+      <text y="5" fill="#6B9FEF">TypeScript</text>
+    </g>
 
   </g>
 
   <!-- Row 2 -->
-  <g font-family="Inter,monospace" font-size="12" font-weight="600">
+  <g font-family="Inter, monospace" font-size="12" font-weight="600" text-anchor="middle">
 
-    <!-- Kubernetes -->
-    <rect x="176" y="848" width="94" height="32" rx="7"
-          fill="#326CE5" fill-opacity="0.09" stroke="#326CE5" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="223" y="869" fill="#6B9FEF" text-anchor="middle">Kubernetes</text>
+    <g transform="translate(152, 648)">
+      <rect x="-36" y="-16" width="72" height="30" rx="6"
+            fill="#646CFF" fill-opacity="0.07" stroke="#646CFF" stroke-opacity="0.18" stroke-width="1"/>
+      <text y="5" fill="#9096FF">Vite</text>
+    </g>
 
-    <!-- ArgoCD -->
-    <rect x="282" y="848" width="74" height="32" rx="7"
-          fill="#EF7B4D" fill-opacity="0.09" stroke="#EF7B4D" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="319" y="869" fill="#EF7B4D" text-anchor="middle">ArgoCD</text>
+    <g transform="translate(248, 648)">
+      <rect x="-40" y="-16" width="80" height="30" rx="6"
+            fill="#06B6D4" fill-opacity="0.07" stroke="#06B6D4" stroke-opacity="0.18" stroke-width="1"/>
+      <text y="5" fill="#22D3EE">Tailwind</text>
+    </g>
 
-    <!-- Helm -->
-    <rect x="368" y="848" width="60" height="32" rx="7"
-          fill="#0F1689" fill-opacity="0.15" stroke="#4F5BD5" stroke-opacity="0.22" stroke-width="1"/>
-    <text x="398" y="869" fill="#7C83E8" text-anchor="middle">Helm</text>
+    <g transform="translate(362, 648)">
+      <rect x="-46" y="-16" width="92" height="30" rx="6"
+            fill="#326CE5" fill-opacity="0.08" stroke="#326CE5" stroke-opacity="0.2" stroke-width="1"/>
+      <text y="5" fill="#6B9FEF">Kubernetes</text>
+    </g>
 
-    <!-- GHCR -->
-    <rect x="440" y="848" width="60" height="32" rx="7"
-          fill="#e5e5e5" fill-opacity="0.05" stroke="#888" stroke-opacity="0.2" stroke-width="1"/>
-    <text x="470" y="869" fill="#aaa" text-anchor="middle">GHCR</text>
+    <g transform="translate(476, 648)">
+      <rect x="-38" y="-16" width="76" height="30" rx="6"
+            fill="#EF7B4D" fill-opacity="0.08" stroke="#EF7B4D" stroke-opacity="0.2" stroke-width="1"/>
+      <text y="5" fill="#EF7B4D">ArgoCD</text>
+    </g>
 
-    <!-- Tailwind -->
-    <rect x="512" y="848" width="80" height="32" rx="7"
-          fill="#06B6D4" fill-opacity="0.08" stroke="#06B6D4" stroke-opacity="0.2" stroke-width="1"/>
-    <text x="552" y="869" fill="#22D3EE" text-anchor="middle">Tailwind</text>
+    <g transform="translate(578, 648)">
+      <rect x="-30" y="-16" width="60" height="30" rx="6"
+            fill="#4F5BD5" fill-opacity="0.08" stroke="#4F5BD5" stroke-opacity="0.18" stroke-width="1"/>
+      <text y="5" fill="#8B91EF">Helm</text>
+    </g>
+
+    <g transform="translate(660, 648)">
+      <rect x="-30" y="-16" width="60" height="30" rx="6"
+            fill="#ffffff" fill-opacity="0.04" stroke="#fff" stroke-opacity="0.1" stroke-width="1"/>
+      <text y="5" fill="#71717a">GHCR</text>
+    </g>
 
   </g>
 
-  <!-- ── CIRCUIT DECORATION ── -->
-  <line x1="40" y1="920" x2="760" y2="920" stroke="#f59e0b" stroke-opacity="0.07" stroke-width="1"/>
-  <circle cx="200" cy="920" r="3.5" fill="#f59e0b" opacity="0.12"/>
-  <circle cx="400" cy="920" r="3.5" fill="#f59e0b" opacity="0.12"/>
-  <circle cx="600" cy="920" r="3.5" fill="#f59e0b" opacity="0.12"/>
-  <line x1="200" y1="920" x2="200" y2="940" stroke="#f59e0b" stroke-opacity="0.06" stroke-width="1"/>
-  <line x1="400" y1="920" x2="400" y2="950" stroke="#f59e0b" stroke-opacity="0.06" stroke-width="1"/>
-  <line x1="600" y1="920" x2="600" y2="940" stroke="#f59e0b" stroke-opacity="0.06" stroke-width="1"/>
 
-  <!-- ── FOOTER ── -->
-  <line x1="40" y1="1042" x2="760" y2="1042"
-        stroke="#f59e0b" stroke-opacity="0.08" stroke-width="1"/>
-  <text x="400" y="1068" font-family="Inter,-apple-system,sans-serif"
-        font-size="12" font-weight="500" fill="#3f3f46"
-        text-anchor="middle" letter-spacing="1">jcrlabs · 2026</text>
-  <text x="400" y="1088" font-family="Inter,-apple-system,sans-serif"
-        font-size="11" fill="#2a2a2a" text-anchor="middle">tallerjcr.jcrlabs.net</text>
+  <!-- ── BOTTOM SECTION ── -->
+  <line x1="80" y1="730" x2="720" y2="730"
+        stroke="#27272a" stroke-width="1"/>
+
+  <!-- Author -->
+  <text x="400" y="775"
+        font-family="Inter, -apple-system, sans-serif"
+        font-size="17" font-weight="600"
+        fill="#a1a1aa" text-anchor="middle" letter-spacing="0.2">
+    Jonathan Caamaño Riveiro
+  </text>
+
+  <text x="400" y="804"
+        font-family="Inter, -apple-system, sans-serif"
+        font-size="13" font-weight="400"
+        fill="#3f3f46" text-anchor="middle">
+    2026
+  </text>
 
   <!-- Corner marks -->
-  <path d="M20 90 L20 40 Q20 20 40 20 L90 20" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1.5" fill="none"/>
-  <path d="M780 90 L780 40 Q780 20 760 20 L710 20" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1.5" fill="none"/>
-  <path d="M20 1010 L20 1060 Q20 1080 40 1080 L90 1080" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1.5" fill="none"/>
-  <path d="M780 1010 L780 1060 Q780 1080 760 1080 L710 1080" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1.5" fill="none"/>
+  <path d="M32 110 L32 48 Q32 32 48 32 L110 32"
+        stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.22" fill="none"/>
+  <path d="M768 110 L768 48 Q768 32 752 32 L690 32"
+        stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.22" fill="none"/>
+  <path d="M32 990 L32 1052 Q32 1068 48 1068 L110 1068"
+        stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.22" fill="none"/>
+  <path d="M768 990 L768 1052 Q768 1068 752 1068 L690 1068"
+        stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.22" fill="none"/>
 </svg>
