@@ -12,15 +12,15 @@
       <stop offset="0%" stop-color="#fbbf24"/>
       <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
-    <filter id="wrench-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+    <filter id="soft-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="soft-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur"/>
+    <filter id="wrench-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
@@ -44,33 +44,80 @@
 
 
   <!-- ── LOGOMARK (centered, upper third) ── -->
-  <g transform="translate(400, 260)">
+  <g transform="translate(400, 252)">
     <!-- Outer ring glow -->
     <circle cx="0" cy="0" r="88" fill="#f59e0b" fill-opacity="0.04" filter="url(#soft-glow)"/>
     <!-- Ring -->
     <circle cx="0" cy="0" r="80" fill="#161616"
             stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.2"/>
-    <!-- Wrench mark centered -->
-    <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
-          fill="url(#wrench-fill)" filter="url(#wrench-glow)"/>
-    <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
-    <circle cx="-18" cy="24" r="3.5" fill="#111" opacity="0.5"/>
+
+    <!-- ── GOPHER holding wrench ── -->
+
+    <!-- Body -->
+    <ellipse cx="2" cy="22" rx="25" ry="31" fill="#5BBECB"/>
+    <!-- Head -->
+    <circle cx="2" cy="-14" r="25" fill="#5BBECB"/>
+
+    <!-- Ears outer -->
+    <ellipse cx="-14" cy="-36" rx="7.5" ry="9.5" fill="#5BBECB"/>
+    <ellipse cx="18" cy="-36" rx="7.5" ry="9.5" fill="#5BBECB"/>
+    <!-- Ears inner -->
+    <ellipse cx="-14" cy="-36" rx="4.5" ry="6.5" fill="#2d7a87"/>
+    <ellipse cx="18" cy="-36" rx="4.5" ry="6.5" fill="#2d7a87"/>
+
+    <!-- Snout -->
+    <ellipse cx="2" cy="-7" rx="11" ry="8" fill="#8FD8E0"/>
+
+    <!-- Eyes -->
+    <circle cx="-8" cy="-21" r="7.5" fill="white"/>
+    <circle cx="12" cy="-21" r="7.5" fill="white"/>
+    <circle cx="-7.5" cy="-21" r="4.5" fill="#111827"/>
+    <circle cx="12.5" cy="-21" r="4.5" fill="#111827"/>
+    <!-- Eye shine -->
+    <circle cx="-5.5" cy="-23" r="1.8" fill="white"/>
+    <circle cx="14.5" cy="-23" r="1.8" fill="white"/>
+
+    <!-- Nose -->
+    <ellipse cx="2" cy="-5" rx="2.5" ry="1.8" fill="#111827"/>
+
+    <!-- Belly lighter -->
+    <ellipse cx="2" cy="22" rx="17" ry="24" fill="#8FD8E0" opacity="0.4"/>
+
+    <!-- Left arm (relaxed) -->
+    <path d="M-23 8 Q-36 2 -42 -3" stroke="#5BBECB" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <!-- Left paw -->
+    <circle cx="-42" cy="-3" r="5.5" fill="#5BBECB"/>
+
+    <!-- Right arm (holding wrench up) -->
+    <path d="M27 8 Q38 0 42 -8" stroke="#5BBECB" stroke-width="9" stroke-linecap="round" fill="none"/>
+
+    <!-- Wrench in right hand (scaled, rotated) -->
+    <g transform="translate(36, -22) scale(0.40) rotate(-20)">
+      <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
+            fill="url(#wrench-fill)" filter="url(#wrench-glow)"/>
+      <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
+      <circle cx="-18" cy="24" r="3.5" fill="#111" opacity="0.6"/>
+    </g>
+
+    <!-- Feet -->
+    <ellipse cx="-7" cy="53" rx="9" ry="5.5" fill="#4AAAB7"/>
+    <ellipse cx="14" cy="53" rx="9" ry="5.5" fill="#4AAAB7"/>
   </g>
 
 
   <!-- ── TITLE ── -->
-  <text x="400" y="418"
+  <text x="400" y="412"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="86" font-weight="800"
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
   <!-- Amber accent line under title -->
-  <rect x="308" y="434" width="184" height="2.5" rx="1.25"
+  <rect x="308" y="428" width="184" height="2.5" rx="1.25"
         fill="#f59e0b" opacity="0.55"/>
 
 
   <!-- ── SUBTITLE ── -->
-  <text x="400" y="478"
+  <text x="400" y="472"
         font-family="Inter, -apple-system, sans-serif"
         font-size="19" font-weight="400"
         fill="#71717a" text-anchor="middle" letter-spacing="0.2">
@@ -78,8 +125,8 @@
   </text>
 
 
-  <!-- ── DIVIDER ── -->
-  <line x1="80" y1="550" x2="720" y2="550"
+  <!-- ── DIVIDER (more space from title area) ── -->
+  <line x1="80" y1="595" x2="720" y2="595"
         stroke="#27272a" stroke-width="1"/>
 
 
@@ -87,37 +134,37 @@
   <!-- Row 1 -->
   <g font-family="Inter, monospace" font-size="12" font-weight="600" text-anchor="middle">
 
-    <g transform="translate(118, 596)">
+    <g transform="translate(118, 649)">
       <rect x="-38" y="-16" width="76" height="30" rx="6"
             fill="#00ACD7" fill-opacity="0.08" stroke="#00ACD7" stroke-opacity="0.2" stroke-width="1"/>
       <text y="5" fill="#00ACD7">Go · Gin</text>
     </g>
 
-    <g transform="translate(218, 596)">
+    <g transform="translate(218, 649)">
       <rect x="-34" y="-16" width="68" height="30" rx="6"
             fill="#00ACD7" fill-opacity="0.06" stroke="#00ACD7" stroke-opacity="0.14" stroke-width="1"/>
       <text y="5" fill="#4FC3D9">GORM</text>
     </g>
 
-    <g transform="translate(318, 596)">
+    <g transform="translate(318, 649)">
       <rect x="-44" y="-16" width="88" height="30" rx="6"
             fill="#336791" fill-opacity="0.1" stroke="#336791" stroke-opacity="0.22" stroke-width="1"/>
       <text y="5" fill="#6FA8D0">PostgreSQL</text>
     </g>
 
-    <g transform="translate(432, 596)">
+    <g transform="translate(432, 649)">
       <rect x="-34" y="-16" width="68" height="30" rx="6"
             fill="#C72C48" fill-opacity="0.08" stroke="#C72C48" stroke-opacity="0.2" stroke-width="1"/>
       <text y="5" fill="#E05572">MinIO</text>
     </g>
 
-    <g transform="translate(524, 596)">
+    <g transform="translate(524, 649)">
       <rect x="-36" y="-16" width="72" height="30" rx="6"
             fill="#61DAFB" fill-opacity="0.07" stroke="#61DAFB" stroke-opacity="0.2" stroke-width="1"/>
       <text y="5" fill="#61DAFB">React</text>
     </g>
 
-    <g transform="translate(622, 596)">
+    <g transform="translate(622, 649)">
       <rect x="-44" y="-16" width="88" height="30" rx="6"
             fill="#3178C6" fill-opacity="0.08" stroke="#3178C6" stroke-opacity="0.2" stroke-width="1"/>
       <text y="5" fill="#6B9FEF">TypeScript</text>
@@ -128,37 +175,37 @@
   <!-- Row 2 -->
   <g font-family="Inter, monospace" font-size="12" font-weight="600" text-anchor="middle">
 
-    <g transform="translate(152, 648)">
+    <g transform="translate(152, 701)">
       <rect x="-36" y="-16" width="72" height="30" rx="6"
             fill="#646CFF" fill-opacity="0.07" stroke="#646CFF" stroke-opacity="0.18" stroke-width="1"/>
       <text y="5" fill="#9096FF">Vite</text>
     </g>
 
-    <g transform="translate(248, 648)">
+    <g transform="translate(248, 701)">
       <rect x="-40" y="-16" width="80" height="30" rx="6"
             fill="#06B6D4" fill-opacity="0.07" stroke="#06B6D4" stroke-opacity="0.18" stroke-width="1"/>
       <text y="5" fill="#22D3EE">Tailwind</text>
     </g>
 
-    <g transform="translate(362, 648)">
+    <g transform="translate(362, 701)">
       <rect x="-46" y="-16" width="92" height="30" rx="6"
             fill="#326CE5" fill-opacity="0.08" stroke="#326CE5" stroke-opacity="0.2" stroke-width="1"/>
       <text y="5" fill="#6B9FEF">Kubernetes</text>
     </g>
 
-    <g transform="translate(476, 648)">
+    <g transform="translate(476, 701)">
       <rect x="-38" y="-16" width="76" height="30" rx="6"
             fill="#EF7B4D" fill-opacity="0.08" stroke="#EF7B4D" stroke-opacity="0.2" stroke-width="1"/>
       <text y="5" fill="#EF7B4D">ArgoCD</text>
     </g>
 
-    <g transform="translate(578, 648)">
+    <g transform="translate(578, 701)">
       <rect x="-30" y="-16" width="60" height="30" rx="6"
             fill="#4F5BD5" fill-opacity="0.08" stroke="#4F5BD5" stroke-opacity="0.18" stroke-width="1"/>
       <text y="5" fill="#8B91EF">Helm</text>
     </g>
 
-    <g transform="translate(660, 648)">
+    <g transform="translate(660, 701)">
       <rect x="-30" y="-16" width="60" height="30" rx="6"
             fill="#ffffff" fill-opacity="0.04" stroke="#fff" stroke-opacity="0.1" stroke-width="1"/>
       <text y="5" fill="#71717a">GHCR</text>
@@ -168,22 +215,22 @@
 
 
   <!-- ── BOTTOM SECTION ── -->
-  <line x1="80" y1="730" x2="720" y2="730"
+  <line x1="80" y1="828" x2="720" y2="828"
         stroke="#27272a" stroke-width="1"/>
 
   <!-- Author -->
-  <text x="400" y="775"
+  <text x="400" y="882"
         font-family="Inter, -apple-system, sans-serif"
         font-size="17" font-weight="600"
         fill="#a1a1aa" text-anchor="middle" letter-spacing="0.2">
     Jonathan Caamaño Riveiro
   </text>
 
-  <text x="400" y="804"
+  <text x="400" y="916"
         font-family="Inter, -apple-system, sans-serif"
         font-size="13" font-weight="400"
-        fill="#3f3f46" text-anchor="middle">
-    2026
+        fill="#52525b" text-anchor="middle" letter-spacing="0.5">
+    DAW · 2026
   </text>
 
   <!-- Corner marks -->
