@@ -4,8 +4,8 @@
       <stop offset="0%" stop-color="#0a0a0a"/>
       <stop offset="100%" stop-color="#141414"/>
     </linearGradient>
-    <radialGradient id="amber-glow" cx="50%" cy="25%" r="45%">
-      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
+    <radialGradient id="amber-glow" cx="50%" cy="26%" r="42%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.13"/>
       <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="wrench-stroke" x1="0" y1="0" x2="1" y2="1">
@@ -13,21 +13,28 @@
       <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
     <filter id="logo-glow">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="blur"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="dot-glow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
 
-    <!-- PCB grid — tiles in wrench local coords -->
+    <!-- PCB grid in wrench local coords -->
     <pattern id="pcb-grid" x="-26" y="-44" width="13" height="13"
              patternUnits="userSpaceOnUse">
       <line x1="0" y1="13" x2="13" y2="13"
-            stroke="#f59e0b" stroke-width="0.75" opacity="0.36"/>
+            stroke="#f59e0b" stroke-width="0.75" opacity="0.35"/>
       <line x1="13" y1="0" x2="13" y2="13"
-            stroke="#f59e0b" stroke-width="0.75" opacity="0.36"/>
-      <circle cx="13" cy="13" r="1.5" fill="#f59e0b" opacity="0.52"/>
+            stroke="#f59e0b" stroke-width="0.75" opacity="0.35"/>
+      <circle cx="13" cy="13" r="1.5" fill="#f59e0b" opacity="0.50"/>
     </pattern>
 
     <clipPath id="wrench-clip">
@@ -39,20 +46,77 @@
   <!-- ── BACKGROUND ── -->
   <rect width="800" height="1100" fill="url(#bg-grad)"/>
   <rect width="800" height="1100" fill="url(#amber-glow)"/>
-
   <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
     <circle cx="20" cy="20" r="1" fill="#f59e0b" opacity="0.05"/>
   </pattern>
   <rect width="800" height="1100" fill="url(#dots)"/>
-
   <rect x="32" y="32" width="736" height="1036" rx="16"
         stroke="#f59e0b" stroke-width="1" stroke-opacity="0.09" fill="none"/>
 
 
-  <!-- ══ LOGO — PCB wrench, scale 2.9 ══ -->
-  <g transform="translate(400,240) scale(2.9) translate(-11.25,6.25)">
+  <!--
+    ══ LOGO ══
+    Outer group: centers wrench at (400,255) on canvas.
+    translate(-11.25,6.25) → bounding box center to origin
+    scale(2.9)              → enlarge
+    translate(400,255)      → position on canvas
+  -->
+  <g transform="translate(400,255) scale(2.9) translate(-11.25,6.25)">
 
-    <!-- Glow halo -->
+    <!-- ── Orbit ring (dashed, amber) ── -->
+    <circle cx="0" cy="0" r="47"
+            fill="none" stroke="#f59e0b" stroke-width="0.5"
+            stroke-opacity="0.20" stroke-dasharray="2.5 4.5"/>
+
+    <!-- Connector lines from wrench edge to each dot -->
+    <line x1="0"   y1="-37" x2="0"   y2="-41"  stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
+    <line x1="32"  y1="-18" x2="38"  y2="-22"  stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
+    <line x1="32"  y1="15"  x2="38"  y2="22"   stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
+    <line x1="0"   y1="31"  x2="0"   y2="41"   stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
+    <line x1="-26" y1="15"  x2="-38" y2="22"   stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
+    <line x1="-26" y1="-18" x2="-38" y2="-22"  stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.18"/>
+
+    <!-- ── Tech dots — 6 nodes at 60° intervals, r=47 ── -->
+
+    <!-- Go — 0° top (12 o'clock) -->
+    <circle cx="0" cy="-47" r="6.5" fill="#00ACD7" fill-opacity="0.18" filter="url(#dot-glow)"/>
+    <circle cx="0" cy="-47" r="5.5" fill="#00ACD7" fill-opacity="0.85"/>
+    <text x="0" y="-44.8" font-size="5.2" fill="white" text-anchor="middle"
+          font-weight="800" font-family="Inter, sans-serif">G</text>
+
+    <!-- TypeScript — 60° top-right -->
+    <circle cx="40.7" cy="-23.5" r="6.5" fill="#3178C6" fill-opacity="0.18" filter="url(#dot-glow)"/>
+    <circle cx="40.7" cy="-23.5" r="5.5" fill="#3178C6" fill-opacity="0.85"/>
+    <text x="40.7" y="-21.3" font-size="5.2" fill="white" text-anchor="middle"
+          font-weight="800" font-family="Inter, sans-serif">T</text>
+
+    <!-- React — 120° bottom-right -->
+    <circle cx="40.7" cy="23.5" r="6.5" fill="#61DAFB" fill-opacity="0.18" filter="url(#dot-glow)"/>
+    <circle cx="40.7" cy="23.5" r="5.5" fill="#1a9dbf" fill-opacity="0.90"/>
+    <text x="40.7" y="25.7" font-size="5.2" fill="white" text-anchor="middle"
+          font-weight="800" font-family="Inter, sans-serif">R</text>
+
+    <!-- Kubernetes — 180° bottom (6 o'clock) -->
+    <circle cx="0" cy="47" r="6.5" fill="#326CE5" fill-opacity="0.18" filter="url(#dot-glow)"/>
+    <circle cx="0" cy="47" r="5.5" fill="#326CE5" fill-opacity="0.85"/>
+    <text x="0" y="49.2" font-size="5.2" fill="white" text-anchor="middle"
+          font-weight="800" font-family="Inter, sans-serif">K</text>
+
+    <!-- PostgreSQL — 240° bottom-left -->
+    <circle cx="-40.7" cy="23.5" r="6.5" fill="#336791" fill-opacity="0.18" filter="url(#dot-glow)"/>
+    <circle cx="-40.7" cy="23.5" r="5.5" fill="#336791" fill-opacity="0.90"/>
+    <text x="-40.7" y="25.7" font-size="5.2" fill="white" text-anchor="middle"
+          font-weight="800" font-family="Inter, sans-serif">P</text>
+
+    <!-- MinIO — 300° top-left -->
+    <circle cx="-40.7" cy="-23.5" r="6.5" fill="#C72C48" fill-opacity="0.18" filter="url(#dot-glow)"/>
+    <circle cx="-40.7" cy="-23.5" r="5.5" fill="#C72C48" fill-opacity="0.90"/>
+    <text x="-40.7" y="-21.3" font-size="5.2" fill="white" text-anchor="middle"
+          font-weight="800" font-family="Inter, sans-serif">M</text>
+
+    <!-- ── PCB wrench (on top of orbit) ── -->
+
+    <!-- Amber glow halo -->
     <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
              L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
           fill="#f59e0b" fill-opacity="0.12" filter="url(#logo-glow)"/>
@@ -62,22 +126,16 @@
              L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
           fill="#0c0b00"/>
 
-    <!-- Circuit traces + vias clipped to wrench -->
+    <!-- Circuit traces + vias -->
     <g clip-path="url(#wrench-clip)">
       <rect x="-30" y="-50" width="85" height="90" fill="url(#pcb-grid)"/>
-
       <!-- Accent signal paths -->
-      <line x1="-26" y1="-18" x2="10" y2="-18"
-            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
-      <line x1="10" y1="-18" x2="10" y2="-5"
-            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <line x1="-26" y1="-18" x2="10" y2="-18" stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <line x1="10" y1="-18" x2="10" y2="-5"  stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
       <circle cx="10" cy="-18" r="2.4" fill="#f59e0b" opacity="0.8"/>
       <circle cx="10" cy="-5"  r="2.4" fill="#f59e0b" opacity="0.8"/>
-
-      <line x1="-2" y1="10" x2="32" y2="10"
-            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
-      <line x1="32" y1="10" x2="32" y2="-4"
-            stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <line x1="-2" y1="10" x2="32" y2="10"  stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
+      <line x1="32" y1="10" x2="32" y2="-4"  stroke="#f59e0b" stroke-width="1.3" opacity="0.6"/>
       <circle cx="-2"  cy="10"  r="2.4" fill="#f59e0b" opacity="0.8"/>
       <circle cx="32"  cy="10"  r="2.4" fill="#f59e0b" opacity="0.8"/>
       <circle cx="32"  cy="-4"  r="2.4" fill="#f59e0b" opacity="0.8"/>
@@ -88,24 +146,24 @@
              L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
           fill="none" stroke="url(#wrench-stroke)" stroke-width="1.3" stroke-opacity="0.95"/>
 
-    <!-- Nut hole -->
+    <!-- Nut hole detail -->
     <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
     <circle cx="-18" cy="24" r="3.8" fill="#0a0900" opacity="0.9"/>
     <circle cx="-18" cy="24" r="6.5" fill="none"
-            stroke="#f59e0b" stroke-width="0.8" stroke-opacity="0.32"/>
+            stroke="#f59e0b" stroke-width="0.8" stroke-opacity="0.30"/>
   </g>
 
 
   <!-- ── TITLE ── -->
-  <text x="400" y="408"
+  <text x="400" y="428"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="86" font-weight="800"
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <rect x="308" y="424" width="184" height="2.5" rx="1.25"
+  <rect x="308" y="444" width="184" height="2.5" rx="1.25"
         fill="#f59e0b" opacity="0.55"/>
 
-  <text x="400" y="462"
+  <text x="400" y="482"
         font-family="Inter, -apple-system, sans-serif"
         font-size="18" font-weight="400"
         fill="#52525b" text-anchor="middle" letter-spacing="0.2">
@@ -113,43 +171,41 @@
   </text>
 
 
-  <!-- ── DIVIDER ── -->
-  <line x1="160" y1="680" x2="640" y2="680"
+  <!-- ── TECH STACK — very low, 2 rows of 3 ── -->
+  <line x1="180" y1="840" x2="620" y2="840"
         stroke="#27272a" stroke-width="1"/>
 
-
-  <!-- ── TECH STACK — 6 principales, 2 filas de 3, pequeñas ── -->
   <g font-family="Inter, monospace" font-size="11" font-weight="600" text-anchor="middle">
 
     <!-- Row 1 -->
-    <g transform="translate(222,716)">
+    <g transform="translate(234,876)">
       <rect x="-38" y="-14" width="76" height="27" rx="5"
             fill="#00ACD7" fill-opacity="0.08" stroke="#00ACD7" stroke-opacity="0.22" stroke-width="1"/>
       <text y="5" fill="#00ACD7">Go · Gin</text>
     </g>
-    <g transform="translate(400,716)">
+    <g transform="translate(400,876)">
       <rect x="-36" y="-14" width="72" height="27" rx="5"
             fill="#61DAFB" fill-opacity="0.07" stroke="#61DAFB" stroke-opacity="0.20" stroke-width="1"/>
       <text y="5" fill="#61DAFB">React</text>
     </g>
-    <g transform="translate(578,716)">
+    <g transform="translate(566,876)">
       <rect x="-46" y="-14" width="92" height="27" rx="5"
             fill="#326CE5" fill-opacity="0.08" stroke="#326CE5" stroke-opacity="0.20" stroke-width="1"/>
       <text y="5" fill="#6B9FEF">Kubernetes</text>
     </g>
 
     <!-- Row 2 -->
-    <g transform="translate(222,754)">
+    <g transform="translate(234,914)">
       <rect x="-46" y="-14" width="92" height="27" rx="5"
             fill="#336791" fill-opacity="0.10" stroke="#336791" stroke-opacity="0.22" stroke-width="1"/>
       <text y="5" fill="#6FA8D0">PostgreSQL</text>
     </g>
-    <g transform="translate(400,754)">
+    <g transform="translate(400,914)">
       <rect x="-34" y="-14" width="68" height="27" rx="5"
             fill="#C72C48" fill-opacity="0.08" stroke="#C72C48" stroke-opacity="0.20" stroke-width="1"/>
       <text y="5" fill="#E05572">MinIO</text>
     </g>
-    <g transform="translate(578,754)">
+    <g transform="translate(566,914)">
       <rect x="-44" y="-14" width="88" height="27" rx="5"
             fill="#3178C6" fill-opacity="0.08" stroke="#3178C6" stroke-opacity="0.20" stroke-width="1"/>
       <text y="5" fill="#6B9FEF">TypeScript</text>
@@ -157,8 +213,7 @@
 
   </g>
 
-  <!-- Divider after stack -->
-  <line x1="160" y1="784" x2="640" y2="784"
+  <line x1="180" y1="942" x2="620" y2="942"
         stroke="#27272a" stroke-width="1"/>
 
 
