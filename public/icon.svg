@@ -1,82 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
   <defs>
-    <radialGradient id="bg-glow" cx="50%" cy="40%" r="55%">
-      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
+    <radialGradient id="bg" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.1"/>
       <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="eye-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#00C8E8" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#00ACD7" stop-opacity="1"/>
+    <radialGradient id="iris-l" cx="40%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#1adff5"/>
+      <stop offset="100%" stop-color="#007EA8"/>
+    </radialGradient>
+    <radialGradient id="iris-r" cx="40%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#1adff5"/>
+      <stop offset="100%" stop-color="#007EA8"/>
     </radialGradient>
   </defs>
 
-  <!-- Background card -->
-  <rect width="200" height="220" rx="24" fill="#111111"/>
-  <rect width="200" height="220" rx="24" fill="url(#bg-glow)"/>
+  <!-- Background -->
+  <rect width="200" height="200" rx="36" fill="#111111"/>
+  <rect width="200" height="200" rx="36" fill="url(#bg)"/>
+  <rect x="1" y="1" width="198" height="198" rx="35"
+        stroke="#f59e0b" stroke-width="1" stroke-opacity="0.14" fill="none"/>
 
-  <!-- Subtle border -->
-  <rect width="200" height="220" rx="24" stroke="#f59e0b" stroke-opacity="0.12" stroke-width="1.5" fill="none"/>
+  <!-- ── GO GOPHER HEAD (geometric, proportional) ── -->
+  <!-- Ears — same blue as head, inner shadow -->
+  <ellipse cx="62" cy="72" rx="17" ry="21" fill="#00ACD7"/>
+  <ellipse cx="62" cy="72" rx="10" ry="14" fill="#111" opacity="0.28"/>
+  <ellipse cx="138" cy="72" rx="17" ry="21" fill="#00ACD7"/>
+  <ellipse cx="138" cy="72" rx="10" ry="14" fill="#111" opacity="0.28"/>
 
-  <!-- Hard hat (amber, worn by gopher) -->
-  <ellipse cx="100" cy="58" rx="46" ry="10" fill="#f59e0b"/>
-  <rect x="58" y="50" width="84" height="18" rx="4" fill="#f59e0b"/>
-  <rect x="64" y="52" width="72" height="10" rx="3" fill="#d97706"/>
-  <!-- Hard hat brim highlight -->
-  <ellipse cx="100" cy="52" rx="38" ry="4" fill="#fbbf24" opacity="0.4"/>
+  <!-- Head — slightly taller than wide, Go proportions -->
+  <ellipse cx="100" cy="96" rx="54" ry="56" fill="#00ACD7"/>
 
-  <!-- Gopher ears -->
-  <ellipse cx="62" cy="80" rx="14" ry="18" fill="#00ACD7"/>
-  <ellipse cx="62" cy="80" rx="9" ry="12" fill="#111" opacity="0.35"/>
-  <ellipse cx="138" cy="80" rx="14" ry="18" fill="#00ACD7"/>
-  <ellipse cx="138" cy="80" rx="9" ry="12" fill="#111" opacity="0.35"/>
-
-  <!-- Gopher head -->
-  <ellipse cx="100" cy="100" rx="50" ry="46" fill="#00ACD7"/>
-
-  <!-- Eyes -->
-  <ellipse cx="83" cy="93" rx="15" ry="16" fill="white"/>
-  <ellipse cx="117" cy="93" rx="15" ry="16" fill="white"/>
+  <!-- Eyes — large, clean, not exaggerated -->
+  <ellipse cx="80" cy="86" rx="18" ry="19" fill="white"/>
+  <ellipse cx="120" cy="86" rx="18" ry="19" fill="white"/>
   <!-- Iris -->
-  <circle cx="85" cy="95" r="8" fill="url(#eye-glow)"/>
-  <circle cx="115" cy="95" r="8" fill="url(#eye-glow)"/>
+  <circle cx="81" cy="88" r="11" fill="url(#iris-l)"/>
+  <circle cx="119" cy="88" r="11" fill="url(#iris-r)"/>
   <!-- Pupil -->
-  <circle cx="86" cy="95" r="4" fill="#111"/>
-  <circle cx="116" cy="95" r="4" fill="#111"/>
-  <!-- Highlight -->
-  <circle cx="88" cy="92" r="2" fill="white"/>
-  <circle cx="118" cy="92" r="2" fill="white"/>
+  <circle cx="82" cy="89" r="5.5" fill="#0a1a22"/>
+  <circle cx="120" cy="89" r="5.5" fill="#0a1a22"/>
+  <!-- Specular -->
+  <circle cx="85" cy="84" r="3" fill="white" opacity="0.9"/>
+  <circle cx="123" cy="84" r="3" fill="white" opacity="0.9"/>
 
-  <!-- Snout -->
-  <ellipse cx="100" cy="114" rx="24" ry="17" fill="#B2DDE8"/>
-  <!-- Nose -->
-  <ellipse cx="100" cy="106" rx="7" ry="5" fill="#111" opacity="0.7"/>
-  <!-- Smile lines -->
-  <path d="M90 118 Q100 124 110 118" stroke="#00ACD7" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <!-- Muzzle — flatter, more proportional -->
+  <ellipse cx="100" cy="118" rx="30" ry="20" fill="#9DD8E5"/>
+  <!-- Nose — two small nostrils, not one blob -->
+  <circle cx="94" cy="109" r="4" fill="#0a2530"/>
+  <circle cx="106" cy="109" r="4" fill="#0a2530"/>
+  <!-- Philtrum line -->
+  <line x1="100" y1="113" x2="100" y2="119" stroke="#7ABFCF" stroke-width="1.5" opacity="0.5"/>
 
-  <!-- Body -->
-  <ellipse cx="100" cy="170" rx="44" ry="46" fill="#00ACD7"/>
-  <!-- Belly -->
-  <ellipse cx="100" cy="175" rx="28" ry="32" fill="#B2DDE8"/>
+  <!-- Neck / body stub -->
+  <ellipse cx="100" cy="155" rx="32" ry="18" fill="#00ACD7"/>
 
-  <!-- Left arm (natural) -->
-  <path d="M58 155 Q40 160 38 178" stroke="#00ACD7" stroke-width="14" stroke-linecap="round" fill="none"/>
-
-  <!-- Right arm holding wrench -->
-  <path d="M142 155 Q160 158 165 145" stroke="#00ACD7" stroke-width="14" stroke-linecap="round" fill="none"/>
-
-  <!-- Wrench (held in right hand) -->
-  <path d="M178 118 a10 10 0 0 0-11.2 13.5 L151 148 a3.8 3.8 0 1 0 5.4 5.4 l16.2-16.3 a10 10 0 0 0 13.5-11.2 l-5.6 5.6-4-4 5.5-5.5z"
+  <!-- ── WRENCH badge (bottom-right corner of icon) ── -->
+  <circle cx="155" cy="155" r="30" fill="#111111"/>
+  <circle cx="155" cy="155" r="30" fill="#f59e0b" fill-opacity="0.07"/>
+  <circle cx="155" cy="155" r="29" stroke="#f59e0b" stroke-opacity="0.25" stroke-width="1" fill="none"/>
+  <!-- Wrench shape -->
+  <path d="M165 143 a8.5 8.5 0 0 0-9.5 11.5 l-8.5 8.5 a3 3 0 1 0 4.2 4.2 l8.5-8.5 a8.5 8.5 0 0 0 11.5-9.5 l-4.5 4.5 -3.2-3.2 4.5-4.5z"
         fill="#f59e0b"/>
-  <circle cx="153.5" cy="151" r="2.4" fill="#92400e"/>
-
-  <!-- Small circuit nodes on the wrench -->
-  <circle cx="170" cy="122" r="1.4" fill="#fbbf24" opacity="0.7"/>
-  <circle cx="174" cy="118" r="1" fill="#fbbf24" opacity="0.5"/>
-
-  <!-- Lightning bolt accent (left) -->
-  <path d="M30 140 l6-10 -3 0 6-10" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
-
-  <!-- Small "Go" text hint at bottom -->
-  <text x="100" y="212" font-family="Inter, -apple-system, sans-serif" font-size="9" font-weight="700"
-        fill="#f59e0b" opacity="0.45" text-anchor="middle" letter-spacing="3">ELECTROTECA</text>
 </svg>
