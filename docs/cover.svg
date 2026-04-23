@@ -1,0 +1,282 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" fill="none">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#0d0d0d"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+    <!-- Amber glow top -->
+    <radialGradient id="amber-glow" cx="50%" cy="0%" r="60%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Gopher eye gradient -->
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00C8E8"/>
+      <stop offset="100%" stop-color="#007EA8"/>
+    </radialGradient>
+    <!-- Circuit bottom glow -->
+    <radialGradient id="circuit-glow" cx="50%" cy="100%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ── BACKGROUND ── -->
+  <rect width="800" height="1100" fill="#111111"/>
+  <rect width="800" height="1100" fill="url(#amber-glow)"/>
+  <rect width="800" height="1100" fill="url(#circuit-glow)"/>
+
+  <!-- Amber border frame -->
+  <rect x="24" y="24" width="752" height="1052" rx="20"
+        stroke="#f59e0b" stroke-width="1" stroke-opacity="0.15" fill="none"/>
+  <rect x="30" y="30" width="740" height="1040" rx="18"
+        stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.07" fill="none"/>
+
+  <!-- ── CIRCUIT BOARD PATTERN (background decoration) ── -->
+  <!-- Horizontal traces -->
+  <line x1="0" y1="780" x2="800" y2="780" stroke="#f59e0b" stroke-width="0.5" opacity="0.06"/>
+  <line x1="0" y1="820" x2="800" y2="820" stroke="#f59e0b" stroke-width="0.5" opacity="0.04"/>
+  <!-- Vertical traces -->
+  <line x1="120" y1="760" x2="120" y2="900" stroke="#f59e0b" stroke-width="0.5" opacity="0.06"/>
+  <line x1="240" y1="760" x2="240" y2="900" stroke="#f59e0b" stroke-width="0.5" opacity="0.05"/>
+  <line x1="400" y1="760" x2="400" y2="900" stroke="#f59e0b" stroke-width="0.5" opacity="0.04"/>
+  <line x1="560" y1="760" x2="560" y2="900" stroke="#f59e0b" stroke-width="0.5" opacity="0.05"/>
+  <line x1="680" y1="760" x2="680" y2="900" stroke="#f59e0b" stroke-width="0.5" opacity="0.06"/>
+  <!-- Circuit nodes -->
+  <circle cx="120" cy="780" r="4" fill="#f59e0b" opacity="0.12"/>
+  <circle cx="240" cy="780" r="3" fill="#f59e0b" opacity="0.10"/>
+  <circle cx="400" cy="780" r="4" fill="#f59e0b" opacity="0.10"/>
+  <circle cx="560" cy="780" r="3" fill="#f59e0b" opacity="0.10"/>
+  <circle cx="680" cy="780" r="4" fill="#f59e0b" opacity="0.12"/>
+  <circle cx="120" cy="820" r="3" fill="#f59e0b" opacity="0.08"/>
+  <circle cx="680" cy="820" r="3" fill="#f59e0b" opacity="0.08"/>
+  <!-- IC chip decoration bottom-right -->
+  <rect x="620" y="840" width="80" height="50" rx="4"
+        fill="none" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+  <line x1="620" y1="855" x2="600" y2="855" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+  <line x1="620" y1="865" x2="600" y2="865" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+  <line x1="620" y1="875" x2="600" y2="875" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+  <line x1="700" y1="855" x2="720" y2="855" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+  <line x1="700" y1="865" x2="720" y2="865" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+  <line x1="700" y1="875" x2="720" y2="875" stroke="#f59e0b" stroke-width="0.8" opacity="0.1"/>
+
+  <!-- ── TOP BRANDING ── -->
+  <!-- Logo icon small (top-left) -->
+  <rect x="48" y="48" width="42" height="42" rx="10"
+        fill="#1a1a1a" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.25"/>
+  <!-- Mini wrench in logo -->
+  <path d="M68 56 a8 8 0 0 0-9 10.8 l-9 9.1 a2.8 2.8 0 1 0 4 4 l9-9.1 a8 8 0 0 0 10.8-9l-4 4 -2.8-2.8 4-4z"
+        fill="#f59e0b"/>
+  <!-- Mini gopher eye in logo -->
+  <circle cx="57" cy="84" r="3.5" fill="#00ACD7"/>
+  <circle cx="57" cy="84" r="1.8" fill="white"/>
+  <circle cx="57.6" cy="83.4" r="0.9" fill="#111"/>
+
+  <!-- jcrlabs label -->
+  <text x="100" y="65" font-family="Inter, -apple-system, sans-serif"
+        font-size="11" font-weight="600" fill="#f59e0b" opacity="0.7" letter-spacing="2">JCRLABS</text>
+  <text x="100" y="83" font-family="Inter, -apple-system, sans-serif"
+        font-size="10" font-weight="400" fill="#71717a" letter-spacing="0.5">Sistema de gestión</text>
+
+
+  <!-- ── GO GOPHER CHARACTER (centered, ~380px tall) ── -->
+  <g transform="translate(400, 390)">
+
+    <!-- Hard hat -->
+    <ellipse cx="0" cy="-178" rx="90" ry="18" fill="#f59e0b"/>
+    <rect x="-82" y="-192" width="164" height="34" rx="8" fill="#f59e0b"/>
+    <rect x="-70" y="-190" width="140" height="20" rx="6" fill="#d97706"/>
+    <!-- Hat shine -->
+    <ellipse cx="0" cy="-186" rx="65" ry="7" fill="#fbbf24" opacity="0.35"/>
+    <!-- Hat strap hint -->
+    <line x1="-40" y1="-158" x2="-50" y2="-135" stroke="#d97706" stroke-width="3" opacity="0.6"/>
+    <line x1="40" y1="-158" x2="50" y2="-135" stroke="#d97706" stroke-width="3" opacity="0.6"/>
+
+    <!-- Ears -->
+    <ellipse cx="-95" cy="-105" rx="22" ry="28" fill="#00ACD7"/>
+    <ellipse cx="-95" cy="-105" rx="13" ry="18" fill="#111" opacity="0.3"/>
+    <ellipse cx="95" cy="-105" rx="22" ry="28" fill="#00ACD7"/>
+    <ellipse cx="95" cy="-105" rx="13" ry="18" fill="#111" opacity="0.3"/>
+
+    <!-- Head -->
+    <ellipse cx="0" cy="-85" rx="80" ry="75" fill="#00ACD7"/>
+
+    <!-- Eyes -->
+    <ellipse cx="-28" cy="-98" rx="24" ry="26" fill="white"/>
+    <ellipse cx="28" cy="-98" rx="24" ry="26" fill="white"/>
+    <!-- Iris -->
+    <circle cx="-25" cy="-96" r="13" fill="url(#iris)"/>
+    <circle cx="25" cy="-96" r="13" fill="url(#iris)"/>
+    <!-- Pupil -->
+    <circle cx="-23" cy="-95" r="6.5" fill="#111"/>
+    <circle cx="23" cy="-95" r="6.5" fill="#111"/>
+    <!-- Highlights -->
+    <circle cx="-20" cy="-100" r="3.5" fill="white"/>
+    <circle cx="20" cy="-100" r="3.5" fill="white"/>
+    <circle cx="-16" cy="-98" r="1.5" fill="white" opacity="0.6"/>
+    <circle cx="16" cy="-98" r="1.5" fill="white" opacity="0.6"/>
+
+    <!-- Snout / muzzle -->
+    <ellipse cx="0" cy="-65" rx="38" ry="28" fill="#B2DDE8"/>
+    <!-- Nose -->
+    <ellipse cx="0" cy="-80" rx="11" ry="8" fill="#0d3a4a"/>
+    <!-- Smile -->
+    <path d="M-16 -52 Q0 -42 16 -52" stroke="#009BC4" stroke-width="2.5"
+          stroke-linecap="round" fill="none" opacity="0.6"/>
+
+    <!-- Body torso -->
+    <ellipse cx="0" cy="55" rx="72" ry="78" fill="#00ACD7"/>
+    <!-- Belly -->
+    <ellipse cx="0" cy="62" rx="44" ry="54" fill="#B2DDE8"/>
+
+    <!-- Left arm (relaxed, slightly up) -->
+    <path d="M-68 20 Q-105 10 -115 35 Q-120 48 -108 55"
+          stroke="#00ACD7" stroke-width="22" stroke-linecap="round" fill="none"/>
+    <!-- Left hand hint -->
+    <circle cx="-108" cy="55" r="12" fill="#00ACD7"/>
+
+    <!-- Right arm (raised, holding wrench) -->
+    <path d="M68 10 Q108 0 118 -28 Q124 -50 110 -60"
+          stroke="#00ACD7" stroke-width="22" stroke-linecap="round" fill="none"/>
+
+    <!-- WRENCH (held upper-right) -->
+    <g transform="rotate(-35, 140, -80)">
+      <path d="M145 -118 a17 17 0 0 0-19 23 l-22 22 a6.5 6.5 0 1 0 9.2 9.2 l22-22 a17 17 0 0 0 23-19 l-9.5 9.5 -6.8-6.8 9.5-9.5z"
+            fill="#f59e0b"/>
+      <circle cx="116" cy="-61" r="4" fill="#92400e"/>
+      <!-- Wrench shine -->
+      <ellipse cx="150" cy="-120" rx="4" ry="8" fill="#fbbf24" opacity="0.35" transform="rotate(-35,150,-120)"/>
+    </g>
+
+    <!-- Legs / feet -->
+    <ellipse cx="-30" cy="132" rx="22" ry="16" fill="#007EA8"/>
+    <ellipse cx="30" cy="132" rx="22" ry="16" fill="#007EA8"/>
+
+    <!-- Lightning bolt left accent -->
+    <path d="M-155 -30 l11-18 -6 0 11-18" stroke="#f59e0b" stroke-width="3.5"
+          stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+    <!-- Small circuit dot right -->
+    <circle cx="155" cy="20" r="5" fill="#f59e0b" opacity="0.3"/>
+    <circle cx="170" cy="20" r="3" fill="#f59e0b" opacity="0.2"/>
+    <line x1="160" y1="20" x2="167" y2="20" stroke="#f59e0b" stroke-width="1" opacity="0.25"/>
+  </g>
+
+  <!-- ── TITLE ── -->
+  <text x="400" y="715" font-family="Inter, -apple-system, sans-serif"
+        font-size="72" font-weight="800" fill="white"
+        text-anchor="middle" letter-spacing="-2">Electroteca</text>
+
+  <!-- Title underline accent -->
+  <line x1="200" y1="730" x2="600" y2="730" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.35"/>
+  <line x1="300" y1="730" x2="500" y2="730" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.6"/>
+
+  <!-- Subtitle -->
+  <text x="400" y="770" font-family="Inter, -apple-system, sans-serif"
+        font-size="20" font-weight="400" fill="#71717a"
+        text-anchor="middle" letter-spacing="0.5">Sistema de gestión de reparaciones</text>
+
+  <!-- ── TECH STACK BADGES ── -->
+  <g transform="translate(400, 840)">
+
+    <!-- Go -->
+    <g transform="translate(-280, 0)">
+      <rect x="-38" y="-17" width="76" height="34" rx="8"
+            fill="#00ACD7" fill-opacity="0.1" stroke="#00ACD7" stroke-opacity="0.25" stroke-width="1"/>
+      <!-- Go logo simplified (two G shapes) -->
+      <text x="0" y="6" font-family="Inter, monospace" font-size="14" font-weight="700"
+            fill="#00ACD7" text-anchor="middle">Go</text>
+    </g>
+
+    <!-- React -->
+    <g transform="translate(-170, 0)">
+      <rect x="-38" y="-17" width="76" height="34" rx="8"
+            fill="#61DAFB" fill-opacity="0.08" stroke="#61DAFB" stroke-opacity="0.25" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#61DAFB" text-anchor="middle">React</text>
+    </g>
+
+    <!-- PostgreSQL -->
+    <g transform="translate(-45, 0)">
+      <rect x="-48" y="-17" width="96" height="34" rx="8"
+            fill="#336791" fill-opacity="0.12" stroke="#336791" stroke-opacity="0.3" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#6FA8D0" text-anchor="middle">PostgreSQL</text>
+    </g>
+
+    <!-- MinIO -->
+    <g transform="translate(100, 0)">
+      <rect x="-36" y="-17" width="72" height="34" rx="8"
+            fill="#C72C48" fill-opacity="0.1" stroke="#C72C48" stroke-opacity="0.25" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#E05572" text-anchor="middle">MinIO</text>
+    </g>
+
+    <!-- Kubernetes -->
+    <g transform="translate(210, 0)">
+      <rect x="-44" y="-17" width="88" height="34" rx="8"
+            fill="#326CE5" fill-opacity="0.1" stroke="#326CE5" stroke-opacity="0.25" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#6B9FEF" text-anchor="middle">Kubernetes</text>
+    </g>
+
+  </g>
+
+  <!-- Second row of badges -->
+  <g transform="translate(400, 898)">
+
+    <!-- Gin -->
+    <g transform="translate(-200, 0)">
+      <rect x="-34" y="-17" width="68" height="34" rx="8"
+            fill="#00ACD7" fill-opacity="0.07" stroke="#00ACD7" stroke-opacity="0.18" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#4FC3D9" text-anchor="middle">Gin</text>
+    </g>
+
+    <!-- TypeScript -->
+    <g transform="translate(-105, 0)">
+      <rect x="-52" y="-17" width="104" height="34" rx="8"
+            fill="#3178C6" fill-opacity="0.1" stroke="#3178C6" stroke-opacity="0.25" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#5C9FDE" text-anchor="middle">TypeScript</text>
+    </g>
+
+    <!-- ArgoCD -->
+    <g transform="translate(30, 0)">
+      <rect x="-42" y="-17" width="84" height="34" rx="8"
+            fill="#EF7B4D" fill-opacity="0.1" stroke="#EF7B4D" stroke-opacity="0.25" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#EF7B4D" text-anchor="middle">ArgoCD</text>
+    </g>
+
+    <!-- Vite -->
+    <g transform="translate(150, 0)">
+      <rect x="-34" y="-17" width="68" height="34" rx="8"
+            fill="#646CFF" fill-opacity="0.1" stroke="#646CFF" stroke-opacity="0.25" stroke-width="1"/>
+      <text x="0" y="6" font-family="Inter, monospace" font-size="13" font-weight="700"
+            fill="#9096FF" text-anchor="middle">Vite</text>
+    </g>
+
+  </g>
+
+  <!-- ── FOOTER ── -->
+  <line x1="48" y1="990" x2="752" y2="990" stroke="#f59e0b" stroke-opacity="0.1" stroke-width="1"/>
+
+  <text x="400" y="1018" font-family="Inter, -apple-system, sans-serif"
+        font-size="12" font-weight="500" fill="#3f3f46"
+        text-anchor="middle" letter-spacing="1">jcrlabs · 2026</text>
+
+  <text x="400" y="1040" font-family="Inter, -apple-system, sans-serif"
+        font-size="11" font-weight="400" fill="#27272a"
+        text-anchor="middle">tallerjcr.jcrlabs.net</text>
+
+  <!-- Corner decorations -->
+  <!-- Top-left corner lines -->
+  <path d="M24 80 L24 40 Q24 24 40 24 L80 24" stroke="#f59e0b" stroke-opacity="0.2" stroke-width="1.5" fill="none"/>
+  <!-- Top-right -->
+  <path d="M776 80 L776 40 Q776 24 760 24 L720 24" stroke="#f59e0b" stroke-opacity="0.2" stroke-width="1.5" fill="none"/>
+  <!-- Bottom-left -->
+  <path d="M24 1020 L24 1060 Q24 1076 40 1076 L80 1076" stroke="#f59e0b" stroke-opacity="0.2" stroke-width="1.5" fill="none"/>
+  <!-- Bottom-right -->
+  <path d="M776 1020 L776 1060 Q776 1076 760 1076 L720 1076" stroke="#f59e0b" stroke-opacity="0.2" stroke-width="1.5" fill="none"/>
+</svg>

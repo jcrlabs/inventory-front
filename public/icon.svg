@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none">
+  <defs>
+    <radialGradient id="bg-glow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="eye-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00C8E8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#00ACD7" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background card -->
+  <rect width="200" height="220" rx="24" fill="#111111"/>
+  <rect width="200" height="220" rx="24" fill="url(#bg-glow)"/>
+
+  <!-- Subtle border -->
+  <rect width="200" height="220" rx="24" stroke="#f59e0b" stroke-opacity="0.12" stroke-width="1.5" fill="none"/>
+
+  <!-- Hard hat (amber, worn by gopher) -->
+  <ellipse cx="100" cy="58" rx="46" ry="10" fill="#f59e0b"/>
+  <rect x="58" y="50" width="84" height="18" rx="4" fill="#f59e0b"/>
+  <rect x="64" y="52" width="72" height="10" rx="3" fill="#d97706"/>
+  <!-- Hard hat brim highlight -->
+  <ellipse cx="100" cy="52" rx="38" ry="4" fill="#fbbf24" opacity="0.4"/>
+
+  <!-- Gopher ears -->
+  <ellipse cx="62" cy="80" rx="14" ry="18" fill="#00ACD7"/>
+  <ellipse cx="62" cy="80" rx="9" ry="12" fill="#111" opacity="0.35"/>
+  <ellipse cx="138" cy="80" rx="14" ry="18" fill="#00ACD7"/>
+  <ellipse cx="138" cy="80" rx="9" ry="12" fill="#111" opacity="0.35"/>
+
+  <!-- Gopher head -->
+  <ellipse cx="100" cy="100" rx="50" ry="46" fill="#00ACD7"/>
+
+  <!-- Eyes -->
+  <ellipse cx="83" cy="93" rx="15" ry="16" fill="white"/>
+  <ellipse cx="117" cy="93" rx="15" ry="16" fill="white"/>
+  <!-- Iris -->
+  <circle cx="85" cy="95" r="8" fill="url(#eye-glow)"/>
+  <circle cx="115" cy="95" r="8" fill="url(#eye-glow)"/>
+  <!-- Pupil -->
+  <circle cx="86" cy="95" r="4" fill="#111"/>
+  <circle cx="116" cy="95" r="4" fill="#111"/>
+  <!-- Highlight -->
+  <circle cx="88" cy="92" r="2" fill="white"/>
+  <circle cx="118" cy="92" r="2" fill="white"/>
+
+  <!-- Snout -->
+  <ellipse cx="100" cy="114" rx="24" ry="17" fill="#B2DDE8"/>
+  <!-- Nose -->
+  <ellipse cx="100" cy="106" rx="7" ry="5" fill="#111" opacity="0.7"/>
+  <!-- Smile lines -->
+  <path d="M90 118 Q100 124 110 118" stroke="#00ACD7" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="170" rx="44" ry="46" fill="#00ACD7"/>
+  <!-- Belly -->
+  <ellipse cx="100" cy="175" rx="28" ry="32" fill="#B2DDE8"/>
+
+  <!-- Left arm (natural) -->
+  <path d="M58 155 Q40 160 38 178" stroke="#00ACD7" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Right arm holding wrench -->
+  <path d="M142 155 Q160 158 165 145" stroke="#00ACD7" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Wrench (held in right hand) -->
+  <path d="M178 118 a10 10 0 0 0-11.2 13.5 L151 148 a3.8 3.8 0 1 0 5.4 5.4 l16.2-16.3 a10 10 0 0 0 13.5-11.2 l-5.6 5.6-4-4 5.5-5.5z"
+        fill="#f59e0b"/>
+  <circle cx="153.5" cy="151" r="2.4" fill="#92400e"/>
+
+  <!-- Small circuit nodes on the wrench -->
+  <circle cx="170" cy="122" r="1.4" fill="#fbbf24" opacity="0.7"/>
+  <circle cx="174" cy="118" r="1" fill="#fbbf24" opacity="0.5"/>
+
+  <!-- Lightning bolt accent (left) -->
+  <path d="M30 140 l6-10 -3 0 6-10" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+
+  <!-- Small "Go" text hint at bottom -->
+  <text x="100" y="212" font-family="Inter, -apple-system, sans-serif" font-size="9" font-weight="700"
+        fill="#f59e0b" opacity="0.45" text-anchor="middle" letter-spacing="3">ELECTROTECA</text>
+</svg>

@@ -1,7 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="55%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
   <rect width="32" height="32" rx="7" fill="#111111"/>
-  <!-- Wrench body -->
-  <path d="M21.8 6.2a5 5 0 0 0-5.6 6.8L8.5 20.7a1.8 1.8 0 1 0 2.5 2.5l7.7-7.7a5 5 0 0 0 6.8-5.6l-2.8 2.8-1.9-1.9 2.8-2.8z" fill="#f59e0b"/>
-  <!-- Gear hint (small circle accent) -->
-  <circle cx="10.5" cy="21.5" r="1.2" fill="#b45309"/>
+  <rect width="32" height="32" rx="7" fill="url(#glow)"/>
+
+  <!-- Circuit traces (top-right accent) -->
+  <circle cx="26.5" cy="5.5" r="1.3" fill="#f59e0b" opacity="0.45"/>
+  <line x1="25.2" y1="5.5" x2="21.5" y2="5.5" stroke="#f59e0b" stroke-width="0.7" opacity="0.3"/>
+  <circle cx="21.5" cy="5.5" r="0.9" fill="#f59e0b" opacity="0.35"/>
+  <line x1="21.5" y1="6.4" x2="21.5" y2="9" stroke="#f59e0b" stroke-width="0.7" opacity="0.22"/>
+
+  <!-- Wrench -->
+  <path d="M21.2 7.2a4.4 4.4 0 0 0-4.9 5.9L8.6 20.8a1.7 1.7 0 1 0 2.4 2.4l7.7-7.7a4.4 4.4 0 0 0 5.9-4.9l-2.5 2.5-1.7-1.7 2.5-2.5z"
+        fill="#f59e0b"/>
+  <circle cx="10.7" cy="21.5" r="1.1" fill="#92400e"/>
+
+  <!-- Gopher eye peek (bottom-left) -->
+  <ellipse cx="5.5" cy="26.5" rx="2.8" ry="2.2" fill="#00ACD7" opacity="0.9"/>
+  <circle cx="5.5" cy="26.5" r="1.2" fill="white"/>
+  <circle cx="5.8" cy="26.2" r="0.55" fill="#111"/>
+  <circle cx="5.4" cy="26.1" r="0.25" fill="white"/>
 </svg>
