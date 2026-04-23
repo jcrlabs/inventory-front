@@ -64,10 +64,6 @@
              L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
           fill="#f59e0b" fill-opacity="0.12" filter="url(#logo-glow)"/>
 
-    <!-- Circular blurred background -->
-    <circle cx="0" cy="0" r="44" fill="#1c1600" filter="url(#circle-bg)"/>
-    <!-- Solid circle core -->
-    <circle cx="0" cy="0" r="28" fill="#111000"/>
 
     <!-- Circuit traces + vias -->
     <g clip-path="url(#wrench-clip)">
@@ -98,15 +94,15 @@
 
 
   <!-- ── TITLE ── -->
-  <text x="400" y="558"
+  <text x="400" y="630"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="86" font-weight="800"
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
-  <rect x="308" y="574" width="184" height="2.5" rx="1.25"
+  <rect x="308" y="646" width="184" height="2.5" rx="1.25"
         fill="#f59e0b" opacity="0.55"/>
 
-  <text x="400" y="610"
+  <text x="400" y="682"
         font-family="Inter, -apple-system, sans-serif"
         font-size="18" font-weight="400"
         fill="#52525b" text-anchor="middle" letter-spacing="0.2">
