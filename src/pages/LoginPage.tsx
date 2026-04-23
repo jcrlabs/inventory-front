@@ -12,17 +12,6 @@ interface LoginForm {
   password: string
 }
 
-const WrenchLogo = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
-      stroke="#f59e0b"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -57,16 +46,12 @@ export default function LoginPage() {
       <div className="w-full max-w-[360px] relative z-10">
         {/* Logo + título */}
         <div className="flex flex-col items-center mb-8">
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
-            style={{
-              background: '#1a1a1a',
-              border: '1px solid rgba(245,158,11,0.2)',
-              boxShadow: '0 0 28px -6px rgba(245,158,11,0.25)',
-            }}
-          >
-            <WrenchLogo />
-          </div>
+          <img
+            src="/icon.svg"
+            alt="Electroteca"
+            className="w-20 h-20 mb-3"
+            style={{ filter: 'drop-shadow(0 0 16px rgba(245,158,11,0.25))' }}
+          />
           <h1 className="text-lg font-bold text-zinc-100 tracking-tight">Electroteca</h1>
           <p className="text-xs text-zinc-600 mt-1 tracking-wide uppercase">Gestión de reparaciones</p>
         </div>
