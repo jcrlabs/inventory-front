@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  tag: v0.2.6
+  tag: v0.2.7
 
 ingress:
   host: tallerjcr.jcrlabs.net
