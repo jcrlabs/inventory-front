@@ -62,7 +62,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="px-4 pt-5 pb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
-              src="/icon.svg"
+              src="/icon.svg?v=0.2.6"
               alt="Electroteca"
               className="w-8 h-8 flex-shrink-0"
               style={{ filter: 'drop-shadow(0 0 5px rgba(245,158,11,0.22))' }}

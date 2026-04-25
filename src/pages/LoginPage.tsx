@@ -47,7 +47,7 @@ export default function LoginPage() {
         {/* Logo + título */}
         <div className="flex flex-col items-center mb-8">
           <img
-            src="/icon.svg"
+            src="/icon.svg?v=0.2.6"
             alt="Electroteca"
             className="w-20 h-20 mb-3"
             style={{ filter: 'drop-shadow(0 0 16px rgba(245,158,11,0.25))' }}
