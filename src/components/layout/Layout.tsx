@@ -44,7 +44,7 @@ export default function Layout() {
           </button>
           <div className="flex items-center gap-2.5">
             <img
-              src="/icon.svg"
+              src="/icon.svg?v=0.2.6"
               alt="Electroteca"
               className="w-7 h-7 flex-shrink-0"
               style={{ filter: 'drop-shadow(0 0 4px rgba(245,158,11,0.2))' }}
