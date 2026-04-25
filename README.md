@@ -127,7 +127,7 @@ graph TB
 
     subgraph Deploy
         Nginx[nginx:alpine\ntry_files SPA routing\n/api/* proxy → backend]
-        Ingress["nginx Ingress K8s\ntallerjcr.jcrlabs.net"]
+        Ingress["nginx Ingress K8s\nelectroteca.jcrlabs.net"]
     end
 
     Router --> Pages --> Components

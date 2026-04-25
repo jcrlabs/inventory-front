@@ -5,7 +5,7 @@ image:
   pullPolicy: Always
 
 ingress:
-  host: tallerjcr-test.jcrlabs.net
+  host: electroteca-test.jcrlabs.net
 
 resources:
   requests:

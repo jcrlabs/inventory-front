@@ -66,7 +66,7 @@ The frontend is exposed via the cluster's nginx ingress controller:
 
 | Domain | Service | Namespace |
 |---|---|---|
-| `tallerjcr.jcrlabs.net` | `inventory-front-service:80` | `taller-inventario` |
+| `electroteca.jcrlabs.net` | `inventory-front-service:80` | `taller-inventario` |
 
 ---
 

@@ -4,7 +4,7 @@ image:
   tag: v0.2.7
 
 ingress:
-  host: tallerjcr.jcrlabs.net
+  host: electroteca.jcrlabs.net
 
 hpa:
   minReplicas: 2

@@ -19,7 +19,7 @@ graph TB
             PG["PostgreSQL 16<br/>StatefulSet"]
             MINIO["MinIO<br/>object storage"]
         end
-        INGRESS["nginx Ingress<br/>tallerjcr.jcrlabs.net"]
+        INGRESS["nginx Ingress<br/>electroteca.jcrlabs.net"]
     end
 
     subgraph GitOps["GitOps (ArgoCD)"]
@@ -297,7 +297,7 @@ replicaCount: 2
 ## 8. Comunicación entre servicios
 
 ```
-tallerjcr.jcrlabs.net
+electroteca.jcrlabs.net
   │
   └─▶ nginx Ingress (TLS terminación)
         ├─▶ path: /          → inventory-front-service:80  (nginx sirve SPA)

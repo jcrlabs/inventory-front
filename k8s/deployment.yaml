@@ -68,7 +68,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: tallerjcr.jcrlabs.net
+    - host: electroteca.jcrlabs.net
       http:
         paths:
           - path: /
