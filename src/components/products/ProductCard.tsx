@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Edit, Trash2, ChevronLeft, ChevronRight, CheckCircle2, Clock, XCircle } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { Product } from '../../types'
 import { usePermissions } from '../../hooks/usePermissions'
@@ -11,9 +11,9 @@ interface ProductCardProps {
 }
 
 const statusConfig = {
-  reparado:    { label: 'Reparado',    color: '#10b981', bg: 'rgba(16,185,129,0.1)',  border: 'rgba(16,185,129,0.18)' },
-  en_progreso: { label: 'En progreso', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.18)' },
-  no_reparado: { label: 'No reparado', color: '#ef4444', bg: 'rgba(239,68,68,0.1)',  border: 'rgba(239,68,68,0.18)' },
+  reparado:    { label: 'Reparado',    Icon: CheckCircle2, color: '#34d399', bg: '#064e3b', border: '#059669' },
+  en_progreso: { label: 'En progreso', Icon: Clock,        color: '#fbbf24', bg: '#451a03', border: '#d97706' },
+  no_reparado: { label: 'No reparado', Icon: XCircle,      color: '#f87171', bg: '#450a0a', border: '#dc2626' },
 }
 
 export default function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
@@ -68,6 +68,7 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
   }
 
   const status = statusConfig[product.status as keyof typeof statusConfig] ?? statusConfig.no_reparado
+  const StatusIcon = status.Icon
 
   return (
     <div className="group relative bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-600/80 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
@@ -75,8 +76,12 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
 
       {/* ── Carousel ── */}
       <div
-        className="relative aspect-video bg-zinc-800 overflow-hidden cursor-pointer"
+        role="button"
+        tabIndex={0}
+        aria-label={`Ver detalle de ${product.name}`}
+        className="relative aspect-video bg-zinc-800 overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-inset"
         onClick={handleImageClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick() } }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -134,11 +139,12 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
         )}
 
         {/* Status badge */}
-        <div className="absolute top-2 left-2 z-10">
+        <div className="absolute top-2 right-2 z-10">
           <span
-            className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold"
-            style={{ background: status.bg, color: status.color, border: `1px solid ${status.border}`, backdropFilter: 'blur(4px)' }}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide"
+            style={{ background: status.bg, color: status.color, border: `1px solid ${status.border}` }}
           >
+            <StatusIcon size={11} strokeWidth={2.5} />
             {status.label}
           </span>
         </div>
