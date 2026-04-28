@@ -33,19 +33,22 @@ function CategoryForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-zinc-300 mb-1.5">
-          Nombre <span className="text-red-500">*</span>
+        <label htmlFor="cat-name" className="block text-sm font-medium text-zinc-300 mb-1.5">
+          Nombre <span className="text-red-500" aria-hidden="true">*</span>
         </label>
         <input
+          id="cat-name"
           {...register('name', { required: 'El nombre es obligatorio' })}
           className={inputClass}
           placeholder="Nombre de la categoría"
+          aria-required="true"
         />
-        {errors.name && <p className="mt-1.5 text-xs text-red-500">{errors.name.message}</p>}
+        {errors.name && <p className="mt-1.5 text-xs text-red-500" role="alert">{errors.name.message}</p>}
       </div>
       <div>
-        <label className="block text-sm font-medium text-zinc-300 mb-1.5">Descripción</label>
+        <label htmlFor="cat-desc" className="block text-sm font-medium text-zinc-300 mb-1.5">Descripción</label>
         <textarea
+          id="cat-desc"
           {...register('description')}
           rows={3}
           className={`${inputClass} resize-none`}

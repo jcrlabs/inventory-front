@@ -49,7 +49,7 @@ export default function RegisterPage() {
   const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-10 bg-zinc-900">
+    <div className="min-h-screen flex flex-col justify-center items-center p-6 sm:p-10 bg-[#111111]">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -67,8 +67,9 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Usuario</label>
+            <label htmlFor="reg-username" className="block text-sm font-medium text-zinc-300 mb-1.5">Usuario</label>
             <input
+              id="reg-username"
               {...register('username', {
                 required: 'Campo obligatorio',
                 minLength: { value: 3, message: 'Mínimo 3 caracteres' },
@@ -82,8 +83,9 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Email</label>
+            <label htmlFor="reg-email" className="block text-sm font-medium text-zinc-300 mb-1.5">Email</label>
             <input
+              id="reg-email"
               {...register('email', {
                 required: 'Campo obligatorio',
                 pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Email inválido' },
@@ -97,9 +99,10 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Contraseña</label>
+            <label htmlFor="reg-password" className="block text-sm font-medium text-zinc-300 mb-1.5">Contraseña</label>
             <div className="relative">
               <input
+                id="reg-password"
                 {...register('password', {
                   required: 'Campo obligatorio',
                   minLength: { value: 8, message: 'Mínimo 8 caracteres' },
@@ -110,8 +113,12 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 autoComplete="new-password"
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors">
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
+              >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
@@ -120,9 +127,10 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Confirmar contraseña</label>
+            <label htmlFor="reg-confirm-password" className="block text-sm font-medium text-zinc-300 mb-1.5">Confirmar contraseña</label>
             <div className="relative">
               <input
+                id="reg-confirm-password"
                 {...register('confirmPassword', {
                   required: 'Campo obligatorio',
                   validate: (val) => val === password || 'Las contraseñas no coinciden',
@@ -132,8 +140,12 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 autoComplete="new-password"
               />
-              <button type="button" onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors">
+              <button
+                type="button"
+                onClick={() => setShowConfirm(!showConfirm)}
+                aria-label={showConfirm ? 'Ocultar confirmación' : 'Mostrar confirmación'}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
+              >
                 {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
@@ -154,7 +166,7 @@ export default function RegisterPage() {
             }}
           >
             {isLoading
-              ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" role="status" aria-label="Creando cuenta…" /><span className="sr-only">Creando cuenta…</span></>
               : <><span>Registrarse</span><ArrowRight size={15} /></>
             }
           </button>

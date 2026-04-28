@@ -61,8 +61,14 @@ function StatsGrid() {
       : []),
   ]
 
+  const colsClass = cards.length >= 4
+    ? 'grid-cols-2 lg:grid-cols-4'
+    : cards.length === 3
+    ? 'grid-cols-2 lg:grid-cols-3'
+    : 'grid-cols-2'
+
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+    <div className={`grid ${colsClass} gap-3 sm:gap-4 mb-6`}>
       {cards.map(({ label, value, sub, icon: Icon, color, glow, bg, border, to }) => (
         <Link
           key={label}

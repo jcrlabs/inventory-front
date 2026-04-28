@@ -85,8 +85,15 @@ export default function App() {
           position="top-right"
           toastOptions={{
             duration: 3000,
-            style: { fontSize: '14px' },
-            success: { iconTheme: { primary: '#0ea5e9', secondary: 'white' } },
+            style: {
+              fontSize: '14px',
+              background: '#27272a',
+              color: '#e4e4e7',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 8px 32px -8px rgba(0,0,0,0.6)',
+            },
+            success: { iconTheme: { primary: '#f59e0b', secondary: '#1a1a1a' } },
+            error: { iconTheme: { primary: '#ef4444', secondary: '#1a1a1a' } },
           }}
         />
       </BrowserRouter>

@@ -50,36 +50,41 @@ function UserForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
-            Usuario <span className="text-red-500">*</span>
+          <label htmlFor="uf-username" className="block text-sm font-medium text-zinc-300 mb-1.5">
+            Usuario <span className="text-red-500" aria-hidden="true">*</span>
           </label>
           <input
+            id="uf-username"
             {...register('username', { required: !user, minLength: 3 })}
             className={inputClass}
             placeholder="nombre de usuario"
+            aria-required={!user}
           />
-          {errors.username && <p className="mt-1.5 text-xs text-red-500">Mínimo 3 caracteres</p>}
+          {errors.username && <p className="mt-1.5 text-xs text-red-500" role="alert">Mínimo 3 caracteres</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1.5">
-            Email <span className="text-red-500">*</span>
+          <label htmlFor="uf-email" className="block text-sm font-medium text-zinc-300 mb-1.5">
+            Email <span className="text-red-500" aria-hidden="true">*</span>
           </label>
           <input
+            id="uf-email"
             {...register('email', { required: !user, pattern: /^\S+@\S+\.\S+$/ })}
             type="email"
             className={inputClass}
             placeholder="user@ejemplo.com"
+            aria-required={!user}
           />
-          {errors.email && <p className="mt-1.5 text-xs text-red-500">Email inválido</p>}
+          {errors.email && <p className="mt-1.5 text-xs text-red-500" role="alert">Email inválido</p>}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-300 mb-1.5">
-          Contraseña {!user && <span className="text-red-500">*</span>}
+        <label htmlFor="uf-password" className="block text-sm font-medium text-zinc-300 mb-1.5">
+          Contraseña {!user && <span className="text-red-500" aria-hidden="true">*</span>}
           {user && <span className="text-zinc-500 font-normal text-xs ml-1">(dejar vacío para no cambiar)</span>}
         </label>
         <input
+          id="uf-password"
           {...register('password', {
             required: !user ? 'Campo obligatorio' : false,
             minLength: !user ? { value: 8, message: 'Mínimo 8 caracteres' } : undefined,
@@ -88,14 +93,16 @@ function UserForm({
           type="password"
           className={inputClass}
           placeholder="••••••••"
+          aria-required={!user}
         />
         {!user && <p className="mt-1.5 text-xs text-zinc-500">Mínimo 8 caracteres, debe incluir letras y números</p>}
         {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-zinc-300 mb-1.5">Rol</label>
+        <label htmlFor="uf-role" className="block text-sm font-medium text-zinc-300 mb-1.5">Rol</label>
         <select
+          id="uf-role"
           {...register('role', { required: true })}
           className="w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 text-zinc-300 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
         >

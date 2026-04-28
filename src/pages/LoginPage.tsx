@@ -67,10 +67,11 @@ export default function LoginPage() {
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-[11px] font-semibold text-zinc-500 uppercase tracking-widest mb-2">
+              <label htmlFor="login-identifier" className="block text-[11px] font-semibold text-zinc-500 uppercase tracking-widest mb-2">
                 Usuario o Email
               </label>
               <input
+                id="login-identifier"
                 {...register('identifier', { required: 'Campo obligatorio' })}
                 className="w-full px-4 py-3 rounded-xl text-sm bg-zinc-900 text-zinc-100 placeholder-zinc-600 border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-amber-500/15 focus:border-amber-700/50 transition-colors"
                 placeholder="usuario o correo"
@@ -83,11 +84,12 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-zinc-500 uppercase tracking-widest mb-2">
+              <label htmlFor="login-password" className="block text-[11px] font-semibold text-zinc-500 uppercase tracking-widest mb-2">
                 Contraseña
               </label>
               <div className="relative">
                 <input
+                  id="login-password"
                   {...register('password', { required: 'Campo obligatorio' })}
                   type={showPassword ? 'text' : 'password'}
                   className="w-full px-4 py-3 pr-11 rounded-xl text-sm bg-zinc-900 text-zinc-100 placeholder-zinc-600 border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-amber-500/15 focus:border-amber-700/50 transition-colors"
@@ -97,7 +99,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400 transition-colors"
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
                 >
                   {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
@@ -117,7 +120,7 @@ export default function LoginPage() {
               }}
             >
               {isLoading
-                ? <span className="w-4 h-4 border-2 border-zinc-900/30 border-t-zinc-900 rounded-full animate-spin" />
+                ? <><span className="w-4 h-4 border-2 border-zinc-900/30 border-t-zinc-900 rounded-full animate-spin" role="status" aria-label="Iniciando sesión…" /><span className="sr-only">Iniciando sesión…</span></>
                 : 'Entrar'
               }
             </button>
