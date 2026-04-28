@@ -407,8 +407,8 @@ export default function ProductsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-zinc-800 flex-shrink-0 overflow-hidden border border-zinc-700/60">
-                          {product.image_url ? (
-                            <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                          {(product.images?.[0]?.image_url ?? product.image_url) ? (
+                            <img src={product.images?.[0]?.image_url ?? product.image_url} alt={product.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <Package className="text-zinc-600" size={13} />
