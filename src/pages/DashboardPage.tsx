@@ -93,8 +93,8 @@ function StatsGrid() {
             />
           </div>
           <p className="text-2xl sm:text-3xl font-bold text-zinc-100 leading-none tabular-nums">{value}</p>
-          <p className="text-xs sm:text-[13px] text-zinc-400 mt-1.5 font-medium">{label}</p>
-          {sub && <p className="text-[11px] text-zinc-500 mt-0.5">{sub}</p>}
+          <p className="text-xs sm:text-[13px] text-zinc-400 mt-1.5 font-medium leading-snug">{label}</p>
+          {sub && <p className="text-[11px] text-zinc-500 mt-0.5 line-clamp-2">{sub}</p>}
         </Link>
       ))}
     </div>

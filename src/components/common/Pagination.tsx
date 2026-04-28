@@ -13,8 +13,13 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
 
   return (
     <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 border-t border-zinc-700/80">
-      <p className="text-sm text-zinc-400">
-        Mostrando {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, total)} de {total}
+      {/* Desktop: rango completo */}
+      <p className="hidden sm:block text-sm text-zinc-400">
+        Mostrando {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} de {total}
+      </p>
+      {/* Mobile: compacto */}
+      <p className="sm:hidden text-xs text-zinc-500 tabular-nums">
+        {page} / {totalPages}
       </p>
       <div className="flex items-center gap-1">
         <button
