@@ -132,7 +132,7 @@ export default function ProductDetailPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 border border-zinc-700 rounded-lg text-sm font-medium text-zinc-300 hover:bg-zinc-900 transition-colors"
               >
                 <Edit size={14} />
-                <span className="hidden sm:inline">Editar</span>
+                Editar
               </button>
             )}
             {product && canDeleteProduct(product) && (
@@ -141,7 +141,7 @@ export default function ProductDetailPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/20 transition-colors"
               >
                 <Trash2 size={14} />
-                <span className="hidden sm:inline">Eliminar</span>
+                Eliminar
               </button>
             )}
           </div>

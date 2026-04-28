@@ -159,7 +159,7 @@ export default function ProductsPage() {
           {/* Mobile: toggle filters button */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`sm:hidden flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${
+            className={`sm:hidden relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${
               showFilters || hasActiveFilters
                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
                 : 'border-zinc-700 text-zinc-400 hover:bg-zinc-900'
@@ -167,7 +167,7 @@ export default function ProductsPage() {
           >
             <SlidersHorizontal size={15} />
             {hasActiveFilters && (
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 absolute mt-[-8px] ml-4" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-500 ring-2 ring-zinc-800" />
             )}
           </button>
 
