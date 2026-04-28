@@ -150,6 +150,7 @@ export default function ProductsPage() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Buscar por nombre, SKU..."
+              aria-label="Buscar productos"
               className="w-full pl-9 pr-4 py-2 border border-zinc-700 rounded-lg text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
             />
           </div>
@@ -174,14 +175,16 @@ export default function ProductsPage() {
             <button
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
-              title="Vista cuadrícula"
+              aria-label="Vista cuadrícula"
+              aria-pressed={viewMode === 'grid'}
             >
               <LayoutGrid size={15} />
             </button>
             <button
               onClick={() => setViewMode('list')}
               className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
-              title="Vista lista"
+              aria-label="Vista lista"
+              aria-pressed={viewMode === 'list'}
             >
               <List size={15} />
             </button>
@@ -258,7 +261,7 @@ export default function ProductsPage() {
                   ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
                   : 'border-zinc-700 text-zinc-400 hover:bg-zinc-900'
               }`}
-              title={filters.sort_order === 'asc' ? 'Ascendente' : 'Descendente'}
+              aria-label={filters.sort_order === 'asc' ? 'Orden ascendente' : 'Orden descendente'}
             >
               {filters.sort_order === 'asc' ? <ArrowUp size={14} /> : <ArrowDown size={14} />}
               <span className="hidden sm:inline text-xs">{filters.sort_order === 'asc' ? 'Asc' : 'Desc'}</span>
@@ -379,6 +382,10 @@ export default function ProductsPage() {
                     key={product.id}
                     className="hover:bg-amber-500/5 transition-colors cursor-pointer group"
                     onClick={() => navigate(`/products/${product.id}`)}
+                    tabIndex={0}
+                    role="row"
+                    aria-label={product.name}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/products/${product.id}`) } }}
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">

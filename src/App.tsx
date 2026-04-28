@@ -1,18 +1,20 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
+import { lazy, Suspense } from 'react'
 import { useAuthStore } from './store/authStore'
 import Layout from './components/layout/Layout'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import DashboardPage from './pages/DashboardPage'
-import ProductsPage from './pages/ProductsPage'
-import ProductDetailPage from './pages/ProductDetailPage'
-import CategoriesPage from './pages/CategoriesPage'
-import UsersPage from './pages/UsersPage'
-import NotFoundPage from './pages/NotFoundPage'
 import ErrorBoundary from './components/common/ErrorBoundary'
 import { usePermissions } from './hooks/usePermissions'
+
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const RegisterPage = lazy(() => import('./pages/RegisterPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const ProductsPage = lazy(() => import('./pages/ProductsPage'))
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'))
+const CategoriesPage = lazy(() => import('./pages/CategoriesPage'))
+const UsersPage = lazy(() => import('./pages/UsersPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,38 +41,40 @@ function AppRoutes() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
   return (
-    <Routes>
-      <Route
-        path="/login"
-        element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
-      />
-      <Route
-        path="/register"
-        element={isAuthenticated ? <Navigate to="/" replace /> : <RegisterPage />}
-      />
-      <Route
-        element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/" element={<Navigate to="/products" replace />} />
-        <Route path="/dashboard" element={<ErrorBoundary><DashboardPage /></ErrorBoundary>} />
-        <Route path="/products" element={<ErrorBoundary><ProductsPage /></ErrorBoundary>} />
-        <Route path="/products/:id" element={<ErrorBoundary><ProductDetailPage /></ErrorBoundary>} />
-        <Route path="/categories" element={<ErrorBoundary><CategoriesPage /></ErrorBoundary>} />
+    <Suspense fallback={null}>
+      <Routes>
         <Route
-          path="/users"
-          element={
-            <AdminRoute>
-              <ErrorBoundary><UsersPage /></ErrorBoundary>
-            </AdminRoute>
-          }
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
         />
-      </Route>
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        <Route
+          path="/register"
+          element={isAuthenticated ? <Navigate to="/" replace /> : <RegisterPage />}
+        />
+        <Route
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/" element={<Navigate to="/products" replace />} />
+          <Route path="/dashboard" element={<ErrorBoundary><DashboardPage /></ErrorBoundary>} />
+          <Route path="/products" element={<ErrorBoundary><ProductsPage /></ErrorBoundary>} />
+          <Route path="/products/:id" element={<ErrorBoundary><ProductDetailPage /></ErrorBoundary>} />
+          <Route path="/categories" element={<ErrorBoundary><CategoriesPage /></ErrorBoundary>} />
+          <Route
+            path="/users"
+            element={
+              <AdminRoute>
+                <ErrorBoundary><UsersPage /></ErrorBoundary>
+              </AdminRoute>
+            }
+          />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   )
 }
 

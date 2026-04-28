@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, memo } from 'react'
 import { Edit, Trash2, ChevronLeft, ChevronRight, CheckCircle2, Clock, XCircle } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { Product } from '../../types'
@@ -16,7 +16,7 @@ const statusConfig = {
   no_reparado: { label: 'No reparado', Icon: XCircle,      color: '#f87171', bg: '#450a0a', border: '#dc2626' },
 }
 
-export default function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
+const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
   const navigate = useNavigate()
   const { canManage, canDeleteProduct } = usePermissions()
   const canDelete = canDeleteProduct(product)
@@ -203,4 +203,6 @@ export default function ProductCard({ product, onEdit, onDelete }: ProductCardPr
       </Link>
     </div>
   )
-}
+})
+
+export default ProductCard

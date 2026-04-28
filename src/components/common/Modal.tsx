@@ -19,9 +19,16 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
   const titleId = `modal-title-${title.replace(/\s+/g, '-').toLowerCase()}`
   const firstFocusRef = useRef<HTMLButtonElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    if (!isOpen) return
+    if (isOpen) {
+      triggerRef.current = document.activeElement as HTMLElement
+    } else {
+      triggerRef.current?.focus()
+      triggerRef.current = null
+      return
+    }
 
     // Focus trap
     const focusable = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
