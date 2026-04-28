@@ -230,7 +230,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 leading-tight tracking-tight">
           <span className="text-gradient">{user?.username ?? '—'}</span>
         </h1>
-        <p className="text-sm text-zinc-500 mt-1.5">Resumen de actividad de tu electroteca</p>
+        <p className="text-sm text-zinc-500 mt-1.5">Aquí puedes ver y gestionar las reparaciones, categorías y estadísticas de la electroteca.</p>
       </div>
 
       <ErrorBoundary>

@@ -178,7 +178,7 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
 
           {/* Action buttons — visible on hover (desktop) or always on touch devices */}
           {(canManage || canDelete) && (
-            <div className="flex items-center gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+            <div className="flex items-center gap-1.5">
               {canManage && (
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(product) }}

@@ -120,6 +120,7 @@ export default function ProductsPage() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Electroteca</p>
           <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Productos</h1>
+          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">Registro y gestión de reparaciones de la electroteca</p>
           <p className="text-sm text-zinc-500 mt-0.5" aria-live="polite">
             {total} {total === 1 ? 'artículo' : 'artículos'}
             {isFetching && !isLoading && (
@@ -174,19 +175,21 @@ export default function ProductsPage() {
           <div className="hidden sm:flex items-center gap-1 border border-zinc-700 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               aria-label="Vista cuadrícula"
               aria-pressed={viewMode === 'grid'}
             >
-              <LayoutGrid size={15} />
+              <LayoutGrid size={14} />
+              <span className="text-xs font-medium">Cuadrícula</span>
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+              className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               aria-label="Vista lista"
               aria-pressed={viewMode === 'list'}
             >
-              <List size={15} />
+              <List size={14} />
+              <span className="text-xs font-medium">Lista</span>
             </button>
           </div>
         </div>
@@ -211,49 +214,61 @@ export default function ProductsPage() {
         )}
 
         {/* Filters row — always visible on sm+, toggleable on mobile */}
-        <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 mt-2.5 pt-2.5 border-t border-zinc-800`}>
-          <select
-            value={filters.category_id ?? ''}
-            onChange={(e) => setFilters((f) => ({ ...f, category_id: e.target.value || undefined, page: 1 }))}
-            className={`${selectClass} flex-1 sm:flex-none`}
-          >
-            <option value="">Todas las categorías</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
-            ))}
-          </select>
-
-          <select
-            value={filters.status ?? ''}
-            onChange={(e) => setFilters((f) => ({ ...f, status: (e.target.value || undefined) as typeof f.status, page: 1 }))}
-            className={`${selectClass} flex-1 sm:flex-none`}
-          >
-            <option value="">Todos los estados</option>
-            <option value="en_progreso">En progreso</option>
-            <option value="reparado">Reparado</option>
-            <option value="no_reparado">No reparado</option>
-          </select>
-
-          <select
-            value={filters.paid === undefined ? '' : String(filters.paid)}
-            onChange={(e) => setFilters((f) => ({ ...f, paid: e.target.value === '' ? undefined : e.target.value === 'true', page: 1 }))}
-            className={`${selectClass} flex-1 sm:flex-none`}
-          >
-            <option value="">Pagado / Pendiente</option>
-            <option value="true">Pagado</option>
-            <option value="false">Pendiente</option>
-          </select>
-
-          <div className="flex items-center gap-1.5 flex-1 sm:flex-none">
+        <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-2 mt-2.5 pt-2.5 border-t border-zinc-800`}>
+          <div className="flex flex-col gap-1 flex-1 sm:flex-none">
+            <label className="text-[11px] font-medium text-zinc-500 px-0.5">Categoría</label>
             <select
-              value={filters.sort_by ?? 'created_at'}
-              onChange={(e) => setFilters((f) => ({ ...f, sort_by: (e.target.value as typeof f.sort_by) || undefined, page: 1 }))}
-              className={`${selectClass} flex-1`}
+              value={filters.category_id ?? ''}
+              onChange={(e) => setFilters((f) => ({ ...f, category_id: e.target.value || undefined, page: 1 }))}
+              className={selectClass}
             >
-              <option value="created_at">Fecha creación</option>
-              <option value="entry_date">Fecha entrada</option>
-              <option value="exit_date">Fecha salida</option>
+              <option value="">Todas</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
             </select>
+          </div>
+
+          <div className="flex flex-col gap-1 flex-1 sm:flex-none">
+            <label className="text-[11px] font-medium text-zinc-500 px-0.5">Estado</label>
+            <select
+              value={filters.status ?? ''}
+              onChange={(e) => setFilters((f) => ({ ...f, status: (e.target.value || undefined) as typeof f.status, page: 1 }))}
+              className={selectClass}
+            >
+              <option value="">Todos</option>
+              <option value="en_progreso">En progreso</option>
+              <option value="reparado">Reparado</option>
+              <option value="no_reparado">No reparado</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1 flex-1 sm:flex-none">
+            <label className="text-[11px] font-medium text-zinc-500 px-0.5">Pago</label>
+            <select
+              value={filters.paid === undefined ? '' : String(filters.paid)}
+              onChange={(e) => setFilters((f) => ({ ...f, paid: e.target.value === '' ? undefined : e.target.value === 'true', page: 1 }))}
+              className={selectClass}
+            >
+              <option value="">Todos</option>
+              <option value="true">Pagado</option>
+              <option value="false">Pendiente</option>
+            </select>
+          </div>
+
+          <div className="flex items-end gap-1.5 flex-1 sm:flex-none">
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="text-[11px] font-medium text-zinc-500 px-0.5">Ordenar por</label>
+              <select
+                value={filters.sort_by ?? 'created_at'}
+                onChange={(e) => setFilters((f) => ({ ...f, sort_by: (e.target.value as typeof f.sort_by) || undefined, page: 1 }))}
+                className={`${selectClass} flex-1`}
+              >
+                <option value="created_at">Fecha creación</option>
+                <option value="entry_date">Fecha entrada</option>
+                <option value="exit_date">Fecha salida</option>
+              </select>
+            </div>
             <button
               onClick={() => setFilters((f) => ({ ...f, sort_order: f.sort_order === 'asc' ? 'desc' : 'asc', page: 1 }))}
               className={`flex items-center gap-1 px-2.5 py-2 border rounded-lg text-sm font-medium transition-colors ${
@@ -273,15 +288,17 @@ export default function ProductsPage() {
             <div className="sm:hidden flex items-center gap-1 border border-zinc-700 rounded-lg p-1">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               >
-                <LayoutGrid size={15} />
+                <LayoutGrid size={14} />
+                <span className="text-xs font-medium">Cuadrícula</span>
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
               >
-                <List size={15} />
+                <List size={14} />
+                <span className="text-xs font-medium">Lista</span>
               </button>
             </div>
 

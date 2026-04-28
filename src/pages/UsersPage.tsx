@@ -188,6 +188,7 @@ export default function UsersPage() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Administración</p>
           <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Usuarios</h1>
+          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">Gestiona el acceso y los permisos de cada persona</p>
           <p className="text-sm text-zinc-500 mt-0.5">{data?.total ?? 0} usuarios registrados</p>
         </div>
         <button
