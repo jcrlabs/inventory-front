@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Package, Tag, Users, ArrowUpRight, Clock, CheckCircle2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { statsApi } from '../api/stats'
 import { productsApi } from '../api/products'
 import { useAuthStore } from '../store/authStore'
@@ -213,24 +214,20 @@ function RecentProducts() {
   )
 }
 
-function getGreeting() {
-  const h = new Date().getHours()
-  if (h < 13) return 'Buenos días'
-  if (h < 20) return 'Buenas tardes'
-  return 'Buenas noches'
-}
-
 export default function DashboardPage() {
   const user = useAuthStore((s) => s.user)
+  const { t } = useTranslation()
+  const h = new Date().getHours()
+  const greeting = h < 13 ? t('dashboard.morningGreeting') : h < 20 ? t('dashboard.afternoonGreeting') : t('dashboard.eveningGreeting')
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-6 sm:mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-amber-500/70 mb-2 tabular">{getGreeting()}</p>
-        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 leading-tight tracking-tight">
+        <p className="text-xs font-semibold uppercase tracking-widest text-amber-500/70 mb-2 tabular">{greeting}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold leading-tight tracking-tight" style={{ color: 'var(--text-1)' }}>
           <span className="text-gradient">{user?.username ?? '—'}</span>
         </h1>
-        <p className="text-sm text-zinc-500 mt-1.5">Aquí puedes ver y gestionar las reparaciones, categorías y estadísticas de la electroteca.</p>
+        <p className="text-sm mt-1.5" style={{ color: 'var(--text-3)' }}>{t('dashboard.subtitle')}</p>
       </div>
 
       <ErrorBoundary>

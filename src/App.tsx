@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import { lazy, Suspense, useEffect } from 'react'
 import { useAuthStore } from './store/authStore'
+import { useSettingsStore } from './store/settingsStore'
 import type { User } from './types'
 import Layout from './components/layout/Layout'
 import ErrorBoundary from './components/common/ErrorBoundary'
@@ -107,6 +108,28 @@ function AppRoutes() {
   )
 }
 
+function ThemedToaster() {
+  const theme = useSettingsStore((s) => s.theme)
+  const isDark = theme === 'dark'
+  return (
+    <Toaster
+      position="top-right"
+      toastOptions={{
+        duration: 3000,
+        style: {
+          fontSize: '14px',
+          background: isDark ? '#27272a' : '#ffffff',
+          color: isDark ? '#e4e4e7' : '#18181b',
+          border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
+          boxShadow: isDark ? '0 8px 32px -8px rgba(0,0,0,0.6)' : '0 8px 32px -8px rgba(0,0,0,0.12)',
+        },
+        success: { iconTheme: { primary: '#f59e0b', secondary: isDark ? '#1a1a1a' : '#ffffff' } },
+        error: { iconTheme: { primary: '#ef4444', secondary: isDark ? '#1a1a1a' : '#ffffff' } },
+      }}
+    />
+  )
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -114,21 +137,7 @@ export default function App() {
         <ErrorBoundary>
           <AppRoutes />
         </ErrorBoundary>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              fontSize: '14px',
-              background: '#27272a',
-              color: '#e4e4e7',
-              border: '1px solid rgba(255,255,255,0.08)',
-              boxShadow: '0 8px 32px -8px rgba(0,0,0,0.6)',
-            },
-            success: { iconTheme: { primary: '#f59e0b', secondary: '#1a1a1a' } },
-            error: { iconTheme: { primary: '#ef4444', secondary: '#1a1a1a' } },
-          }}
-        />
+        <ThemedToaster />
       </BrowserRouter>
     </QueryClientProvider>
   )

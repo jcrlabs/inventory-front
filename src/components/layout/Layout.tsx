@@ -8,7 +8,7 @@ export default function Layout() {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen bg-[#111111]">
+    <div className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-amber-500 focus:text-black focus:font-semibold focus:text-sm"
@@ -31,8 +31,8 @@ export default function Layout() {
         <header
           className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3"
           style={{
-            background: '#0d0d0d',
-            borderBottom: '1px solid rgba(255,255,255,0.07)',
+            background: 'var(--bg-nav)',
+            borderBottom: '1px solid var(--border)',
           }}
         >
           <button
