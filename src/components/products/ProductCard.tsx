@@ -114,14 +114,14 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
           <>
             <button
               onClick={prev}
-              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 p-1 bg-black/40 hover:bg-black/65 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-black/40 hover:bg-black/65 text-white rounded-full opacity-0 group-hover:opacity-100 touch-always-visible transition-opacity"
               aria-label="Imagen anterior"
             >
               <ChevronLeft size={14} />
             </button>
             <button
               onClick={next}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 p-1 bg-black/40 hover:bg-black/65 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 p-1.5 bg-black/40 hover:bg-black/65 text-white rounded-full opacity-0 group-hover:opacity-100 touch-always-visible transition-opacity"
               aria-label="Imagen siguiente"
             >
               <ChevronRight size={14} />

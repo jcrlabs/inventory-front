@@ -278,7 +278,7 @@ export default function ProductForm({ product, onSubmit, onCancel, isLoading }: 
         </label>
 
         {imagePreviews.length > 0 && (
-          <div className="grid grid-cols-3 gap-2 mb-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-2">
             {imagePreviews.map((preview, i) => (
               <div key={i} className="relative group aspect-square rounded-xl overflow-hidden border border-zinc-700/60 bg-zinc-900">
                 <img src={preview.url} alt={`Imagen ${i + 1}`} className="w-full h-full object-cover" />
