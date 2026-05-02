@@ -149,7 +149,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     onMouseEnter={(e) => { if (locale !== l) (e.target as HTMLElement).style.background = 'var(--bg-hover)' }}
                     onMouseLeave={(e) => { if (locale !== l) (e.target as HTMLElement).style.background = 'transparent' }}
                   >
-                    {t(`language.${l}`)}
+                    {l.toUpperCase()}
                   </button>
                 ))}
               </div>
