@@ -227,7 +227,7 @@ export default function ProductDetailPage() {
           {/* Price + category */}
           <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
             <h2 className="text-sm font-semibold text-zinc-300 mb-4">Información General</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-1">Precio</p>
                 <p className="text-2xl font-bold text-zinc-100">

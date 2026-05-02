@@ -25,7 +25,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
         <button
           onClick={() => onChange(page - 1)}
           disabled={page === 1}
-          className="p-1.5 rounded-lg text-zinc-400 hover:bg-[var(--bg-hover)] hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-lg text-zinc-400 hover:bg-[var(--bg-hover)] hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft size={18} />
         </button>
@@ -43,7 +43,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
               <button
                 key={p}
                 onClick={() => onChange(p as number)}
-                className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                className={`w-9 h-9 sm:w-8 sm:h-8 rounded-lg text-sm font-medium transition-colors ${
                   p === page
                     ? 'bg-amber-600 text-white'
                     : 'text-zinc-300 hover:bg-[var(--bg-hover)] hover:text-zinc-100'
@@ -56,7 +56,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
         <button
           onClick={() => onChange(page + 1)}
           disabled={page === totalPages}
-          className="p-1.5 rounded-lg text-zinc-400 hover:bg-[var(--bg-hover)] hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-lg text-zinc-400 hover:bg-[var(--bg-hover)] hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronRight size={18} />
         </button>

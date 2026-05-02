@@ -105,7 +105,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
         </div>
 
         {/* Scrollable content — min-h-0 prevents flex overflow bug on iOS/Android */}
-        <div className="overflow-y-auto flex-1 min-h-0 px-5 py-5">
+        <div className="overflow-y-auto flex-1 min-h-0 px-4 sm:px-5 py-4 sm:py-5">
           {children}
         </div>
       </div>
