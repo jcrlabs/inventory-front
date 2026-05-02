@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  tag: v0.3.7
+  tag: v0.3.8
 
 ingress:
   host: electroteca.jcrlabs.net
