@@ -254,6 +254,12 @@
     "deleted": "Repair deleted",
     "editTitle": "Edit Product"
   },
+  "errors": {
+    "unexpected": "An unexpected error occurred",
+    "boundaryTitle": "Something went wrong",
+    "boundaryHint": "If the problem persists, reload the page.",
+    "retry": "Retry"
+  },
   "notFound": {
     "title": "Page not found",
     "back": "Back to home"

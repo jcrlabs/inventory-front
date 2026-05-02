@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 interface Props {
@@ -11,8 +12,12 @@ interface State {
   error: Error | null
 }
 
-export default class ErrorBoundary extends React.Component<Props, State> {
-  constructor(props: Props) {
+interface InnerProps extends Props {
+  t: (key: string) => string
+}
+
+class ErrorBoundaryInner extends React.Component<InnerProps, State> {
+  constructor(props: InnerProps) {
     super(props)
     this.state = { hasError: false, error: null }
   }
@@ -30,6 +35,8 @@ export default class ErrorBoundary extends React.Component<Props, State> {
   }
 
   render() {
+    const { t } = this.props
+
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback
 
@@ -43,13 +50,13 @@ export default class ErrorBoundary extends React.Component<Props, State> {
               <AlertTriangle className="text-red-400" size={32} />
             </div>
             <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-1)' }}>
-              Algo salió mal
+              {t('errors.boundaryTitle')}
             </h2>
             <p className="text-sm mb-2" style={{ color: 'var(--text-2)' }}>
-              {this.state.error?.message ?? 'Ha ocurrido un error inesperado.'}
+              {this.state.error?.message ?? t('errors.unexpected')}
             </p>
             <p className="text-xs mb-6" style={{ color: 'var(--text-3)' }}>
-              Si el problema persiste, recarga la página.
+              {t('errors.boundaryHint')}
             </p>
             <button
               onClick={this.handleReset}
@@ -57,7 +64,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
               style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
             >
               <RefreshCw size={14} />
-              Reintentar
+              {t('errors.retry')}
             </button>
           </div>
         </div>
@@ -66,4 +73,9 @@ export default class ErrorBoundary extends React.Component<Props, State> {
 
     return this.props.children
   }
+}
+
+export default function ErrorBoundary(props: Props) {
+  const { t } = useTranslation()
+  return <ErrorBoundaryInner {...props} t={t} />
 }

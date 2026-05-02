@@ -254,6 +254,12 @@
     "deleted": "Reparación eliminada",
     "editTitle": "Editar Produto"
   },
+  "errors": {
+    "unexpected": "Produciuse un erro inesperado",
+    "boundaryTitle": "Algo saíu mal",
+    "boundaryHint": "Se o problema persiste, recarga a páxina.",
+    "retry": "Reintentar"
+  },
   "notFound": {
     "title": "Páxina non atopada",
     "back": "Volver ao inicio"

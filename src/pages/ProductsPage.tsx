@@ -178,20 +178,20 @@ export default function ProductsPage() {
             <button
               onClick={() => setViewMode('grid')}
               className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
-              aria-label="Vista cuadrícula"
+              aria-label={t('products.gridLabel')}
               aria-pressed={viewMode === 'grid'}
             >
               <LayoutGrid size={14} />
-              <span className="text-xs font-medium">Cuadrícula</span>
+              <span className="text-xs font-medium">{t('products.grid')}</span>
             </button>
             <button
               onClick={() => setViewMode('list')}
               className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
-              aria-label="Vista lista"
+              aria-label={t('products.listLabel')}
               aria-pressed={viewMode === 'list'}
             >
               <List size={14} />
-              <span className="text-xs font-medium">Lista</span>
+              <span className="text-xs font-medium">{t('products.list')}</span>
             </button>
           </div>
         </div>
@@ -291,16 +291,20 @@ export default function ProductsPage() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`flex items-center gap-1 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                aria-label={t('products.gridLabel')}
+                aria-pressed={viewMode === 'grid'}
               >
                 <LayoutGrid size={14} />
-                <span className="text-xs font-medium">Cuadrícula</span>
+                <span className="text-xs font-medium">{t('products.grid')}</span>
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className={`flex items-center gap-1 px-2 py-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                aria-label={t('products.listLabel')}
+                aria-pressed={viewMode === 'list'}
               >
                 <List size={14} />
-                <span className="text-xs font-medium">Lista</span>
+                <span className="text-xs font-medium">{t('products.list')}</span>
               </button>
             </div>
 

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import i18n from '../i18n'
 
 const BASE_URL = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api/v1`
@@ -95,5 +96,5 @@ export function getErrorMessage(error: unknown): string {
     return error.response?.data?.error ?? error.message
   }
   if (error instanceof Error) return error.message
-  return 'Ha ocurrido un error inesperado'
+  return i18n.t('errors.unexpected')
 }
