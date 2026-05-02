@@ -85,6 +85,62 @@
   }
 }
 
+/* ─── Light theme overrides ────────────────────────────────────────────────── */
+/* Remap hardcoded zinc text classes so they're legible on light backgrounds   */
+[data-theme="light"] .text-zinc-100,
+[data-theme="light"] .text-zinc-200 { color: #18181b; }
+
+[data-theme="light"] .text-zinc-300 { color: #3f3f46; }
+
+[data-theme="light"] .text-zinc-400 { color: #52525b; }
+
+[data-theme="light"] .text-zinc-500 { color: #71717a; }
+
+[data-theme="light"] .text-zinc-600 { color: #52525b; }
+
+/* Hover backgrounds */
+[data-theme="light"] .hover\:bg-zinc-900\/60:hover,
+[data-theme="light"] .hover\:bg-zinc-900:hover,
+[data-theme="light"] .hover\:bg-zinc-800:hover { background: rgba(0,0,0,0.05); }
+
+/* Table / list dividers */
+[data-theme="light"] .divide-zinc-800 > * + *,
+[data-theme="light"] .divide-zinc-700\/60 > * + * { border-color: rgba(0,0,0,0.07); }
+
+/* Static dark backgrounds used in some table rows / containers */
+[data-theme="light"] .bg-zinc-900\/60 { background: rgba(0,0,0,0.03); }
+[data-theme="light"] .bg-zinc-900 { background: #f2f2f4; }
+[data-theme="light"] .bg-zinc-800 { background: #ffffff; }
+
+/* Borders */
+[data-theme="light"] .border-zinc-700,
+[data-theme="light"] .border-zinc-700\/80 { border-color: rgba(0,0,0,0.10); }
+[data-theme="light"] .border-zinc-600 { border-color: rgba(0,0,0,0.14); }
+[data-theme="light"] .border-zinc-800 { border-color: rgba(0,0,0,0.06); }
+
+/* Status / accent text: amber, emerald and red need darker shades for 4.5:1 */
+[data-theme="light"] .text-amber-400,
+[data-theme="light"] .text-amber-500 { color: #b45309; }
+[data-theme="light"] .text-amber-600 { color: #92400e; }
+[data-theme="light"] .text-emerald-400,
+[data-theme="light"] .text-emerald-600 { color: #047857; }
+[data-theme="light"] .text-red-400,
+[data-theme="light"] .text-red-500 { color: #dc2626; }
+
+/* Status badge backgrounds: make them slightly more opaque */
+[data-theme="light"] .bg-amber-500\/10 { background: rgba(245,158,11,0.12); }
+[data-theme="light"] .bg-emerald-500\/10 { background: rgba(16,185,129,0.10); }
+[data-theme="light"] .bg-red-500\/10 { background: rgba(239,68,68,0.10); }
+
+/* Table thead dark overlay */
+[data-theme="light"] thead[style*="rgba(24,24,27"] { background: rgba(0,0,0,0.04) !important; }
+
+/* Focus ring: amber readable on light bg */
+[data-theme="light"] :focus-visible { outline-color: rgba(180,83,9,0.7); }
+
+/* Text selection on light bg */
+[data-theme="light"] ::selection { background: rgba(245,158,11,0.20); color: #18181b; }
+
 @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
