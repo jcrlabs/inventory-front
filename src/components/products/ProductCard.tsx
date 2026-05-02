@@ -11,9 +11,9 @@ interface ProductCardProps {
 }
 
 const statusConfig = {
-  reparado:    { label: 'Reparado',    Icon: CheckCircle2, color: '#34d399', bg: '#064e3b', border: '#059669' },
-  en_progreso: { label: 'En progreso', Icon: Clock,        color: '#fbbf24', bg: '#451a03', border: '#d97706' },
-  no_reparado: { label: 'No reparado', Icon: XCircle,      color: '#f87171', bg: '#450a0a', border: '#dc2626' },
+  reparado:    { label: 'Reparado',    Icon: CheckCircle2, colorCls: 'text-emerald-400', bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.25)' },
+  en_progreso: { label: 'En progreso', Icon: Clock,        colorCls: 'text-amber-400',   bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
+  no_reparado: { label: 'No reparado', Icon: XCircle,      colorCls: 'text-red-400',     bg: 'rgba(239,68,68,0.12)',  border: 'rgba(239,68,68,0.25)' },
 }
 
 const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
@@ -142,8 +142,8 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
         {/* Status badge */}
         <div className="absolute top-2 right-2 z-10">
           <span
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide"
-            style={{ background: status.bg, color: status.color, border: `1px solid ${status.border}` }}
+            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide ${status.colorCls}`}
+            style={{ background: status.bg, border: `1px solid ${status.border}` }}
           >
             <StatusIcon size={11} strokeWidth={2.5} />
             {status.label}
