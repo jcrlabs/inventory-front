@@ -11,9 +11,9 @@ interface ProductCardProps {
 }
 
 const statusConfig = {
-  reparado:    { label: 'Reparado',    Icon: CheckCircle2, colorCls: 'text-emerald-400', bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.25)' },
-  en_progreso: { label: 'En progreso', Icon: Clock,        colorCls: 'text-amber-400',   bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
-  no_reparado: { label: 'No reparado', Icon: XCircle,      colorCls: 'text-red-400',     bg: 'rgba(239,68,68,0.12)',  border: 'rgba(239,68,68,0.25)' },
+  reparado:    { label: 'Reparado',    Icon: CheckCircle2, colorCls: 'text-emerald-400', accent: '#10b981', bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.25)' },
+  en_progreso: { label: 'En progreso', Icon: Clock,        colorCls: 'text-amber-400',   accent: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
+  no_reparado: { label: 'No reparado', Icon: XCircle,      colorCls: 'text-red-400',     accent: '#ef4444', bg: 'rgba(239,68,68,0.12)',  border: 'rgba(239,68,68,0.25)' },
 }
 
 const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
@@ -72,7 +72,7 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
 
   return (
     <div className="group relative rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
-      <div className="absolute left-0 top-0 bottom-0 w-1 z-10" style={{ background: status.color }} />
+      <div className="absolute left-0 top-0 bottom-0 w-1 z-10" style={{ background: status.accent }} />
 
       {/* ── Carousel ── */}
       <div
