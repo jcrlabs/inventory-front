@@ -16,9 +16,9 @@ import { getErrorMessage } from '../api/client'
 import type { CreateProductInput, UpsertContactInput } from '../types'
 
 const statusConfig = {
-  reparado:    { label: 'Reparado',    Icon: CheckCircle2, color: '#10b981', bg: 'rgba(16,185,129,0.08)',  border: 'rgba(16,185,129,0.18)' },
-  en_progreso: { label: 'En progreso', Icon: Clock,         color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.18)' },
-  no_reparado: { label: 'No reparado', Icon: AlertCircle,   color: '#ef4444', bg: 'rgba(239,68,68,0.08)',  border: 'rgba(239,68,68,0.18)' },
+  reparado:    { label: 'Reparado',    Icon: CheckCircle2, colorCls: 'text-emerald-400', bg: 'rgba(16,185,129,0.08)',  border: 'rgba(16,185,129,0.18)' },
+  en_progreso: { label: 'En progreso', Icon: Clock,         colorCls: 'text-amber-400',  bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.18)' },
+  no_reparado: { label: 'No reparado', Icon: AlertCircle,   colorCls: 'text-red-400',    bg: 'rgba(239,68,68,0.08)',  border: 'rgba(239,68,68,0.18)' },
 }
 
 export default function ProductDetailPage() {
@@ -114,8 +114,8 @@ export default function ProductDetailPage() {
           <div className="flex flex-wrap items-center gap-2">
             {/* Status badge */}
             <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
-              style={{ background: status.bg, color: status.color, border: `1px solid ${status.border}` }}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${status.colorCls}`}
+              style={{ background: status.bg, border: `1px solid ${status.border}` }}
             >
               <StatusIcon size={12} />
               {status.label}

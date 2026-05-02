@@ -111,9 +111,9 @@ function RecentProducts() {
   const products = data?.data ?? []
 
   const statusConfig = {
-    reparado: { label: t('products.repaired'), icon: CheckCircle2, color: '#10b981', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.15)' },
-    en_progreso: { label: t('products.inProgress'), icon: Clock, color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.15)' },
-    no_reparado: { label: t('products.notRepaired'), icon: AlertCircle, color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.15)' },
+    reparado: { label: t('products.repaired'), icon: CheckCircle2, colorCls: 'text-emerald-400', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.15)' },
+    en_progreso: { label: t('products.inProgress'), icon: Clock, colorCls: 'text-amber-400', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.15)' },
+    no_reparado: { label: t('products.notRepaired'), icon: AlertCircle, colorCls: 'text-red-400', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.15)' },
   }
 
   return (
@@ -198,8 +198,8 @@ function RecentProducts() {
                   </p>
                 </div>
                 <div
-                  className="flex items-center gap-1.5 flex-shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full"
-                  style={{ background: status.bg, color: status.color, border: `1px solid ${status.border}` }}
+                  className={`flex items-center gap-1.5 flex-shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full ${status.colorCls}`}
+                  style={{ background: status.bg, border: `1px solid ${status.border}` }}
                 >
                   <StatusIcon size={11} />
                   <span className="hidden sm:inline">{status.label}</span>

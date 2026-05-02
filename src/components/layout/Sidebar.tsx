@@ -107,7 +107,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 >
                   {({ isActive }) => (
                     <>
-                      <Icon size={15} style={{ color: isActive ? '#fbbf24' : 'var(--text-3)' }} />
+                      <Icon size={15} className={isActive ? 'text-amber-400' : ''} style={!isActive ? { color: 'var(--text-3)' } : undefined} />
                       {label}
                     </>
                   )}
@@ -122,11 +122,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="px-3 pb-3 flex items-center gap-1.5">
           {/* Theme toggle */}
           <button onClick={toggleTheme} aria-label={t('theme.toggle')}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium transition-all"
+            className="flex-1 flex items-center justify-center py-2 rounded-xl transition-all"
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-2)' }}
           >
-            {isDark ? <Sun size={12} /> : <Moon size={12} />}
-            <span>{isDark ? t('theme.light') : t('theme.dark')}</span>
+            {isDark ? <Sun size={14} /> : <Moon size={14} />}
           </button>
 
           {/* Language switcher */}
@@ -144,8 +143,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               >
                 {LOCALES.map((l) => (
                   <button key={l} onClick={() => handleLocale(l)}
-                    className="w-full text-left px-3 py-2 text-xs font-medium transition-colors"
-                    style={{ color: locale === l ? '#f59e0b' : 'var(--text-2)', background: locale === l ? 'rgba(245,158,11,0.06)' : 'transparent' }}
+                    className={`w-full text-left px-3 py-2 text-xs font-medium transition-colors ${locale === l ? 'text-amber-500' : ''}`}
+                    style={{ color: locale !== l ? 'var(--text-2)' : undefined, background: locale === l ? 'rgba(245,158,11,0.06)' : 'transparent' }}
                     onMouseEnter={(e) => { if (locale !== l) (e.target as HTMLElement).style.background = 'var(--bg-hover)' }}
                     onMouseLeave={(e) => { if (locale !== l) (e.target as HTMLElement).style.background = 'transparent' }}
                   >
