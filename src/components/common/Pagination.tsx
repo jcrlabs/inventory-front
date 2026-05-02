@@ -29,30 +29,33 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
         >
           <ChevronLeft size={18} />
         </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1)
-          .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
-          .reduce<(number | 'ellipsis')[]>((acc, p, idx, arr) => {
-            if (idx > 0 && (arr[idx - 1] as number) + 1 !== p) acc.push('ellipsis')
-            acc.push(p)
-            return acc
-          }, [])
-          .map((p, idx) =>
-            p === 'ellipsis' ? (
-              <span key={`e-${idx}`} className="px-2 text-zinc-500">…</span>
-            ) : (
-              <button
-                key={p}
-                onClick={() => onChange(p as number)}
-                className={`w-9 h-9 sm:w-8 sm:h-8 rounded-lg text-sm font-medium transition-colors ${
-                  p === page
-                    ? 'bg-amber-600 text-white'
-                    : 'text-zinc-300 hover:bg-[var(--bg-hover)] hover:text-zinc-100'
-                }`}
-              >
-                {p}
-              </button>
-            )
-          )}
+        {/* Page numbers — hidden on mobile to prevent overflow */}
+        <div className="hidden sm:flex items-center gap-1">
+          {Array.from({ length: totalPages }, (_, i) => i + 1)
+            .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+            .reduce<(number | 'ellipsis')[]>((acc, p, idx, arr) => {
+              if (idx > 0 && (arr[idx - 1] as number) + 1 !== p) acc.push('ellipsis')
+              acc.push(p)
+              return acc
+            }, [])
+            .map((p, idx) =>
+              p === 'ellipsis' ? (
+                <span key={`e-${idx}`} className="px-2 text-zinc-500">…</span>
+              ) : (
+                <button
+                  key={p}
+                  onClick={() => onChange(p as number)}
+                  className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                    p === page
+                      ? 'bg-amber-600 text-white'
+                      : 'text-zinc-300 hover:bg-[var(--bg-hover)] hover:text-zinc-100'
+                  }`}
+                >
+                  {p}
+                </button>
+              )
+            )}
+        </div>
         <button
           onClick={() => onChange(page + 1)}
           disabled={page === totalPages}

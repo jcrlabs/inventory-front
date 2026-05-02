@@ -49,7 +49,7 @@ export default function Layout() {
               className="w-7 h-7 flex-shrink-0"
               style={{ filter: 'drop-shadow(0 0 4px rgba(245,158,11,0.2))' }}
             />
-            <span className="text-white text-sm font-semibold tracking-tight">Electroteca</span>
+            <span className="text-sm font-semibold tracking-tight" style={{ color: 'var(--text-1)' }}>Electroteca</span>
           </div>
         </header>
 
