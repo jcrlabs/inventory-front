@@ -34,21 +34,27 @@ export default class ErrorBoundary extends React.Component<Props, State> {
       if (this.props.fallback) return this.props.fallback
 
       return (
-        <div className="min-h-[400px] flex items-center justify-center p-8">
+        <div className="min-h-[400px] flex items-center justify-center p-8" style={{ background: 'var(--bg-base)' }}>
           <div className="text-center max-w-md">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
-              <AlertTriangle className="text-red-500" size={32} />
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
+              style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)' }}
+            >
+              <AlertTriangle className="text-red-400" size={32} />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Algo salió mal</h2>
-            <p className="text-sm text-gray-500 mb-2">
+            <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-1)' }}>
+              Algo salió mal
+            </h2>
+            <p className="text-sm mb-2" style={{ color: 'var(--text-2)' }}>
               {this.state.error?.message ?? 'Ha ocurrido un error inesperado.'}
             </p>
-            <p className="text-xs text-gray-400 mb-6">
+            <p className="text-xs mb-6" style={{ color: 'var(--text-3)' }}>
               Si el problema persiste, recarga la página.
             </p>
             <button
               onClick={this.handleReset}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
             >
               <RefreshCw size={14} />
               Reintentar

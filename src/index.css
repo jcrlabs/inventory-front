@@ -30,8 +30,8 @@
   --bg-input:    #ffffff;
   --bg-hover:    rgba(0,0,0,0.04);
   --text-1:      #18181b;
-  --text-2:      #52525b;
-  --text-3:      #71717a;
+  --text-2:      #3f3f46;
+  --text-3:      #52525b;
   --border:      rgba(0,0,0,0.08);
   --border-md:   rgba(0,0,0,0.12);
   --scrollbar:   #d4d4d8;
@@ -92,9 +92,9 @@
 
 [data-theme="light"] .text-zinc-300 { color: #3f3f46; }
 
-[data-theme="light"] .text-zinc-400 { color: #52525b; }
+[data-theme="light"] .text-zinc-400 { color: #3f3f46; }
 
-[data-theme="light"] .text-zinc-500 { color: #71717a; }
+[data-theme="light"] .text-zinc-500 { color: #52525b; }
 
 [data-theme="light"] .text-zinc-600 { color: #52525b; }
 
