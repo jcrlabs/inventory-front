@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Tag, Edit, Trash2, ChevronDown, ChevronRight, Package, Search, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -13,7 +14,7 @@ import { usePermissions } from '../hooks/usePermissions'
 import { getErrorMessage } from '../api/client'
 import type { Category, CreateCategoryInput } from '../types'
 
-const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
+const inputClass = "w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors bg-[var(--bg-input)] text-[var(--text-1)] border border-[var(--border)]"
 
 function CategoryForm({
   category,
@@ -155,6 +156,7 @@ function CategoryProducts({ categoryId }: { categoryId: string }) {
 }
 
 export default function CategoriesPage() {
+  const { t } = useTranslation()
   const { canManage, canDelete } = usePermissions()
   const queryClient = useQueryClient()
   const [editing, setEditing] = useState<Category | null>(null)
@@ -173,7 +175,7 @@ export default function CategoriesPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
       setShowCreate(false)
-      toast.success('Categoría creada')
+      toast.success(t('categories.created'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -183,7 +185,7 @@ export default function CategoriesPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
       setEditing(null)
-      toast.success('Categoría actualizada')
+      toast.success(t('categories.updated'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -193,7 +195,7 @@ export default function CategoriesPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] })
       setDeleting(null)
-      toast.success('Categoría eliminada')
+      toast.success(t('categories.deleted'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -217,9 +219,9 @@ export default function CategoriesPage() {
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Electroteca</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Categorías</h1>
-          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">Agrupa los productos para organizar mejor la electroteca</p>
-          <p className="text-sm text-zinc-500 mt-0.5">{data?.total ?? 0} categorías</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">{t('categories.title')}</h1>
+          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">{t('categories.subtitle')}</p>
+          <p className="text-sm text-zinc-500 mt-0.5">{t(data?.total === 1 ? 'categories.total_one' : 'categories.total_other', { count: data?.total ?? 0 })}</p>
         </div>
         {canManage && (
           <button
@@ -228,21 +230,21 @@ export default function CategoriesPage() {
             style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.35)' }}
           >
             <Plus size={17} />
-            <span className="hidden sm:inline">Nueva categoría</span>
-            <span className="sm:hidden">Nueva</span>
+            <span className="hidden sm:inline">{t('categories.new')}</span>
+            <span className="sm:hidden">{t('categories.newShort')}</span>
           </button>
         )}
       </div>
 
       {/* Search bar */}
-      <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 p-3 sm:p-4 mb-5 sm:mb-6">
+      <div className="rounded-2xl p-3 sm:p-4 mb-5 sm:mb-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" size={15} />
           <input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Buscar categoría..."
-            className="w-full pl-9 pr-8 py-2 border border-zinc-700 rounded-lg text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
+            placeholder={t('categories.search')}
+            className="w-full pl-9 pr-8 py-2 rounded-lg text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors bg-[var(--bg-input)] text-[var(--text-1)] border border-[var(--border)]"
           />
           {searchInput && (
             <button onClick={() => setSearchInput('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
@@ -311,7 +313,8 @@ export default function CategoriesPage() {
             return (
               <div
                 key={category.id}
-                className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden transition-all duration-150"
+                className="rounded-2xl shadow-none overflow-hidden transition-all duration-150"
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
               >
                 {/* Header row */}
                 <div
@@ -369,7 +372,7 @@ export default function CategoriesPage() {
         </div>
       )}
 
-      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nueva Categoría" size="sm">
+      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title={t('categories.createTitle')} size="sm">
         <CategoryForm
           onSubmit={async (data) => { await createMutation.mutateAsync(data) }}
           onCancel={() => setShowCreate(false)}
@@ -377,7 +380,7 @@ export default function CategoriesPage() {
         />
       </Modal>
 
-      <Modal isOpen={!!editing} onClose={() => setEditing(null)} title="Editar Categoría" size="sm">
+      <Modal isOpen={!!editing} onClose={() => setEditing(null)} title={t('categories.editTitle')} size="sm">
         {editing && (
           <CategoryForm
             category={editing}
@@ -392,8 +395,8 @@ export default function CategoriesPage() {
         isOpen={!!deleting}
         onClose={() => setDeleting(null)}
         onConfirm={() => deleting && deleteMutation.mutate(deleting.id)}
-        title="Eliminar categoría"
-        message={`¿Eliminar la categoría "${deleting?.name}"? Los productos asociados no se eliminarán.`}
+        title={t('categories.deleteTitle')}
+        message={t('categories.deleteConfirm', { name: deleting?.name ?? '' })}
         isLoading={deleteMutation.isPending}
       />
     </div>

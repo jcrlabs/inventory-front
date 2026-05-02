@@ -10,6 +10,7 @@ import ErrorBoundary from '../components/common/ErrorBoundary'
 import { usePermissions } from '../hooks/usePermissions'
 
 function StatsGrid() {
+  const { t } = useTranslation()
   const { isAdmin } = usePermissions()
 
   const { data: stats, isLoading } = useQuery({
@@ -28,9 +29,9 @@ function StatsGrid() {
 
   const cards = [
     {
-      label: 'Total Reparaciones',
+      label: t('dashboard.totalRepairs'),
       value: stats?.total_products ?? 0,
-      sub: `${stats?.repaired_products ?? 0} reparadas · ${stats?.paid_products ?? 0} pagadas`,
+      sub: t('dashboard.repairedCount', { repaired: stats?.repaired_products ?? 0, paid: stats?.paid_products ?? 0 }),
       icon: Package,
       color: '#f59e0b',
       glow: 'rgba(245,158,11,0.2)',
@@ -39,7 +40,7 @@ function StatsGrid() {
       to: '/products',
     },
     {
-      label: 'Categorías',
+      label: t('dashboard.categories'),
       value: stats?.total_categories ?? 0,
       icon: Tag,
       color: '#22d3ee',
@@ -50,7 +51,7 @@ function StatsGrid() {
     },
     ...(isAdmin
       ? [{
-          label: 'Usuarios',
+          label: t('dashboard.users'),
           value: stats?.total_users ?? 0,
           icon: Users,
           color: '#f59e0b',
@@ -74,11 +75,8 @@ function StatsGrid() {
         <Link
           key={label}
           to={to}
-          className="group relative rounded-2xl p-4 sm:p-5 bg-zinc-800 overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
-          style={{
-            border: `1px solid ${border}`,
-            boxShadow: `0 2px 12px -4px ${glow}, 0 1px 3px rgba(0,0,0,0.04)`,
-          }}
+          className="group relative rounded-2xl p-4 sm:p-5 overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
+          style={{ background: 'var(--bg-card)', border: `1px solid ${border}`, boxShadow: `0 2px 12px -4px ${glow}, 0 1px 3px rgba(0,0,0,0.04)` }}
         >
           <div className="flex items-start justify-between mb-4">
             <div
@@ -103,6 +101,7 @@ function StatsGrid() {
 }
 
 function RecentProducts() {
+  const { t } = useTranslation()
   const { data, isLoading } = useQuery({
     queryKey: ['products', { page: 1, page_size: 8 }],
     queryFn: () => productsApi.list({ page: 1, page_size: 8 }),
@@ -112,23 +111,23 @@ function RecentProducts() {
   const products = data?.data ?? []
 
   const statusConfig = {
-    reparado: { label: 'Reparado', icon: CheckCircle2, color: '#10b981', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.15)' },
-    en_progreso: { label: 'En progreso', icon: Clock, color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.15)' },
-    no_reparado: { label: 'No reparado', icon: AlertCircle, color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.15)' },
+    reparado: { label: t('products.repaired'), icon: CheckCircle2, color: '#10b981', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.15)' },
+    en_progreso: { label: t('products.inProgress'), icon: Clock, color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.15)' },
+    no_reparado: { label: t('products.notRepaired'), icon: AlertCircle, color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.15)' },
   }
 
   return (
-    <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
+    <div className="rounded-2xl shadow-none overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
       <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-200">Últimas Reparaciones</h2>
-          <p className="text-xs text-zinc-500 mt-0.5">Actividad reciente de la electroteca</p>
+          <h2 className="text-sm font-semibold text-zinc-200">{t('dashboard.recentRepairs')}</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">{t('dashboard.recentSubtitle')}</p>
         </div>
         <Link
           to="/products"
           className="flex items-center gap-1 text-xs font-semibold text-amber-500 hover:text-amber-400 transition-colors"
         >
-          Ver todas
+          {t('dashboard.viewAll')}
           <ArrowUpRight size={13} />
         </Link>
       </div>
@@ -153,15 +152,15 @@ function RecentProducts() {
             >
               <Package className="text-amber-500/70" size={22} />
             </div>
-            <p className="text-sm font-semibold text-zinc-300 mb-1">Todo despejado</p>
+            <p className="text-sm font-semibold text-zinc-300 mb-1">{t('dashboard.cleared')}</p>
             <p className="text-xs text-zinc-500 max-w-[200px] mx-auto leading-relaxed">
-              Aún no hay reparaciones registradas en la electroteca
+              {t('dashboard.clearedDesc')}
             </p>
             <Link
               to="/products"
               className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-amber-500 hover:text-amber-400 transition-colors"
             >
-              Crear primera reparación
+              {t('dashboard.createFirst')}
               <ArrowUpRight size={12} />
             </Link>
           </div>

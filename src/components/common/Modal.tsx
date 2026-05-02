@@ -82,8 +82,8 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
         ref={containerRef}
         className={`relative sm:rounded-2xl rounded-t-2xl w-full ${sizeClasses[size]} flex flex-col overflow-x-hidden animate-scale-in`}
         style={{
-          background: '#1a1a1a',
-          border: '1px solid rgba(255,255,255,0.09)',
+          background: 'var(--bg-surface)',
+          border: '1px solid var(--border-md)',
           boxShadow: '0 24px 64px -12px rgba(0,0,0,0.8)',
           maxHeight: 'min(92svh, 92vh)',
         }}
@@ -91,7 +91,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' }:
         {/* Header — always visible, never shrinks */}
         <div
           className="flex items-center justify-between px-5 py-3.5 flex-shrink-0 sticky top-0 z-10"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', background: '#1a1a1a' }}
+          style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-surface)' }}
         >
           <h2 id={titleId} className="text-[15px] font-semibold text-zinc-100 truncate pr-3">{title}</h2>
           <button

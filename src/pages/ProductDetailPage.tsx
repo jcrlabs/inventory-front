@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft, Edit, Trash2, Package, Phone, Mail, UserRound, Clock, CheckCircle2, AlertCircle, Calendar, Tag } from 'lucide-react'
@@ -21,6 +22,7 @@ const statusConfig = {
 }
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -48,7 +50,7 @@ export default function ProductDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['product', id] })
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setShowEdit(false)
-      toast.success('Reparación actualizada')
+      toast.success(t('productDetail.updated'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -57,7 +59,7 @@ export default function ProductDetailPage() {
     mutationFn: () => productsApi.delete(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
-      toast.success('Reparación eliminada')
+      toast.success(t('productDetail.deleted'))
       navigate('/products')
     },
     onError: (err) => toast.error(getErrorMessage(err)),
@@ -93,7 +95,7 @@ export default function ProductDetailPage() {
           className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-zinc-200 transition-colors mb-3"
         >
           <ArrowLeft size={15} />
-          <span>Volver a productos</span>
+          <span>{t('productDetail.backToProducts')}</span>
         </Link>
 
         {/* Title row */}
@@ -154,7 +156,7 @@ export default function ProductDetailPage() {
         <div className="space-y-4">
           {/* Images */}
           {canManage ? (
-            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <div className="rounded-2xl shadow-none p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <h2 className="text-sm font-semibold text-zinc-300 mb-3 flex items-center gap-2">
                 Imágenes
                 {product.images && product.images.length > 0 && (
@@ -243,7 +245,7 @@ export default function ProductDetailPage() {
 
           {/* Repair Reference */}
           {product.repair_reference && (
-            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <div className="rounded-2xl shadow-none p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <h2 className="text-sm font-semibold text-zinc-300 mb-2">Referencia de reparación</h2>
               <p className="text-sm font-mono text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-lg inline-block border border-amber-500/20">{product.repair_reference}</p>
             </div>
@@ -251,7 +253,7 @@ export default function ProductDetailPage() {
 
           {/* Repair Description */}
           {product.repair_description && (
-            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <div className="rounded-2xl shadow-none p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <h2 className="text-sm font-semibold text-zinc-300 mb-3">Descripción de reparación</h2>
               <p className="text-sm text-zinc-400 leading-relaxed whitespace-pre-wrap">{product.repair_description}</p>
             </div>
@@ -259,7 +261,7 @@ export default function ProductDetailPage() {
 
           {/* Observations */}
           {product.observations && (
-            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <div className="rounded-2xl shadow-none p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <h2 className="text-sm font-semibold text-zinc-300 mb-3">Observaciones</h2>
               <p className="text-sm text-zinc-400 leading-relaxed whitespace-pre-wrap">{product.observations}</p>
             </div>
@@ -267,7 +269,7 @@ export default function ProductDetailPage() {
 
           {/* Workshop dates */}
           {(product.entry_date || product.exit_date) && (
-            <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-5">
+            <div className="rounded-2xl shadow-none p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <h2 className="text-sm font-semibold text-zinc-300 mb-4">Fechas de electroteca</h2>
               <div className="space-y-3">
                 {product.entry_date && (
@@ -334,7 +336,7 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      <Modal isOpen={showEdit} onClose={() => setShowEdit(false)} title="Editar Producto">
+      <Modal isOpen={showEdit} onClose={() => setShowEdit(false)} title={t('productDetail.editTitle')}>
         <ProductForm
           product={product}
           onSubmit={async (data, contact, imageFiles) => {
@@ -349,8 +351,8 @@ export default function ProductDetailPage() {
         isOpen={showDelete}
         onClose={() => setShowDelete(false)}
         onConfirm={() => deleteMutation.mutate()}
-        title="Eliminar producto"
-        message={`¿Estás seguro de que quieres eliminar "${product.name}"? Esta acción no se puede deshacer.`}
+        title={t('productDetail.deleteTitle')}
+        message={t('productDetail.deleteConfirm', { name: product.name })}
         isLoading={deleteMutation.isPending}
       />
     </div>

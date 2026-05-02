@@ -40,15 +40,16 @@ export default function ConfirmDialog({
         aria-modal="true"
         aria-labelledby="confirm-title"
         aria-describedby="confirm-message"
-        className="relative bg-zinc-800 border border-zinc-700/80 rounded-2xl shadow-2xl w-full max-w-sm p-6"
+        className="relative rounded-2xl shadow-2xl w-full max-w-sm p-6"
+        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-md)' }}
       >
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
             <AlertTriangle className="text-red-400" size={20} aria-hidden="true" />
           </div>
           <div>
-            <h3 id="confirm-title" className="text-base font-semibold text-zinc-100">{title}</h3>
-            <p id="confirm-message" className="mt-1 text-sm text-zinc-400">{message}</p>
+            <h3 id="confirm-title" className="text-base font-semibold" style={{ color: 'var(--text-1)' }}>{title}</h3>
+            <p id="confirm-message" className="mt-1 text-sm" style={{ color: 'var(--text-2)' }}>{message}</p>
           </div>
         </div>
 
@@ -57,7 +58,8 @@ export default function ConfirmDialog({
             ref={cancelRef}
             onClick={onClose}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-zinc-300 bg-zinc-700 border border-zinc-600 rounded-xl hover:bg-zinc-600 hover:text-zinc-100 disabled:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+            className="px-4 py-2 text-sm font-medium rounded-xl hover:opacity-80 disabled:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+            style={{ color: 'var(--text-2)', background: 'var(--bg-card)', border: '1px solid var(--border)' }}
           >
             Cancelar
           </button>

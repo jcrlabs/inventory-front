@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Users, Shield } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -24,7 +25,7 @@ const roleLabels: Record<Role, string> = {
   viewer: 'Visualizador',
 }
 
-const inputClass = "w-full px-3.5 py-2.5 border border-zinc-700 rounded-xl text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
+const inputClass = "w-full px-3.5 py-2.5 rounded-xl text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors bg-[var(--bg-input)] text-[var(--text-1)] border border-[var(--border)]"
 
 function UserForm({
   user,
@@ -138,6 +139,7 @@ function UserForm({
 }
 
 export default function UsersPage() {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const currentUser = useAuthStore((s) => s.user)
   const [editing, setEditing] = useState<User | null>(null)
@@ -154,7 +156,7 @@ export default function UsersPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       setShowCreate(false)
-      toast.success('Usuario creado')
+      toast.success(t('users.created'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -164,7 +166,7 @@ export default function UsersPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       setEditing(null)
-      toast.success('Usuario actualizado')
+      toast.success(t('users.updated'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -174,7 +176,7 @@ export default function UsersPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       setDeleting(null)
-      toast.success('Usuario eliminado')
+      toast.success(t('users.deleted'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -187,9 +189,9 @@ export default function UsersPage() {
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Administración</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Usuarios</h1>
-          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">Gestiona el acceso y los permisos de cada persona</p>
-          <p className="text-sm text-zinc-500 mt-0.5">{data?.total ?? 0} usuarios registrados</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">{t('users.title')}</h1>
+          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">{t('users.subtitle')}</p>
+          <p className="text-sm text-zinc-500 mt-0.5">{t(data?.total === 1 ? 'users.total_one' : 'users.total_other', { count: data?.total ?? 0 })}</p>
         </div>
         <button
           onClick={() => setShowCreate(true)}
@@ -203,15 +205,15 @@ export default function UsersPage() {
       </div>
 
       {isLoading ? (
-        <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden">
+        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[580px]">
               <thead style={{ background: 'rgba(24,24,27,0.7)', borderBottom: '1px solid rgba(63,63,70,0.6)' }}>
                 <tr>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Usuario</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Rol</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden md:table-cell">Estado</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('users.colUsername')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">{t('users.colEmail')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('users.colRole')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden md:table-cell">{t('users.colStatus')}</th>
                   <th className="px-5 py-3" />
                 </tr>
               </thead>
@@ -222,16 +224,16 @@ export default function UsersPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
+        <div className="rounded-2xl shadow-none overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[580px]">
               <thead style={{ background: 'rgba(24,24,27,0.7)', borderBottom: '1px solid rgba(63,63,70,0.6)' }}>
                 <tr>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Usuario</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">Email</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Rol</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden md:table-cell">Estado</th>
-                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden lg:table-cell">Último acceso</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('users.colUsername')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden sm:table-cell">{t('users.colEmail')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('users.colRole')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden md:table-cell">{t('users.colStatus')}</th>
+                  <th className="text-left px-5 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide hidden lg:table-cell">{t('users.colLastLogin')}</th>
                   <th className="px-5 py-3" />
                 </tr>
               </thead>
@@ -249,7 +251,7 @@ export default function UsersPage() {
                         <div>
                           <p className="font-semibold text-zinc-200">{user.username}</p>
                           {user.id === currentUser?.id && (
-                            <span className="text-xs text-amber-500 font-medium">(tú)</span>
+                            <span className="text-xs text-amber-500 font-medium">{t('users.you')}</span>
                           )}
                           {/* Email shown below name on small screens */}
                           <p className="text-xs text-zinc-500 sm:hidden mt-0.5">{user.email}</p>
@@ -270,7 +272,7 @@ export default function UsersPage() {
                     </td>
                     <td className="px-5 py-3.5 hidden md:table-cell">
                       <Badge variant={user.active ? 'success' : 'error'}>
-                        {user.active ? 'Activo' : 'Inactivo'}
+                        {user.active ? t('users.active') : t('users.inactive')}
                       </Badge>
                     </td>
                     <td className="px-5 py-3.5 text-zinc-500 text-xs hidden lg:table-cell">
@@ -326,7 +328,7 @@ export default function UsersPage() {
         </div>
       )}
 
-      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Usuario" size="sm">
+      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title={t('users.createTitle')} size="sm">
         <UserForm
           onSubmit={async (data) => { await createMutation.mutateAsync(data as CreateUserInput) }}
           onCancel={() => setShowCreate(false)}
@@ -334,7 +336,7 @@ export default function UsersPage() {
         />
       </Modal>
 
-      <Modal isOpen={!!editing} onClose={() => setEditing(null)} title="Editar Usuario" size="sm">
+      <Modal isOpen={!!editing} onClose={() => setEditing(null)} title={t('users.editTitle')} size="sm">
         {editing && (
           <UserForm
             user={editing}
@@ -349,8 +351,8 @@ export default function UsersPage() {
         isOpen={!!deleting}
         onClose={() => setDeleting(null)}
         onConfirm={() => deleting && deleteMutation.mutate(deleting.id)}
-        title="Eliminar usuario"
-        message={`¿Eliminar al usuario "${deleting?.username}"?`}
+        title={t('users.deleteTitle')}
+        message={t('users.deleteConfirm', { name: deleting?.username ?? '' })}
         isLoading={deleteMutation.isPending}
       />
     </div>

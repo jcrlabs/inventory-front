@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus, Search, LayoutGrid, List, Package, X, SlidersHorizontal, ArrowUp, ArrowDown, Tag } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -17,9 +18,10 @@ import { useDebounce } from '../hooks/useDebounce'
 import { getErrorMessage } from '../api/client'
 import type { Product, CreateProductInput, UpsertContactInput, ProductFilters } from '../types'
 
-const selectClass = "px-3 py-2 border border-zinc-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 bg-zinc-800 text-zinc-300 transition-colors"
+const selectClass = "px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors bg-[var(--bg-input)] text-[var(--text-1)] border border-[var(--border)]"
 
 export default function ProductsPage() {
+  const { t } = useTranslation()
   const { canManage, canDeleteProduct } = usePermissions()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -62,7 +64,7 @@ export default function ProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setShowCreate(false)
-      toast.success('Reparación creada')
+      toast.success(t('products.created'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -81,7 +83,7 @@ export default function ProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setEditingProduct(null)
-      toast.success('Reparación actualizada')
+      toast.success(t('products.updated'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -91,7 +93,7 @@ export default function ProductsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] })
       setDeletingProduct(null)
-      toast.success('Reparación eliminada')
+      toast.success(t('products.deleted'))
     },
     onError: (err) => toast.error(getErrorMessage(err)),
   })
@@ -119,10 +121,10 @@ export default function ProductsPage() {
       <div className="flex items-center justify-between mb-5 sm:mb-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-amber-500 mb-0.5">Electroteca</p>
-          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">Productos</h1>
-          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">Registro y gestión de reparaciones de la electroteca</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-zinc-100">{t('products.title')}</h1>
+          <p className="text-xs text-zinc-600 mt-0.5 mb-0.5">{t('products.subtitle')}</p>
           <p className="text-sm text-zinc-500 mt-0.5" aria-live="polite">
-            {total} {total === 1 ? 'artículo' : 'artículos'}
+            {t(total === 1 ? 'products.items_one' : 'products.items_other', { count: total })}
             {isFetching && !isLoading && (
               <span className="ml-2 inline-block w-3 h-3 border-2 border-amber-400 border-t-transparent rounded-full animate-spin align-middle" role="status" aria-label="Cargando" />
             )}
@@ -135,14 +137,14 @@ export default function ProductsPage() {
             style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 14px -3px rgba(245,158,11,0.35)' }}
           >
             <Plus size={17} />
-            <span className="hidden sm:inline">Nuevo producto</span>
-            <span className="sm:hidden">Nuevo</span>
+            <span className="hidden sm:inline">{t('products.newProduct')}</span>
+            <span className="sm:hidden">{t('products.new')}</span>
           </button>
         )}
       </div>
 
       {/* Filter bar */}
-      <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none p-3 sm:p-4 mb-5 sm:mb-6">
+      <div className="rounded-2xl shadow-none p-3 sm:p-4 mb-5 sm:mb-6" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
         {/* Search row — always visible */}
         <div className="flex gap-2">
           <div className="flex-1 relative">
@@ -150,9 +152,9 @@ export default function ProductsPage() {
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Buscar por nombre, SKU..."
-              aria-label="Buscar productos"
-              className="w-full pl-9 pr-4 py-2 border border-zinc-700 rounded-lg text-sm bg-zinc-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors"
+              placeholder={t('products.search')}
+              aria-label={t('products.searchLabel')}
+              className="w-full pl-9 pr-4 py-2 rounded-lg text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-400 transition-colors bg-[var(--bg-input)] text-[var(--text-1)] border border-[var(--border)]"
             />
           </div>
 
@@ -216,13 +218,13 @@ export default function ProductsPage() {
         {/* Filters row — always visible on sm+, toggleable on mobile */}
         <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-2 mt-2.5 pt-2.5 border-t border-zinc-800`}>
           <div className="flex flex-col gap-1 flex-1 sm:flex-none">
-            <label className="text-[11px] font-medium text-zinc-500 px-0.5">Categoría</label>
+            <label className="text-[11px] font-medium text-zinc-500 px-0.5">{t('products.category')}</label>
             <select
               value={filters.category_id ?? ''}
               onChange={(e) => setFilters((f) => ({ ...f, category_id: e.target.value || undefined, page: 1 }))}
               className={selectClass}
             >
-              <option value="">Todas</option>
+              <option value="">{t('products.allCategories')}</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
@@ -230,43 +232,43 @@ export default function ProductsPage() {
           </div>
 
           <div className="flex flex-col gap-1 flex-1 sm:flex-none">
-            <label className="text-[11px] font-medium text-zinc-500 px-0.5">Estado</label>
+            <label className="text-[11px] font-medium text-zinc-500 px-0.5">{t('products.status')}</label>
             <select
               value={filters.status ?? ''}
               onChange={(e) => setFilters((f) => ({ ...f, status: (e.target.value || undefined) as typeof f.status, page: 1 }))}
               className={selectClass}
             >
-              <option value="">Todos</option>
-              <option value="en_progreso">En progreso</option>
-              <option value="reparado">Reparado</option>
-              <option value="no_reparado">No reparado</option>
+              <option value="">{t('products.allStatuses')}</option>
+              <option value="en_progreso">{t('products.inProgress')}</option>
+              <option value="reparado">{t('products.repaired')}</option>
+              <option value="no_reparado">{t('products.notRepaired')}</option>
             </select>
           </div>
 
           <div className="flex flex-col gap-1 flex-1 sm:flex-none">
-            <label className="text-[11px] font-medium text-zinc-500 px-0.5">Pago</label>
+            <label className="text-[11px] font-medium text-zinc-500 px-0.5">{t('products.payment')}</label>
             <select
               value={filters.paid === undefined ? '' : String(filters.paid)}
               onChange={(e) => setFilters((f) => ({ ...f, paid: e.target.value === '' ? undefined : e.target.value === 'true', page: 1 }))}
               className={selectClass}
             >
-              <option value="">Todos</option>
-              <option value="true">Pagado</option>
-              <option value="false">Pendiente</option>
+              <option value="">{t('products.allPayments')}</option>
+              <option value="true">{t('products.paid')}</option>
+              <option value="false">{t('products.pending')}</option>
             </select>
           </div>
 
           <div className="flex items-end gap-1.5 flex-1 sm:flex-none">
             <div className="flex flex-col gap-1 flex-1">
-              <label className="text-[11px] font-medium text-zinc-500 px-0.5">Ordenar por</label>
+              <label className="text-[11px] font-medium text-zinc-500 px-0.5">{t('products.sortBy')}</label>
               <select
                 value={filters.sort_by ?? 'created_at'}
                 onChange={(e) => setFilters((f) => ({ ...f, sort_by: (e.target.value as typeof f.sort_by) || undefined, page: 1 }))}
                 className={`${selectClass} flex-1`}
               >
-                <option value="created_at">Fecha creación</option>
-                <option value="entry_date">Fecha entrada</option>
-                <option value="exit_date">Fecha salida</option>
+                <option value="created_at">{t('products.sortCreatedAt')}</option>
+                <option value="entry_date">{t('products.sortEntryDate')}</option>
+                <option value="exit_date">{t('products.sortExitDate')}</option>
               </select>
             </div>
             <button
@@ -339,12 +341,12 @@ export default function ProductsPage() {
             />
           </div>
           <p className="text-base font-semibold text-zinc-300 mb-1.5">
-            {hasActiveFilters || searchInput ? 'Sin resultados' : 'Electroteca vacía'}
+            {hasActiveFilters || searchInput ? t('products.noResults') : t('products.empty')}
           </p>
           <p className="text-sm text-zinc-500 max-w-xs mx-auto leading-relaxed">
             {hasActiveFilters || searchInput
-              ? 'Ningún producto coincide con los filtros actuales'
-              : 'Registra tu primera reparación para empezar a gestionar la electroteca'}
+              ? t('products.noResultsDesc')
+              : t('products.emptyDesc')}
           </p>
           {(hasActiveFilters || searchInput) ? (
             <button
@@ -377,19 +379,19 @@ export default function ProductsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 shadow-none overflow-hidden">
+        <div className="rounded-2xl shadow-none overflow-hidden" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[560px]">
               <caption className="sr-only">Lista de productos</caption>
               <thead style={{ background: 'rgba(24,24,27,0.7)', borderBottom: '1px solid rgba(63,63,70,0.6)' }}>
                 <tr>
-                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Producto</th>
-                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Categoría</th>
-                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">F. Entrada</th>
-                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">F. Salida</th>
-                  <th className="text-right px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Precio</th>
-                  <th className="text-center px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Pago</th>
-                  <th className="text-center px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">Estado</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.product')}</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.category')}</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.entryDate')}</th>
+                  <th className="text-left px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.exitDate')}</th>
+                  <th className="text-right px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.price')}</th>
+                  <th className="text-center px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.paymentCol')}</th>
+                  <th className="text-center px-4 py-3 font-semibold text-zinc-400 text-xs uppercase tracking-wide">{t('products.statusCol')}</th>
                   {canManage && <th className="px-4 py-3" />}
                 </tr>
               </thead>
@@ -430,7 +432,7 @@ export default function ProductsPage() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${product.paid ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
-                        {product.paid ? 'Pagado' : 'Pendiente'}
+                        {product.paid ? t('products.paid') : t('products.pending')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -439,7 +441,7 @@ export default function ProductsPage() {
                         : product.status === 'en_progreso' ? 'bg-amber-500/10 text-amber-400'
                         : 'bg-red-500/10 text-red-400'
                       }`}>
-                        {product.status === 'reparado' ? 'Reparado' : product.status === 'en_progreso' ? 'En progreso' : 'No reparado'}
+                        {product.status === 'reparado' ? t('products.repaired') : product.status === 'en_progreso' ? t('products.inProgress') : t('products.notRepaired')}
                       </span>
                     </td>
                     {canManage && (
@@ -449,14 +451,14 @@ export default function ProductsPage() {
                             onClick={(e) => { e.stopPropagation(); setEditingProduct(product) }}
                             className="text-xs font-semibold text-amber-600 hover:text-amber-800 transition-colors"
                           >
-                            Editar
+                            {t('products.edit')}
                           </button>
                           {canDeleteProduct(product) && (
                             <button
                               onClick={(e) => { e.stopPropagation(); setDeletingProduct(product) }}
                               className="text-xs font-semibold text-red-500 hover:text-red-700 transition-colors"
                             >
-                              Eliminar
+                              {t('products.delete')}
                             </button>
                           )}
                         </div>
@@ -487,7 +489,7 @@ export default function ProductsPage() {
         </div>
       )}
 
-      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="Nuevo Producto">
+      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title={t('products.createTitle')}>
         <ProductForm
           onSubmit={async (data, contact, imageFiles) => { await createMutation.mutateAsync({ data, contact, imageFiles }) }}
           onCancel={() => setShowCreate(false)}
@@ -495,7 +497,7 @@ export default function ProductsPage() {
         />
       </Modal>
 
-      <Modal isOpen={!!editingProduct} onClose={() => setEditingProduct(null)} title="Editar Producto">
+      <Modal isOpen={!!editingProduct} onClose={() => setEditingProduct(null)} title={t('products.editTitle')}>
         {editingProduct && (
           <ProductForm
             product={editingProduct}
@@ -510,8 +512,8 @@ export default function ProductsPage() {
         isOpen={!!deletingProduct}
         onClose={() => setDeletingProduct(null)}
         onConfirm={() => deletingProduct && deleteMutation.mutate(deletingProduct.id)}
-        title="Eliminar producto"
-        message={`¿Estás seguro de que quieres eliminar "${deletingProduct?.name}"? Esta acción no se puede deshacer.`}
+        title={t('products.deleteTitle')}
+        message={t('products.deleteConfirm', { name: deletingProduct?.name ?? '' })}
         isLoading={deleteMutation.isPending}
       />
     </div>

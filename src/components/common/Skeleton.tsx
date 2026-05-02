@@ -4,13 +4,13 @@ interface SkeletonProps {
 
 function Skeleton({ className = '' }: SkeletonProps) {
   return (
-    <div className={`animate-pulse bg-zinc-700/50 rounded-lg ${className}`} />
+    <div className={`animate-pulse rounded-lg ${className}`} style={{ background: 'var(--bg-card)' }} />
   )
 }
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-zinc-800 rounded-2xl border border-zinc-700/70 overflow-hidden shadow-none">
+    <div className="rounded-2xl overflow-hidden shadow-none" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
       <Skeleton className="aspect-video rounded-none" />
       <div className="p-4 space-y-2">
         <Skeleton className="h-4 w-3/4" />
@@ -28,7 +28,7 @@ export function ProductCardSkeleton() {
 
 export function StatCardSkeleton() {
   return (
-    <div className="bg-zinc-800 rounded-2xl border border-zinc-700/70 shadow-none p-5">
+    <div className="rounded-2xl shadow-none p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
       <Skeleton className="h-10 w-10 rounded-xl mb-4" />
       <Skeleton className="h-8 w-24 mb-1.5" />
       <Skeleton className="h-4 w-32" />
@@ -71,7 +71,7 @@ export function ProductDetailSkeleton() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Left column */}
         <div className="space-y-4">
-          <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 p-5">
+          <div className="rounded-2xl p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
             <Skeleton className="h-4 w-20 mb-3" />
             <Skeleton className="aspect-square w-full rounded-xl" />
           </div>
@@ -85,7 +85,7 @@ export function ProductDetailSkeleton() {
 
         {/* Right column */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-zinc-800 rounded-2xl border border-zinc-700/80 p-5">
+          <div className="rounded-2xl p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
             <Skeleton className="h-4 w-36 mb-4" />
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">

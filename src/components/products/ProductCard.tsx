@@ -71,7 +71,7 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
   const StatusIcon = status.Icon
 
   return (
-    <div className="group relative bg-zinc-800 rounded-2xl border border-zinc-700/80 overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-600/80 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]">
+    <div className="group relative rounded-2xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
       <div className="absolute left-0 top-0 bottom-0 w-1 z-10" style={{ background: status.color }} />
 
       {/* ── Carousel ── */}
@@ -79,7 +79,8 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
         role="button"
         tabIndex={0}
         aria-label={`Ver detalle de ${product.name}`}
-        className="relative aspect-video bg-zinc-800 overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-inset"
+        className="relative aspect-video overflow-hidden cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-inset"
+        style={{ background: 'var(--bg-card)' }}
         onClick={handleImageClick}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick() } }}
         onTouchStart={onTouchStart}
@@ -182,7 +183,8 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
               {canManage && (
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(product) }}
-                  className="p-2 rounded-xl bg-zinc-800 hover:bg-amber-500/15 text-zinc-400 hover:text-amber-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                  className="p-2 rounded-xl hover:bg-amber-500/15 text-zinc-400 hover:text-amber-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                  style={{ background: 'var(--bg-card)' }}
                   aria-label="Editar"
                 >
                   <Edit size={13} />
@@ -191,7 +193,8 @@ const ProductCard = memo(function ProductCard({ product, onEdit, onDelete }: Pro
               {canDelete && (
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(product) }}
-                  className="p-2 rounded-xl bg-zinc-800 hover:bg-red-500/15 text-zinc-400 hover:text-red-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  className="p-2 rounded-xl hover:bg-red-500/15 text-zinc-400 hover:text-red-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  style={{ background: 'var(--bg-card)' }}
                   aria-label="Eliminar"
                 >
                   <Trash2 size={13} />

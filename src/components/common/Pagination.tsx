@@ -12,7 +12,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
   if (totalPages <= 1) return null
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 border-t border-zinc-700/80">
+    <div className="flex items-center justify-between px-4 py-3" style={{ background: 'var(--bg-card)', borderTop: '1px solid var(--border)' }}>
       {/* Desktop: rango completo */}
       <p className="hidden sm:block text-sm text-zinc-400">
         Mostrando {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, total)} de {total}
@@ -25,7 +25,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
         <button
           onClick={() => onChange(page - 1)}
           disabled={page === 1}
-          className="p-1.5 rounded-lg text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-lg text-zinc-400 hover:bg-[var(--bg-hover)] hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft size={18} />
         </button>
@@ -46,7 +46,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
                 className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
                   p === page
                     ? 'bg-amber-600 text-white'
-                    : 'text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100'
+                    : 'text-zinc-300 hover:bg-[var(--bg-hover)] hover:text-zinc-100'
                 }`}
               >
                 {p}
@@ -56,7 +56,7 @@ export default function Pagination({ page, pageSize, total, onChange }: Paginati
         <button
           onClick={() => onChange(page + 1)}
           disabled={page === totalPages}
-          className="p-1.5 rounded-lg text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-lg text-zinc-400 hover:bg-[var(--bg-hover)] hover:text-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronRight size={18} />
         </button>
