@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-05-03T09:10:01.029Z",
+  "phase": null,
+  "phase_name": "ad-hoc: light-theme a11y + i18n fixes",
+  "phase_dir": null,
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "completed",
+  "completed_tasks": [
+    {"id": 1, "name": "Light theme CSS — contraste WCAG AA (rose, amber, zinc variants)", "status": "done", "commit": "f33398f"},
+    {"id": 2, "name": "ProductsPage — traducir botones cuadrícula/lista hardcodeados", "status": "done", "commit": "f33398f"},
+    {"id": 3, "name": "ErrorBoundary — migrar 4 strings a i18n (wrapper funcional + clase)", "status": "done", "commit": "f33398f"},
+    {"id": 4, "name": "getErrorMessage — fallback i18n via import directo", "status": "done", "commit": "f33398f"},
+    {"id": 5, "name": "Locale files es/en/gl — añadir sección errors.*", "status": "done", "commit": "f33398f"},
+    {"id": 6, "name": "tailwind.config.js — eliminar tokens sin uso (surface, night, brand, glow)", "status": "done", "commit": "f33398f"},
+    {"id": 7, "name": "Input borders WCAG 1.4.11 — regla específica input.border (0.35 opacity)", "status": "done", "commit": "f33398f"},
+    {"id": 8, "name": "Deploy v0.3.12 — tag + push + kubectl rollout confirmado", "status": "done", "commit": "3e3c4ab"}
+  ],
+  "remaining_tasks": [],
+  "blockers": [],
+  "human_actions_pending": [],
+  "decisions": [
+    {"decision": "ErrorBoundary: patrón wrapper funcional + clase inner con prop t", "rationale": "React ErrorBoundary debe ser clase; hooks solo en funcional. Wrapper inyecta t como prop.", "phase": null},
+    {"decision": "bg-amber-600 → amber-700 via !important en light theme", "rationale": "amber-600+white = 4.2:1 (falla WCAG AA). amber-700 (#b45309) = 4.9:1.", "phase": null},
+    {"decision": "Tokens Tailwind (surface/night/brand) eliminados en lugar de migrar código", "rationale": "Código usa zinc-*/amber-* estándar. Tokens eran documentación mentirosa. Migrar habría sido refactor enorme.", "phase": null},
+    {"decision": "ArgoCD sync forzado via kubectl rollout restart", "rationale": "argocd CLI sin credenciales disponibles. values-prod.yaml ya tenía v0.3.12; solo faltaba trigger.", "phase": null}
+  ],
+  "uncommitted_files": [],
+  "next_action": "Revisar issues abiertos pendientes: (1) RegisterPage bg-[#111111] ignora light theme — fondo negro hardcodeado en auth page. (2) Resto de issues de UI-REVIEW.md (Badge en UsersPage, ProductCard mobile, DashboardPage grid vacío para viewers).",
+  "context_notes": "Sesión centrada en accesibilidad del tema claro y completar i18n. Todo commitado y desplegado en v0.3.12. Trabajo limpio, sin deuda técnica nueva."
+}
