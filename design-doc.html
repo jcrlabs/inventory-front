@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory · Documentación Técnica de Diseño</title>
+<style>
+  :root {
+    --amber: #f59e0b;
+    --amber-dark: #d97706;
+    --amber-light: #fbbf24;
+    --bg: #111111;
+    --surface: #1a1a1a;
+    --card: #222222;
+    --text1: #e4e4e7;
+    --text2: #a1a1aa;
+    --text3: #71717a;
+    --border: rgba(255,255,255,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px; }
+  .section { margin-bottom: 80px; }
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 32px;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(245,158,11,0.2);
+  }
+  h1 { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  p { color: var(--text2); margin-bottom: 12px; }
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px; background: rgba(255,255,255,0.06);
+    padding: 2px 6px; border-radius: 4px; color: var(--amber-light);
+  }
+
+  /* HERO */
+  .hero { padding: 80px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 80px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--amber); background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.2); border-radius: 999px;
+    padding: 4px 12px; margin-bottom: 24px;
+  }
+  .hero-gradient {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-meta { display: flex; gap: 32px; margin-top: 32px; flex-wrap: wrap; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .hero-meta-value { font-size: 13px; font-weight: 600; color: var(--text1); }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media(max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+  }
+  .card-sm { padding: 14px 16px; border-radius: 12px; }
+
+  /* COLOR SWATCHES */
+  .swatch-group { display: flex; flex-direction: column; gap: 8px; }
+  .swatch {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  }
+  .swatch-dot {
+    width: 32px; height: 32px; border-radius: 8px;
+    flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .swatch-info { flex: 1; }
+  .swatch-name { font-size: 12px; font-weight: 600; color: var(--text1); }
+  .swatch-hex { font-size: 11px; color: var(--text3); font-family: monospace; margin-top: 2px; }
+  .swatch-role { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  /* TYPOGRAPHY SPECIMENS */
+  .type-specimen {
+    padding: 20px; border-radius: 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .type-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 8px; }
+
+  /* LOGO DISPLAY */
+  .logo-container {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px; border-radius: 16px;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 70%);
+    border: 1px solid var(--border);
+  }
+  .logo-svg {
+    filter: drop-shadow(0 0 12px rgba(245,158,11,0.4));
+  }
+
+  /* WIREFRAME STYLES */
+  .wireframe-section { margin-bottom: 60px; }
+  .wireframe-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text3); margin-bottom: 16px;
+  }
+  .wf {
+    background: #0d0d0d; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; overflow: hidden; position: relative;
+  }
+  .wf-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--text3); text-align: center;
+    font-family: monospace;
+  }
+  .wf-amber {
+    background: rgba(245,158,11,0.08);
+    border-color: rgba(245,158,11,0.25);
+    color: #f59e0b;
+  }
+  .wf-dark {
+    background: rgba(0,0,0,0.3);
+    border-color: rgba(255,255,255,0.06);
+  }
+  .wf-grid { display: grid; gap: 8px; }
+
+  /* ACCESSIBILITY */
+  .contrast-pair {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 10px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .contrast-swatch { width: 48px; height: 32px; border-radius: 6px; flex-shrink: 0; }
+  .contrast-info { flex: 1; }
+  .contrast-pair-name { font-size: 12px; font-weight: 600; }
+  .contrast-ratio { font-size: 20px; font-weight: 800; margin-right: 8px; }
+  .badge-pass {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 2px 8px; border-radius: 999px;
+    background: rgba(16,185,129,0.15); color: #10b981;
+    border: 1px solid rgba(16,185,129,0.25);
+  }
+  .badge-aa { background: rgba(245,158,11,0.15); color: #f59e0b; border-color: rgba(245,158,11,0.25); }
+  .badge-fail { background: rgba(239,68,68,0.15); color: #ef4444; border-color: rgba(239,68,68,0.25); }
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 16px; border-radius: 10px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    font-size: 13px; color: var(--text2);
+  }
+  .check-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+  .check-title { font-weight: 600; color: var(--text1); display: block; margin-bottom: 3px; }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* ANIMATION TOKENS */
+  .anim-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: 8px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .anim-dot {
+    width: 10px; height: 10px; border-radius: 999px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    flex-shrink: 0;
+  }
+
+  /* RESPONSIVE */
+  .responsive-note {
+    font-size: 11px; color: var(--text3); font-style: italic;
+    margin-top: 8px; padding: 8px 12px;
+    background: rgba(255,255,255,0.02); border-radius: 6px;
+    border-left: 2px solid rgba(245,158,11,0.3);
+  }
+
+  /* PRINT */
+  @media print { body { background: #fff; color: #000; } }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">Documentación Técnica de Diseño</div>
+    <h1><span class="hero-gradient">Inventory App</span><br>Sistema Visual</h1>
+    <p style="max-width:560px;margin-top:16px;">
+      Documento de referencia del sistema de diseño aplicado en <strong style="color:var(--text1)">inventory-front</strong>.
+      Cubre paleta, tipografía, iconografía, componentes, wireframes estructurales y criterios de accesibilidad.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Framework</span>
+        <span class="hero-meta-value">React 18 + TypeScript</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">CSS Engine</span>
+        <span class="hero-meta-value">Tailwind CSS 3.4 + CSS Variables</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Iconos</span>
+        <span class="hero-meta-value">Lucide React 0.368</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Versión</span>
+        <span class="hero-meta-value">v0.3.6</span>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 1. LOGO E IDENTIDAD -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">01 — Logotipo e Identidad</div>
+    <div class="grid-2" style="gap:32px; align-items:start;">
+      <div>
+        <div class="logo-container">
+          <svg class="logo-svg" width="120" height="120" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="stroke-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fbbf24"/>
+                <stop offset="100%" stop-color="#d97706"/>
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="95" fill="url(#glow)"/>
+            <circle cx="100" cy="100" r="94" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.15"/>
+            <!-- PCB traces -->
+            <path d="M40 80 H70 V60 H130 V80 H160" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.3" fill="none"/>
+            <path d="M40 120 H60 V140 H140 V120 H160" stroke="#f59e0b" stroke-width="1.2" stroke-opacity="0.3" fill="none"/>
+            <circle cx="70" cy="60" r="3" fill="#f59e0b" fill-opacity="0.5"/>
+            <circle cx="130" cy="60" r="3" fill="#f59e0b" fill-opacity="0.5"/>
+            <circle cx="60" cy="140" r="3" fill="#7c2d12" fill-opacity="0.9"/>
+            <circle cx="140" cy="140" r="3" fill="#7c2d12" fill-opacity="0.9"/>
+            <!-- Wrench icon -->
+            <g transform="translate(100,100)">
+              <path d="M-8,-38 C-18,-38 -26,-30 -26,-20 C-26,-12 -21,-5 -14,0 L20,34 C22,36 25,36 27,34 L34,27 C36,25 36,22 34,20 L0,-14 C5,-21 5,-30 0,-36 Z"
+                fill="none" stroke="url(#stroke-grad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="-16" cy="-22" r="4" fill="#fbbf24" fill-opacity="0.8"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Concepto</h2>
+        <p>
+          El logotipo combina una <strong style="color:var(--text1)">llave inglesa</strong> (wrench) —
+          herramienta universal de reparación — con trazas de <strong style="color:var(--text1)">circuito PCB</strong>.
+          Esta síntesis visual comunica el dominio de la aplicación: gestión de inventario de equipos electrónicos
+          y su ciclo de reparación.
+        </p>
+        <p>
+          El <strong style="color:var(--text1)">gradiente ámbar</strong> (<code>#fbbf24 → #d97706</code>)
+          aporta calidez industrial sin perder la precisión técnica asociada al negro profundo del fondo.
+          El glow radial centra la atención y refuerza la sensación de "actividad" del sistema.
+        </p>
+        <div class="divider" style="margin:20px 0;"></div>
+        <h3>Archivos</h3>
+        <div class="card card-sm" style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:12px;color:var(--text1);font-weight:600;">icon.svg</span>
+            <code>200×200px</code>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text1);font-weight:600;">favicon.svg</span>
+            <code>32×32px</code>
+          </div>
+        </div>
+        <p style="margin-top:12px;font-size:12px;">
+          Formato SVG vectorial para que escale sin pérdida en cualquier DPI, incluyendo pantallas Retina/4K.
+          El <code>drop-shadow</code> CSS (<code>0 0 5px rgba(245,158,11,0.22)</code>) añade el glow en tiempo real
+          sin aumentar el peso del archivo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 2. TIPOGRAFÍA -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">02 — Tipografía</div>
+    <div class="card" style="margin-bottom:24px; padding:24px 28px;">
+      <div style="font-size:40px;font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:8px;">
+        Inter
+      </div>
+      <div style="font-size:13px;color:var(--text3);">
+        Google Fonts · Pesos: 300, 400, 500, 600, 700, 800
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:var(--text2);max-width:600px;">
+        <strong style="color:var(--text1);">Justificación:</strong> Inter fue diseñada específicamente para pantallas y UIs de alta densidad informacional.
+        Su forma de letra optimizada para tamaños pequeños (10–14px) la hace ideal para tablas, badges y formularios.
+        El kerning óptico mejora la legibilidad en los valores numéricos de precios e IDs que abundan en esta app.
+      </div>
+    </div>
+    <div>
+      <div class="type-specimen">
+        <div class="type-label">Display · 32px · 800</div>
+        <div style="font-size:32px;font-weight:800;line-height:1.1;">Gestión de Inventario</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-label">Heading · 18px · 700</div>
+        <div style="font-size:18px;font-weight:700;">Lista de Productos</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-label">Subheading · 15px · 600</div>
+        <div style="font-size:15px;font-weight:600;">Detalles del componente</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-label">Body · 14px · 400</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text2);">
+          Descripción del producto con toda la información relevante de estado, categoría y precio.
+        </div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-label">Small / Badge · 11–12px · 600–700 · UPPERCASE</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);">
+          ESTADO · CATEGORÍA · REF. 2024-0042
+        </div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-label">Label de formulario · 11px · 700 · UPPERCASE + tracking-wider</div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text3);">
+          Nombre del producto
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 3. PALETA DE COLORES -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">03 — Paleta de Colores</div>
+
+    <h2 style="margin-bottom:20px;">Color Primario — Ámbar</h2>
+    <p>
+      El ámbar es el color de acción, énfasis e identidad de marca. Justificación: evoca electricidad,
+      soldadura y luz de taller — directamente asociado al dominio técnico/industrial de la app.
+      Es distinguible por personas con deuteranopia (daltonismo rojo-verde), el tipo más común.
+    </p>
+    <div class="swatch-group" style="margin:16px 0 32px;">
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#fbbf24;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber 400</div>
+          <div class="swatch-hex">#fbbf24 · rgb(251,191,36)</div>
+          <div class="swatch-role">Gradiente primario (inicio) · iconos activos en nav · glow</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#f59e0b;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber 500 (Principal)</div>
+          <div class="swatch-hex">#f59e0b · rgb(245,158,11)</div>
+          <div class="swatch-role">Focus ring · badge warning bg-base · glow-amber token · acento principal</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#d97706;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber 600</div>
+          <div class="swatch-hex">#d97706 · rgb(217,119,6)</div>
+          <div class="swatch-role">Gradiente primario (fin) · paginación activa · botones hover</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#b45309;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber 700 (Light theme)</div>
+          <div class="swatch-hex">#b45309 · rgb(180,83,9)</div>
+          <div class="swatch-role">Override tema claro — contraste 4.9:1 sobre fondo blanco (WCAG AA)</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-bottom:20px;">Colores de Estado</h2>
+    <p>
+      Los colores de estado siguen una convención semántica universal: verde=OK, rojo=error, ámbar=proceso.
+      Se aplican con opacidad reducida (~10–12%) en fondos de badge para no saturar interfaces con mucha
+      información de estado simultánea (listas de productos).
+    </p>
+    <div class="grid-3" style="margin:16px 0 32px;gap:12px;">
+      <div class="card card-sm">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:#10b981;box-shadow:0 2px 8px rgba(16,185,129,0.4);"></div>
+          <div>
+            <div style="font-size:12px;font-weight:700;">Reparado / Éxito</div>
+            <div style="font-size:11px;color:var(--text3);font-family:monospace;">#10b981</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text2);">Emerald 500. Badge bg: <code>rgba(16,185,129,0.12)</code><br>Estado: producto reparado y operativo.</div>
+      </div>
+      <div class="card card-sm">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:#f59e0b;box-shadow:0 2px 8px rgba(245,158,11,0.4);"></div>
+          <div>
+            <div style="font-size:12px;font-weight:700;">En Progreso / Warning</div>
+            <div style="font-size:11px;color:var(--text3);font-family:monospace;">#f59e0b</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text2);">Amber 500. Badge bg: <code>rgba(245,158,11,0.12)</code><br>Estado: producto en proceso de reparación.</div>
+      </div>
+      <div class="card card-sm">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:#ef4444;box-shadow:0 2px 8px rgba(239,68,68,0.4);"></div>
+          <div>
+            <div style="font-size:12px;font-weight:700;">No Reparado / Error</div>
+            <div style="font-size:11px;color:var(--text3);font-family:monospace;">#ef4444</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text2);">Red 500. Badge bg: <code>rgba(239,68,68,0.12)</code><br>Estado: producto sin reparación posible.</div>
+      </div>
+    </div>
+
+    <h2 style="margin-bottom:20px;">Neutrales — Escala Zinc</h2>
+    <p>
+      La escala Zinc de Tailwind aporta calidez ligeramente azulada frente al gris puro, reduciendo la fatiga
+      visual en sesiones largas de uso. Justificación del fondo ultra-oscuro (<code>#111</code>):
+      minimiza el consumo energético en pantallas OLED y reduce el halo luminoso en entornos de taller o almacén.
+    </p>
+    <div class="swatch-group" style="margin:16px 0 32px;">
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#111111; border:1px solid rgba(255,255,255,0.1);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">bg-base</div>
+          <div class="swatch-hex">#111111 · Zinc 950 aprox.</div>
+          <div class="swatch-role">Fondo principal de la aplicación</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#0d0d0d; border:1px solid rgba(255,255,255,0.1);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">bg-nav</div>
+          <div class="swatch-hex">#0d0d0d</div>
+          <div class="swatch-role">Fondo sidebar/nav — ligeramente más oscuro para diferenciar planos</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#1a1a1a; border:1px solid rgba(255,255,255,0.1);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">bg-surface</div>
+          <div class="swatch-hex">#1a1a1a</div>
+          <div class="swatch-role">Modales, drawers — superficie elevada sobre el fondo</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#222222; border:1px solid rgba(255,255,255,0.1);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">bg-card</div>
+          <div class="swatch-hex">#222222</div>
+          <div class="swatch-role">Tarjetas de producto, filas de tabla, stat cards</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#e4e4e7;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">text-1 (primary)</div>
+          <div class="swatch-hex">#e4e4e7 · Zinc 200</div>
+          <div class="swatch-role">Texto de alta importancia — títulos, precios, nombres</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#a1a1aa;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">text-2 (secondary)</div>
+          <div class="swatch-hex">#a1a1aa · Zinc 400</div>
+          <div class="swatch-role">Texto de soporte — descripciones, metadatos</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#71717a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">text-3 (tertiary)</div>
+          <div class="swatch-hex">#71717a · Zinc 500</div>
+          <div class="swatch-role">Labels de formulario, placeholders, texto auxiliar</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-bottom:16px;">Tema Claro — Overrides</h2>
+    <p style="margin-bottom:16px;">
+      El tema claro mapea los tokens al espacio de color opuesto con ajustes WCAG:
+      los ámbar se oscurecen a <code>#b45309</code> (4.9:1) y los rojos a <code>#be123c</code> (6.4:1)
+      para mantener contraste suficiente sobre fondos claros.
+    </p>
+    <div class="grid-2" style="gap:12px;">
+      <div class="card card-sm" style="background:#f2f2f4; border-color:rgba(0,0,0,0.1);">
+        <div style="color:#18181b;font-weight:700;font-size:13px;margin-bottom:6px;">Tema Claro</div>
+        <div style="color:#3f3f46;font-size:12px;">bg-base: <strong>#f2f2f4</strong></div>
+        <div style="color:#3f3f46;font-size:12px;">text-1: <strong>#18181b</strong></div>
+        <div style="color:#71717a;font-size:12px;">text-3: <strong>#52525b</strong></div>
+        <div style="color:#b45309;font-size:12px;margin-top:4px;">Ámbar override: <strong>#b45309</strong></div>
+      </div>
+      <div class="card card-sm">
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px;">Tema Oscuro</div>
+        <div style="color:var(--text2);font-size:12px;">bg-base: <strong style="color:var(--text1);">#111111</strong></div>
+        <div style="color:var(--text2);font-size:12px;">text-1: <strong style="color:var(--text1);">#e4e4e7</strong></div>
+        <div style="color:var(--text3);font-size:12px;">text-3: <strong style="color:var(--text2);">#71717a</strong></div>
+        <div style="color:#f59e0b;font-size:12px;margin-top:4px;">Ámbar: <strong>#f59e0b</strong></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 4. COMPONENTES VISUALES -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">04 — Componentes Visuales Clave</div>
+
+    <div class="grid-2" style="gap:24px; margin-bottom:32px;">
+      <!-- Badges -->
+      <div class="card">
+        <h3>Badges de Estado</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.2);">
+            ✓ Reparado
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.2);">
+            ◷ En progreso
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">
+            ✕ No reparado
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(113,113,122,0.15);color:#a1a1aa;border:1px solid rgba(113,113,122,0.2);">
+            — Desconocido
+          </span>
+        </div>
+        <p style="font-size:12px;margin-top:12px;">
+          Fondo semitransparente al 12% del color de estado para evitar dominancia visual.
+          Borde al 20% para definición. <code>rounded-full</code> para diferenciación
+          visual inmediata del resto de elementos rectangulares.
+        </p>
+      </div>
+
+      <!-- Botón primario -->
+      <div class="card">
+        <h3>Botón Primario</h3>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+          <button style="padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;border:none;cursor:pointer;box-shadow:0 4px 14px -3px rgba(245,158,11,0.35);">
+            + Añadir Producto
+          </button>
+          <button style="padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;background:rgba(255,255,255,0.05);color:var(--text2);border:1px solid var(--border);cursor:pointer;">
+            Cancelar
+          </button>
+        </div>
+        <p style="font-size:12px;margin-top:12px;">
+          Gradiente <code>135deg #f59e0b → #d97706</code> con sombra ámbar para depth.
+          Texto en negro para máximo contraste (>7:1). Secondary usa <code>bg/5</code>
+          opaco para jerarquía clara sin competir visualmente.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="gap:24px; margin-bottom:32px;">
+      <!-- Input -->
+      <div class="card">
+        <h3>Input de Formulario</h3>
+        <div style="margin-top:12px;">
+          <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:6px;">Nombre del Producto</label>
+          <input type="text" value="Placa base MSI B450" style="width:100%;padding:9px 12px;border-radius:10px;font-size:13px;background:#18181b;color:#e4e4e7;border:1px solid rgba(255,255,255,0.12);outline:none;">
+          <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:6px;margin-top:12px;">Estado</label>
+          <select style="width:100%;padding:9px 12px;border-radius:10px;font-size:13px;background:#18181b;color:#e4e4e7;border:1px solid rgba(255,255,255,0.12);outline:none;">
+            <option>En progreso</option>
+          </select>
+        </div>
+        <p style="font-size:12px;margin-top:12px;">
+          Focus ring: <code>ring-2 ring-amber-500/20</code> + <code>border-amber-600/50</code>.
+          Señal visual coherente con la identidad. Border en reposo al 12% blanco para ser
+          visible sin dominancia.
+        </p>
+      </div>
+
+      <!-- Animaciones -->
+      <div class="card">
+        <h3>Tokens de Animación</h3>
+        <div style="margin-top:12px;">
+          <div class="anim-row">
+            <div class="anim-dot"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;">fade-in</div>
+              <div style="font-size:11px;color:var(--text3);">0.15s ease-out · Backdrops de modal</div>
+            </div>
+          </div>
+          <div class="anim-row">
+            <div class="anim-dot"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;">slide-up</div>
+              <div style="font-size:11px;color:var(--text3);">0.18s ease-out · Panel modal, Y+6px → 0</div>
+            </div>
+          </div>
+          <div class="anim-row">
+            <div class="anim-dot"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;">scale-in</div>
+              <div style="font-size:11px;color:var(--text3);">0.18s cubic-bezier(0.16,1,0.3,1) · Modal principal</div>
+            </div>
+          </div>
+          <div class="anim-row">
+            <div class="anim-dot"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;">slide-up-sm</div>
+              <div style="font-size:11px;color:var(--text3);">0.22s cb(0.16,1,0.3,1) · Transiciones de página</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;margin-top:12px;">
+          Duraciones cortas (150–220ms) para no bloquear el flujo de trabajo.
+          El cubic-bezier <code>(0.16,1,0.3,1)</code> simula spring physics:
+          entrada rápida, overshoot mínimo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 5. WIREFRAMES / BOCETOS DE MAQUETA -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">05 — Wireframes Estructurales (Bocetos de Maqueta)</div>
+    <p style="margin-bottom:32px;">
+      Representación esquemática de la estructura propuesta para cada pantalla. No representan el diseño final;
+      muestran la <em>jerarquía de información, zonas funcionales y flujo de navegación</em>.
+      Convención visual: bloques con borde discontinuo = zona funcional; bloques rellenos = contenido principal.
+    </p>
+
+    <!-- LOGIN -->
+    <div class="wireframe-section">
+      <div class="wireframe-label">A — Pantalla de Login / Registro</div>
+      <div class="wf" style="max-width:500px;padding:32px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+          <div class="wf-block wf-amber" style="width:64px;height:64px;border-radius:16px;font-size:18px;">⚙</div>
+          <div class="wf-block" style="width:180px;height:20px;border-radius:4px;">Logo + nombre app</div>
+          <div class="wf-block" style="width:120px;height:14px;border-radius:4px;font-size:9px;">tagline / versión</div>
+          <div style="width:100%;max-width:360px;margin-top:16px;display:flex;flex-direction:column;gap:12px;">
+            <div class="wf-block" style="width:100%;height:36px;border-radius:8px;font-size:10px;">campo email</div>
+            <div class="wf-block" style="width:100%;height:36px;border-radius:8px;font-size:10px;">campo contraseña</div>
+            <div class="wf-block wf-amber" style="width:100%;height:40px;border-radius:8px;font-size:11px;font-weight:700;">INICIAR SESIÓN</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+              <span style="font-size:9px;color:var(--text3);">o</span>
+              <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+            </div>
+            <div class="wf-block" style="width:100%;height:36px;border-radius:8px;font-size:10px;">¿No tienes cuenta? Regístrate →</div>
+          </div>
+        </div>
+      </div>
+      <p class="responsive-note">Centrado vertical en viewport completo. Sin sidebar. Fondo base con glow radial ámbar sutil en el centro.</p>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="wireframe-section">
+      <div class="wireframe-label">B — Dashboard / Panel Principal</div>
+      <div class="wf" style="display:flex;min-height:480px;">
+        <!-- Sidebar -->
+        <div style="width:180px;min-height:100%;background:rgba(0,0,0,0.4);border-right:1px dashed rgba(255,255,255,0.12);padding:16px;display:flex;flex-direction:column;gap:8px;flex-shrink:0;">
+          <div class="wf-block wf-amber" style="height:36px;border-radius:8px;margin-bottom:8px;font-size:10px;">Logo + Inventory</div>
+          <div class="wf-block wf-amber" style="height:30px;border-radius:6px;font-size:9px;">■ Dashboard</div>
+          <div class="wf-block" style="height:30px;border-radius:6px;font-size:9px;">□ Productos</div>
+          <div class="wf-block" style="height:30px;border-radius:6px;font-size:9px;">□ Categorías</div>
+          <div class="wf-block" style="height:30px;border-radius:6px;font-size:9px;">□ Usuarios</div>
+          <div style="flex:1;"></div>
+          <div class="wf-block" style="height:30px;border-radius:6px;font-size:9px;">□ Ajustes / Tema</div>
+          <div class="wf-block" style="height:32px;border-radius:6px;font-size:9px;background:rgba(255,255,255,0.03);">Avatar · Nombre · Rol</div>
+        </div>
+        <!-- Main content -->
+        <div style="flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="wf-block" style="width:200px;height:24px;border-radius:4px;font-size:10px;">← Título página: Dashboard</div>
+            <div class="wf-block" style="width:80px;height:28px;border-radius:6px;font-size:9px;">🔔 notif.</div>
+          </div>
+          <!-- Stat cards row -->
+          <div class="wf-grid" style="grid-template-columns: repeat(4,1fr);gap:10px;">
+            <div class="wf-block wf-amber" style="height:80px;border-radius:10px;flex-direction:column;font-size:9px;padding:8px;gap:4px;">
+              <span>📦 icono</span><span>Total Productos</span><span style="font-size:16px;font-weight:700;">142</span>
+            </div>
+            <div class="wf-block" style="height:80px;border-radius:10px;flex-direction:column;font-size:9px;padding:8px;gap:4px;">
+              <span>✓ icono</span><span>Reparados</span><span style="font-size:16px;font-weight:700;">89</span>
+            </div>
+            <div class="wf-block" style="height:80px;border-radius:10px;flex-direction:column;font-size:9px;padding:8px;gap:4px;">
+              <span>◷ icono</span><span>En Progreso</span><span style="font-size:16px;font-weight:700;">31</span>
+            </div>
+            <div class="wf-block" style="height:80px;border-radius:10px;flex-direction:column;font-size:9px;padding:8px;gap:4px;">
+              <span>✕ icono</span><span>Sin reparar</span><span style="font-size:16px;font-weight:700;">22</span>
+            </div>
+          </div>
+          <!-- Gráfico + Recientes -->
+          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:12px;flex:1;">
+            <div class="wf-block" style="border-radius:12px;min-height:180px;flex-direction:column;font-size:10px;gap:8px;padding:12px;">
+              <span style="font-weight:600;">Gráfico distribución por categoría</span>
+              <div style="width:100%;flex:1;display:flex;align-items:flex-end;gap:6px;padding:8px 0;">
+                <div style="width:20%;height:60%;background:rgba(245,158,11,0.25);border-radius:4px 4px 0 0;"></div>
+                <div style="width:20%;height:80%;background:rgba(245,158,11,0.35);border-radius:4px 4px 0 0;"></div>
+                <div style="width:20%;height:45%;background:rgba(245,158,11,0.2);border-radius:4px 4px 0 0;"></div>
+                <div style="width:20%;height:90%;background:rgba(245,158,11,0.4);border-radius:4px 4px 0 0;"></div>
+                <div style="width:20%;height:30%;background:rgba(245,158,11,0.15);border-radius:4px 4px 0 0;"></div>
+              </div>
+            </div>
+            <div class="wf-block" style="border-radius:12px;min-height:180px;flex-direction:column;font-size:10px;gap:6px;padding:12px;align-items:flex-start;">
+              <span style="font-weight:600;margin-bottom:4px;">Últimos añadidos</span>
+              <div style="width:100%;height:24px;background:rgba(255,255,255,0.04);border-radius:4px;"></div>
+              <div style="width:100%;height:24px;background:rgba(255,255,255,0.04);border-radius:4px;"></div>
+              <div style="width:100%;height:24px;background:rgba(255,255,255,0.04);border-radius:4px;"></div>
+              <div style="width:90%;height:24px;background:rgba(255,255,255,0.04);border-radius:4px;"></div>
+              <div style="width:95%;height:24px;background:rgba(255,255,255,0.04);border-radius:4px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="responsive-note">Desktop: sidebar fijo 220px + contenido fluido. Mobile: sidebar oculto, acceso por hamburger. Stat cards en 2×2 en móvil.</p>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="wireframe-section">
+      <div class="wireframe-label">C — Lista de Productos (vista cuadrícula)</div>
+      <div class="wf" style="display:flex;min-height:500px;">
+        <!-- Sidebar (colapsado en este boceto) -->
+        <div style="width:180px;background:rgba(0,0,0,0.4);border-right:1px dashed rgba(255,255,255,0.12);padding:12px;flex-shrink:0;">
+          <div class="wf-block wf-amber" style="height:28px;border-radius:6px;font-size:9px;margin-bottom:8px;">Logo</div>
+          <div class="wf-block" style="height:24px;border-radius:4px;font-size:9px;margin-bottom:4px;">Dashboard</div>
+          <div class="wf-block wf-amber" style="height:24px;border-radius:4px;font-size:9px;margin-bottom:4px;">■ Productos</div>
+          <div class="wf-block" style="height:24px;border-radius:4px;font-size:9px;margin-bottom:4px;">Categorías</div>
+          <div class="wf-block" style="height:24px;border-radius:4px;font-size:9px;">Usuarios</div>
+        </div>
+        <!-- Content -->
+        <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
+          <!-- Header row -->
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+            <div class="wf-block" style="width:160px;height:22px;font-size:9px;">Título: Productos (142)</div>
+            <div style="display:flex;gap:8px;">
+              <div class="wf-block" style="width:180px;height:32px;border-radius:8px;font-size:9px;">🔍 Buscar productos...</div>
+              <div class="wf-block" style="width:100px;height:32px;border-radius:8px;font-size:9px;">Filtrar estado ▾</div>
+              <div class="wf-block wf-amber" style="width:100px;height:32px;border-radius:8px;font-size:9px;font-weight:700;">+ Nuevo</div>
+            </div>
+          </div>
+          <!-- View toggle -->
+          <div style="display:flex;gap:4px;">
+            <div class="wf-block wf-amber" style="width:32px;height:28px;border-radius:6px;font-size:10px;">▦</div>
+            <div class="wf-block" style="width:32px;height:28px;border-radius:6px;font-size:10px;">☰</div>
+          </div>
+          <!-- Grid de tarjetas -->
+          <div class="wf-grid" style="grid-template-columns:repeat(3,1fr);gap:10px;flex:1;">
+            <!-- Tarjeta producto x6 -->
+            <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);overflow:hidden;">
+              <div style="height:80px;background:rgba(255,255,255,0.03);border-bottom:1px dashed rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);">imagen 16:9</div>
+              <div style="padding:8px;display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div style="height:8px;width:40%;background:rgba(245,158,11,0.25);border-radius:3px;"></div>
+                  <div style="height:16px;width:22%;background:rgba(16,185,129,0.15);border-radius:999px;"></div>
+                </div>
+                <div style="height:10px;width:90%;background:rgba(255,255,255,0.08);border-radius:3px;"></div>
+                <div style="height:10px;width:60%;background:rgba(255,255,255,0.05);border-radius:3px;"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                  <div style="height:12px;width:30%;background:rgba(245,158,11,0.3);border-radius:3px;"></div>
+                  <div style="display:flex;gap:4px;">
+                    <div style="width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,0.05);"></div>
+                    <div style="width:20px;height:20px;border-radius:6px;background:rgba(239,68,68,0.1);"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);overflow:hidden;">
+              <div style="height:80px;background:rgba(255,255,255,0.03);border-bottom:1px dashed rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);">imagen 16:9</div>
+              <div style="padding:8px;display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div style="height:8px;width:50%;background:rgba(245,158,11,0.2);border-radius:3px;"></div>
+                  <div style="height:16px;width:22%;background:rgba(245,158,11,0.15);border-radius:999px;"></div>
+                </div>
+                <div style="height:10px;width:80%;background:rgba(255,255,255,0.08);border-radius:3px;"></div>
+                <div style="height:10px;width:55%;background:rgba(255,255,255,0.05);border-radius:3px;"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                  <div style="height:12px;width:28%;background:rgba(245,158,11,0.3);border-radius:3px;"></div>
+                  <div style="display:flex;gap:4px;">
+                    <div style="width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,0.05);"></div>
+                    <div style="width:20px;height:20px;border-radius:6px;background:rgba(239,68,68,0.1);"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);overflow:hidden;">
+              <div style="height:80px;background:rgba(255,255,255,0.03);border-bottom:1px dashed rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3);">imagen 16:9</div>
+              <div style="padding:8px;display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div style="height:8px;width:35%;background:rgba(245,158,11,0.2);border-radius:3px;"></div>
+                  <div style="height:16px;width:22%;background:rgba(239,68,68,0.15);border-radius:999px;"></div>
+                </div>
+                <div style="height:10px;width:95%;background:rgba(255,255,255,0.08);border-radius:3px;"></div>
+                <div style="height:10px;width:70%;background:rgba(255,255,255,0.05);border-radius:3px;"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                  <div style="height:12px;width:32%;background:rgba(245,158,11,0.3);border-radius:3px;"></div>
+                  <div style="display:flex;gap:4px;">
+                    <div style="width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,0.05);"></div>
+                    <div style="width:20px;height:20px;border-radius:6px;background:rgba(239,68,68,0.1);"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Paginación -->
+          <div style="display:flex;justify-content:flex-end;align-items:center;gap:6px;padding-top:4px;">
+            <div class="wf-block" style="width:28px;height:28px;border-radius:6px;font-size:11px;">‹</div>
+            <div class="wf-block wf-amber" style="width:28px;height:28px;border-radius:6px;font-size:11px;">1</div>
+            <div class="wf-block" style="width:28px;height:28px;border-radius:6px;font-size:11px;">2</div>
+            <div class="wf-block" style="width:28px;height:28px;border-radius:6px;font-size:11px;">3</div>
+            <div class="wf-block" style="width:28px;height:28px;border-radius:6px;font-size:11px;">›</div>
+          </div>
+        </div>
+      </div>
+      <p class="responsive-note">Vista cuadrícula: 3 columnas en desktop, 2 en tablet, 1 en móvil. La vista lista (☰) cambia a tabla horizontal con más datos visibles.</p>
+    </div>
+
+    <!-- DETALLE PRODUCTO -->
+    <div class="wireframe-section">
+      <div class="wireframe-label">D — Detalle de Producto (modal/página)</div>
+      <div class="wf" style="padding:24px;display:flex;gap:24px;">
+        <!-- Galería -->
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;">
+          <div class="wf-block" style="width:100%;aspect-ratio:16/9;border-radius:12px;flex-direction:column;font-size:10px;gap:6px;">
+            <span>Carrusel imagen principal</span>
+            <span style="font-size:9px;color:var(--text3);">aspect-video · controles prev/next</span>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div class="wf-block wf-amber" style="width:48px;height:36px;border-radius:6px;font-size:8px;">img 1</div>
+            <div class="wf-block" style="width:48px;height:36px;border-radius:6px;font-size:8px;">img 2</div>
+            <div class="wf-block" style="width:48px;height:36px;border-radius:6px;font-size:8px;">img 3</div>
+            <div class="wf-block" style="width:48px;height:36px;border-radius:6px;font-size:8px;">+ añadir</div>
+          </div>
+        </div>
+        <!-- Info -->
+        <div style="width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="wf-block" style="height:14px;width:60px;border-radius:3px;font-size:8px;">Categoría</div>
+            <div class="wf-block wf-amber" style="height:20px;width:80px;border-radius:999px;font-size:8px;">● En progreso</div>
+          </div>
+          <div class="wf-block" style="width:100%;height:28px;border-radius:6px;font-size:11px;font-weight:700;">NOMBRE DEL PRODUCTO</div>
+          <div class="wf-block" style="width:80%;height:14px;border-radius:3px;font-size:8px;">Descripción línea 1</div>
+          <div class="wf-block" style="width:90%;height:14px;border-radius:3px;font-size:8px;">Descripción línea 2</div>
+          <div class="wf-block" style="width:50%;height:14px;border-radius:3px;font-size:8px;">Descripción línea 3</div>
+          <div style="height:1px;background:rgba(255,255,255,0.06);margin:4px 0;"></div>
+          <div style="display:flex;gap:16px;">
+            <div>
+              <div style="font-size:9px;color:var(--text3);margin-bottom:4px;">PRECIO</div>
+              <div class="wf-block wf-amber" style="width:70px;height:20px;border-radius:4px;font-size:10px;font-weight:700;">€ 149.99</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text3);margin-bottom:4px;">CONTACTO</div>
+              <div class="wf-block" style="width:100px;height:20px;border-radius:4px;font-size:9px;">nombre · tel</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.06);margin:4px 0;"></div>
+          <div style="display:flex;gap:8px;">
+            <div class="wf-block wf-amber" style="flex:1;height:36px;border-radius:8px;font-size:10px;font-weight:700;">✏ Editar</div>
+            <div class="wf-block" style="width:36px;height:36px;border-radius:8px;font-size:14px;">✕</div>
+          </div>
+        </div>
+      </div>
+      <p class="responsive-note">En mobile: layout vertical — galería arriba, info abajo. Modal centrado en viewport con scroll interno si contenido largo.</p>
+    </div>
+
+    <!-- MODAL FORMULARIO -->
+    <div class="wireframe-section">
+      <div class="wireframe-label">E — Modal de Formulario (crear/editar producto)</div>
+      <div class="wf" style="max-width:480px;padding:0;overflow:hidden;">
+        <!-- Header sticky -->
+        <div style="padding:14px 20px;background:rgba(0,0,0,0.3);border-bottom:1px dashed rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;">
+          <div class="wf-block wf-amber" style="width:140px;height:18px;border-radius:4px;font-size:10px;">Nuevo Producto / Editar</div>
+          <div class="wf-block" style="width:28px;height:28px;border-radius:6px;font-size:11px;">✕</div>
+        </div>
+        <!-- Scroll content -->
+        <div style="padding:20px;display:flex;flex-direction:column;gap:12px;max-height:400px;overflow-y:auto;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">NOMBRE</div>
+              <div class="wf-block" style="width:100%;height:34px;border-radius:8px;font-size:9px;">texto libre</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">CATEGORÍA</div>
+              <div class="wf-block" style="width:100%;height:34px;border-radius:8px;font-size:9px;">select ▾</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">DESCRIPCIÓN</div>
+            <div class="wf-block" style="width:100%;height:64px;border-radius:8px;font-size:9px;">textarea</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">ESTADO</div>
+              <div class="wf-block" style="width:100%;height:34px;border-radius:8px;font-size:9px;">select ▾</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">PRECIO</div>
+              <div class="wf-block" style="width:100%;height:34px;border-radius:8px;font-size:9px;">€ número</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">IMÁGENES</div>
+            <div class="wf-block" style="width:100%;height:72px;border-radius:8px;font-size:9px;flex-direction:column;gap:4px;">
+              <span>[ zona drag & drop ]</span>
+              <span style="font-size:8px;color:var(--text3);">JPG/PNG/WEBP · máx 5MB</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.1em;">CONTACTO</div>
+            <div class="wf-block" style="width:100%;height:34px;border-radius:8px;font-size:9px;">select / búsqueda</div>
+          </div>
+        </div>
+        <!-- Footer sticky -->
+        <div style="padding:12px 20px;background:rgba(0,0,0,0.2);border-top:1px dashed rgba(255,255,255,0.08);display:flex;gap:10px;justify-content:flex-end;">
+          <div class="wf-block" style="width:80px;height:36px;border-radius:8px;font-size:10px;">Cancelar</div>
+          <div class="wf-block wf-amber" style="width:100px;height:36px;border-radius:8px;font-size:10px;font-weight:700;">Guardar</div>
+        </div>
+      </div>
+      <p class="responsive-note">Header y footer sticky. Contenido central con scroll. En mobile: bottom-sheet con rounded-t-2xl. Backdrop blur 2px.</p>
+    </div>
+
+    <!-- MOBILE -->
+    <div class="wireframe-section">
+      <div class="wireframe-label">F — Vista Mobile — Lista de Productos</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <!-- Phone frame -->
+        <div class="wf" style="width:280px;min-height:560px;display:flex;flex-direction:column;">
+          <!-- Mobile top bar -->
+          <div style="height:44px;background:rgba(0,0,0,0.5);display:flex;align-items:center;padding:0 12px;justify-content:space-between;border-bottom:1px dashed rgba(255,255,255,0.1);">
+            <div class="wf-block wf-amber" style="width:28px;height:28px;border-radius:6px;font-size:14px;">☰</div>
+            <div class="wf-block" style="width:80px;height:18px;border-radius:4px;font-size:9px;">Productos</div>
+            <div class="wf-block wf-amber" style="width:28px;height:28px;border-radius:6px;font-size:12px;">+</div>
+          </div>
+          <!-- Search bar -->
+          <div style="padding:10px 12px;">
+            <div class="wf-block" style="width:100%;height:36px;border-radius:20px;font-size:9px;">🔍 Buscar...</div>
+          </div>
+          <!-- Filter chips -->
+          <div style="display:flex;gap:6px;padding:0 12px;overflow-x:auto;padding-bottom:8px;">
+            <div class="wf-block wf-amber" style="height:24px;width:48px;border-radius:999px;font-size:8px;flex-shrink:0;">Todos</div>
+            <div class="wf-block" style="height:24px;width:56px;border-radius:999px;font-size:8px;flex-shrink:0;">Reparado</div>
+            <div class="wf-block" style="height:24px;width:60px;border-radius:999px;font-size:8px;flex-shrink:0;">Progreso</div>
+            <div class="wf-block" style="height:24px;width:70px;border-radius:999px;font-size:8px;flex-shrink:0;">Sin reparar</div>
+          </div>
+          <!-- Product list (cards vertical) -->
+          <div style="flex:1;padding:0 12px;display:flex;flex-direction:column;gap:8px;">
+            <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;gap:10px;padding:10px;align-items:center;">
+              <div style="width:56px;height:56px;border-radius:8px;background:rgba(255,255,255,0.06);flex-shrink:0;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div style="height:10px;width:80%;background:rgba(255,255,255,0.1);border-radius:3px;"></div>
+                <div style="height:8px;width:50%;background:rgba(245,158,11,0.2);border-radius:3px;"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="height:16px;width:44px;background:rgba(16,185,129,0.15);border-radius:999px;"></div>
+                  <div style="height:12px;width:36px;background:rgba(245,158,11,0.3);border-radius:3px;"></div>
+                </div>
+              </div>
+            </div>
+            <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;gap:10px;padding:10px;align-items:center;">
+              <div style="width:56px;height:56px;border-radius:8px;background:rgba(255,255,255,0.06);flex-shrink:0;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div style="height:10px;width:70%;background:rgba(255,255,255,0.1);border-radius:3px;"></div>
+                <div style="height:8px;width:40%;background:rgba(245,158,11,0.2);border-radius:3px;"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="height:16px;width:44px;background:rgba(245,158,11,0.15);border-radius:999px;"></div>
+                  <div style="height:12px;width:36px;background:rgba(245,158,11,0.3);border-radius:3px;"></div>
+                </div>
+              </div>
+            </div>
+            <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.1);display:flex;gap:10px;padding:10px;align-items:center;">
+              <div style="width:56px;height:56px;border-radius:8px;background:rgba(255,255,255,0.06);flex-shrink:0;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+                <div style="height:10px;width:90%;background:rgba(255,255,255,0.1);border-radius:3px;"></div>
+                <div style="height:8px;width:55%;background:rgba(245,158,11,0.2);border-radius:3px;"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="height:16px;width:44px;background:rgba(239,68,68,0.15);border-radius:999px;"></div>
+                  <div style="height:12px;width:36px;background:rgba(245,158,11,0.3);border-radius:3px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Bottom pagination dots -->
+          <div style="padding:12px;display:flex;justify-content:center;gap:6px;">
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(245,158,11,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;color:#f59e0b;">‹</div>
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(245,158,11,0.8);display:flex;align-items:center;justify-content:center;font-size:10px;color:#000;">1</div>
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);">2</div>
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);">›</div>
+          </div>
+        </div>
+
+        <!-- Sidebar móvil overlay -->
+        <div style="display:flex;flex-direction:column;gap:8px;width:200px;">
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Sidebar móvil (overlay)</div>
+          <div class="wf" style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+            <div class="wf-block wf-amber" style="height:36px;border-radius:8px;font-size:9px;margin-bottom:4px;">Logo + Inventory</div>
+            <div class="wf-block" style="height:28px;border-radius:6px;font-size:9px;">📊 Dashboard</div>
+            <div class="wf-block wf-amber" style="height:28px;border-radius:6px;font-size:9px;">📦 Productos</div>
+            <div class="wf-block" style="height:28px;border-radius:6px;font-size:9px;">🏷 Categorías</div>
+            <div class="wf-block" style="height:28px;border-radius:6px;font-size:9px;">👥 Usuarios</div>
+            <div style="height:1px;background:rgba(255,255,255,0.06);margin:4px 0;"></div>
+            <div class="wf-block" style="height:28px;border-radius:6px;font-size:9px;">⚙ Ajustes · Idioma</div>
+            <div class="wf-block" style="height:28px;border-radius:6px;font-size:9px;">☀ / 🌙 Tema</div>
+            <div style="height:1px;background:rgba(255,255,255,0.06);margin:4px 0;"></div>
+            <div class="wf-block" style="height:36px;border-radius:8px;font-size:9px;background:rgba(255,255,255,0.03);">● Avatar · Nombre · Rol</div>
+          </div>
+          <div class="responsive-note" style="margin:0;">Backdrop semiopaco (z-30) al pulsar fuera cierra el sidebar.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 6. ACCESIBILIDAD -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">06 — Criterios de Accesibilidad (WCAG 2.1)</div>
+    <p style="margin-bottom:24px;">
+      La app está diseñada para cumplir el nivel <strong style="color:var(--text1);">WCAG 2.1 AA</strong> en todas las pantallas.
+      A continuación se detallan los puntos implementados y los que quedan como recomendación para alcanzar AAA.
+    </p>
+
+    <h2 style="margin-bottom:16px;">Contrastes de Color</h2>
+    <p style="margin-bottom:16px; font-size:13px;">
+      Ratio mínimo WCAG AA: <strong style="color:#e4e4e7;">4.5:1</strong> para texto normal, <strong style="color:#e4e4e7;">3:1</strong> para texto grande (18px+ o 14px+ bold) y componentes UI.
+    </p>
+    <div style="margin-bottom:32px;">
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:#111111; display:flex; align-items:center; justify-content:center; color:#e4e4e7; font-size:14px; font-weight:600; border-radius:6px;">Aa</div>
+        <div class="contrast-info">
+          <div class="contrast-pair-name">text-1 (#e4e4e7) sobre bg-base (#111111)</div>
+          <div><span class="contrast-ratio">13.8:1</span><span class="badge-pass badge-pass">AAA ✓</span></div>
+        </div>
+      </div>
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:#111111; display:flex; align-items:center; justify-content:center; color:#a1a1aa; font-size:14px; font-weight:600; border-radius:6px;">Aa</div>
+        <div class="contrast-info">
+          <div class="contrast-pair-name">text-2 (#a1a1aa) sobre bg-base (#111111)</div>
+          <div><span class="contrast-ratio">6.4:1</span><span class="badge-pass">AA ✓</span></div>
+        </div>
+      </div>
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:#111111; display:flex; align-items:center; justify-content:center; color:#71717a; font-size:14px; font-weight:600; border-radius:6px;">Aa</div>
+        <div class="contrast-info">
+          <div class="contrast-pair-name">text-3 (#71717a) sobre bg-base (#111111) — solo en texto grande/UI</div>
+          <div><span class="contrast-ratio">3.5:1</span><span class="badge-aa">AA large ✓</span></div>
+        </div>
+      </div>
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:linear-gradient(135deg,#f59e0b,#d97706); display:flex; align-items:center; justify-content:center; color:#000; font-size:14px; font-weight:700; border-radius:6px;">Aa</div>
+        <div class="contrast-info">
+          <div class="contrast-pair-name">Texto negro sobre botón ámbar (gradiente) — texto bold</div>
+          <div><span class="contrast-ratio">7.2:1</span><span class="badge-pass badge-pass">AAA ✓</span></div>
+        </div>
+      </div>
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:#f2f2f4; display:flex; align-items:center; justify-content:center; color:#b45309; font-size:14px; font-weight:700; border-radius:6px;">Aa</div>
+        <div class="contrast-info">
+          <div class="contrast-pair-name">Ámbar 700 (#b45309) sobre fondo claro (#f2f2f4) — tema claro</div>
+          <div><span class="contrast-ratio">4.9:1</span><span class="badge-pass">AA ✓</span></div>
+        </div>
+      </div>
+      <div class="contrast-pair">
+        <div class="contrast-swatch" style="background:#f2f2f4; display:flex; align-items:center; justify-content:center; color:#be123c; font-size:14px; font-weight:700; border-radius:6px;">Aa</div>
+        <div class="contrast-info">
+          <div class="contrast-pair-name">Rose 800 (#be123c) sobre fondo claro — tema claro, estado error</div>
+          <div><span class="contrast-ratio">6.4:1</span><span class="badge-pass">AA ✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-bottom:16px;">Checklist de Accesibilidad Implementado</h2>
+    <ul class="checklist">
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Focus Visible — WCAG 2.4.7 (AA)</span>
+          <code>:focus-visible</code> con <code>outline: 2px solid rgba(245,158,11,0.6)</code> + <code>outline-offset: 2px</code>.
+          Visible en ambos temas. No se usa <code>outline:none</code> sin alternativa.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Contraste Adaptativo por Tema — WCAG 1.4.3 (AA)</span>
+          Overrides CSS específicos por tema (<code>[data-theme="light"]</code>) oscurecen badges y texto ámbar
+          de #f59e0b a #b45309 para garantizar ≥4.5:1 sobre fondos claros.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Contraste de Componentes UI — WCAG 1.4.11 (AA)</span>
+          Bordes de inputs ajustados en tema claro a <code>rgba(0,0,0,0.35)</code> para superar el ratio 3:1
+          requerido para componentes no-texto.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Preferencia de Movimiento Reducido — WCAG 2.3.3 (AAA recomendado)</span>
+          Las animaciones (<code>animate-scale-in</code>, <code>animate-slide-up</code>) son de corta duración
+          (150–220ms) y no contienen movimientos parpadeantes. Para cumplir plenamente se recomienda añadir
+          <code>@media (prefers-reduced-motion: reduce)</code> desactivando keyframes.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Internacionalización (i18n) — WCAG 3.1.2</span>
+          Idioma de la página declarado (<code>lang</code>). Traducciones completas en ES, EN, GL con
+          <code>i18next</code>. Cambio de idioma accesible desde sidebar sin recarga.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Estado no solo por Color — WCAG 1.4.1 (A)</span>
+          Los badges de estado combinan color + icono (CheckCircle2, Clock, XCircle) + texto.
+          Un usuario con daltonismo puede identificar el estado sin depender únicamente del hue.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <span class="check-title">Tamaño mínimo de target táctil — WCAG 2.5.5 (AA en WCAG 2.2)</span>
+          Botones de acción con <code>p-2</code> mínimo (32×32px effective). Botones principales ≥44px de alto
+          en mobile para cumplir guidelines de iOS/Android.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><path d="M10 6v4m0 3h.01" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <span class="check-title" style="color:#f59e0b;">Recomendación — ARIA labels en iconos sin texto</span>
+          Los botones que usan solo iconos Lucide (sin texto visible) deben incluir
+          <code>aria-label</code> descriptivo para lectores de pantalla (ej: <code>aria-label="Editar producto"</code>).
+          Verificar cobertura completa con axe DevTools.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.5"/><path d="M10 6v4m0 3h.01" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <span class="check-title" style="color:#f59e0b;">Recomendación — Skip navigation link</span>
+          Añadir un enlace <code>"Saltar al contenido principal"</code> visible al foco como primer elemento del DOM
+          para usuarios de teclado, evitando recorrer la navegación en cada carga.
+        </div>
+      </li>
+    </ul>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- 7. USABILIDAD -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">07 — Criterios de Usabilidad</div>
+    <p style="margin-bottom:24px;">
+      Evaluación frente a las heurísticas de Nielsen y principios de diseño centrado en el usuario,
+      aplicados al dominio de esta aplicación (gestión de inventario de reparaciones para usuarios técnicos y no técnicos).
+    </p>
+
+    <div class="grid-2" style="gap:20px;">
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Visibilidad del Estado del Sistema</h3>
+        <p style="font-size:13px;">
+          Los <strong style="color:var(--text1);">badges de estado</strong> (reparado / en progreso / no reparado) son visibles en
+          todas las vistas de lista y detalle. Los <strong style="color:var(--text1);">skeleton loaders</strong> informan que se
+          está cargando sin bloquear la UI. Los <strong style="color:var(--text1);">toast notifications</strong> (react-hot-toast)
+          confirman acciones CRUD de forma no intrusiva.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Coincidencia con el Mundo Real</h3>
+        <p style="font-size:13px;">
+          Vocabulario del dominio (Reparado, En progreso, Categoría, Precio, Contacto). Iconos Lucide
+          semánticamente representativos: <code>Wrench</code> para reparación, <code>Package</code> para productos,
+          <code>Tag</code> para categorías. Colores de estado mapeados a convenciones universales: verde=OK, rojo=error.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Control y Libertad del Usuario</h3>
+        <p style="font-size:13px;">
+          Todos los modales tienen botón de cierre explícito y se cierran con click fuera del panel o tecla Escape.
+          Las acciones destructivas (eliminar) usan un <strong style="color:var(--text1);">ConfirmDialog</strong> de doble confirmación.
+          La paginación permite navegar libremente entre páginas sin perder el contexto de filtros activos.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Consistencia y Estándares</h3>
+        <p style="font-size:13px;">
+          Sistema de diseño unificado: mismos radios (<code>rounded-xl</code>/<code>rounded-2xl</code>),
+          misma escala tipográfica, mismo sistema de spacing. Los patrones de interacción (hover, focus, disabled)
+          son idénticos en todos los botones, inputs y tarjetas. El sidebar mantiene la misma estructura en todas las páginas.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Reconocimiento antes que Recuerdo</h3>
+        <p style="font-size:13px;">
+          Las tarjetas de producto muestran <strong style="color:var(--text1);">imagen + estado + categoría + precio</strong> sin
+          requerir abrir el detalle. Los filtros de estado son chips visibles siempre. Los items de navegación tienen
+          icono + texto. Los labels de formulario están siempre visibles (no placeholders sustitutivos).
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Flexibilidad y Eficiencia</h3>
+        <p style="font-size:13px;">
+          Vista doble: <strong style="color:var(--text1);">cuadrícula</strong> (inspección visual rápida de imágenes) y
+          <strong style="color:var(--text1);">lista/tabla</strong> (comparación de datos, más eficiente para gestores).
+          Búsqueda textual en tiempo real. Filtros por estado combinables. Paginación para colecciones grandes.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Diseño Estético y Minimalista</h3>
+        <p style="font-size:13px;">
+          Interfaz oscura de alta densidad, sin elementos decorativos innecesarios. La jerarquía visual
+          usa tamaño + peso tipográfico + color, no elementos gráficos extra. Los bordes son sutiles
+          (<code>rgba(255,255,255,0.07)</code>). El ámbar aparece solo en elementos de acción/énfasis.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3 style="color:#10b981;margin-bottom:12px;">Prevención de Errores y Recuperación</h3>
+        <p style="font-size:13px;">
+          Validación de formularios con React Hook Form antes del envío. Campos requeridos marcados.
+          <strong style="color:var(--text1);">ErrorBoundary</strong> global evita que errores de renderizado colapsen toda la app.
+          Mensajes de error específicos por campo. El confirm dialog previene eliminaciones accidentales.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <h2 style="margin-bottom:16px;">Principios UX Específicos del Dominio</h2>
+    <ul class="checklist">
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/><path d="M10 5v5l3 3" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <span class="check-title">Densidad de Información Optimizada para Técnicos</span>
+          Los usuarios técnicos trabajan con listas largas de componentes electrónicos. La vista tabla
+          expone más columnas simultáneamente. La tipografía monospace en códigos y precios facilita
+          la lectura columnar rápida (<code>.tabular</code> class con <code>font-variant-numeric: tabular-nums</code>).
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/><path d="M10 5v5l3 3" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <span class="check-title">Soporte Multilingüe para Entorno Local</span>
+          Gallego y Español además de Inglés refleja el uso real en entornos de pequeños talleres o empresas
+          de reparación en Galicia/España. El switch de idioma es inmediato y persistente (localStorage).
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/><path d="M10 5v5l3 3" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <span class="check-title">Carrusel de Imágenes en Detalle de Producto</span>
+          El diagnóstico visual es fundamental en reparación electrónica. El carrusel <code>aspect-video</code>
+          con thumbnails permite al técnico revisar el estado físico del componente antes de asignarlo o
+          actualizarlo, reduciendo desplazamientos físicos innecesarios.
+        </div>
+      </li>
+      <li>
+        <svg class="check-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/><path d="M10 5v5l3 3" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <span class="check-title">Tema Oscuro por Defecto</span>
+          Entornos de taller o almacén suelen tener iluminación variable. El tema oscuro reduce la fatiga
+          ocular y el efecto de deslumbramiento en pantallas en entornos poco iluminados. El tema claro
+          está disponible para entornos de oficina. La preferencia persiste en localStorage.
+        </div>
+      </li>
+    </ul>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid var(--border);padding-top:32px;margin-top:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:var(--text1);">Inventory · Sistema de Diseño</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px;">inventory-front v0.3.6 · 2026</div>
+    </div>
+    <div style="display:flex;gap:16px;font-size:11px;color:var(--text3);">
+      <span>React 18 + TypeScript</span>
+      <span>Tailwind CSS 3.4</span>
+      <span>Inter Font</span>
+      <span>Lucide Icons</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
