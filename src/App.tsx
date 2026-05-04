@@ -1,10 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense } from 'react'
 import { useAuthStore } from './store/authStore'
 import { useSettingsStore } from './store/settingsStore'
-import type { User } from './types'
 import Layout from './components/layout/Layout'
 import ErrorBoundary from './components/common/ErrorBoundary'
 import { usePermissions } from './hooks/usePermissions'
@@ -41,34 +40,6 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
 
 function AppRoutes() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  const setAuth = useAuthStore((s) => s.setAuth)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const demoToken = params.get('demo_token')
-    if (!demoToken) return
-    try {
-      const parts = demoToken.split('.')
-      if (parts.length !== 3) return
-      const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))
-      const expiresAt = new Date(payload.exp * 1000).toISOString()
-      const user: User = {
-        id: payload.user_id ?? payload.sub,
-        username: payload.username ?? 'demo',
-        email: 'demo@jcrlabs.net',
-        role: (payload.role ?? 'viewer') as User['role'],
-        active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }
-      setAuth(user, demoToken, 'demo-readonly', expiresAt)
-      window.history.replaceState({}, '', window.location.pathname)
-      navigate('/products', { replace: true })
-    } catch {
-      // malformed token — ignore
-    }
-  }, [])
 
   return (
     <Suspense fallback={null}>
