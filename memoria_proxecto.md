@@ -269,60 +269,55 @@ A autenticación implementa JWT (*JSON Web Tokens*) con algoritmo asimétrico **
 
 O modelo de datos da aplicación está composto por seis entidades principais:
 
-```
-users {
-    UUID id PK
-    VARCHAR username
-    VARCHAR email
-    VARCHAR role          -- admin | manager | viewer
-    BOOLEAN active
-}
+```mermaid
+erDiagram
+    users {
+        UUID id PK
+        VARCHAR username
+        VARCHAR email
+        VARCHAR role
+        BOOLEAN active
+    }
+    categories {
+        UUID id PK
+        VARCHAR name
+    }
+    products {
+        UUID id PK
+        VARCHAR name
+        VARCHAR sku
+        UUID category_id FK
+        UUID created_by_id FK
+        VARCHAR status
+        BOOLEAN paid
+        NUMERIC price
+    }
+    contacts {
+        UUID id PK
+        UUID product_id FK
+        VARCHAR name
+        VARCHAR email
+        VARCHAR phone
+    }
+    product_images {
+        UUID id PK
+        UUID product_id FK
+        VARCHAR image_key
+        INT position
+    }
+    refresh_tokens {
+        UUID id PK
+        UUID user_id FK
+        VARCHAR token_hash
+        TIMESTAMPTZ expires_at
+        BOOLEAN revoked
+    }
 
-categories {
-    UUID id PK
-    VARCHAR name
-}
-
-products {
-    UUID id PK
-    VARCHAR name
-    VARCHAR sku
-    UUID category_id FK   --> categories
-    UUID created_by_id FK --> users
-    VARCHAR status        -- reparado | en_progreso | no_reparado
-    BOOLEAN paid
-    NUMERIC price
-}
-
-contacts {
-    UUID id PK
-    UUID product_id FK    --> products
-    VARCHAR name
-    VARCHAR email
-    VARCHAR phone
-}
-
-product_images {
-    UUID id PK
-    UUID product_id FK    --> products
-    VARCHAR image_key     -- chave en MinIO
-    INT position
-}
-
-refresh_tokens {
-    UUID id PK
-    UUID user_id FK       --> users
-    VARCHAR token_hash    -- SHA-256 do token
-    TIMESTAMPTZ expires_at
-    BOOLEAN revoked
-}
-
-Relacións:
-  users        ||--o{  products        : "crea"
-  users        ||--o{  refresh_tokens  : "posee"
-  categories   ||--o{  products        : "clasifica"
-  products     ||--o|  contacts        : "ten"
-  products     ||--o{  product_images  : "galería"
+    users        ||--o{ products       : "crea"
+    users        ||--o{ refresh_tokens : "posee"
+    categories   ||--o{ products       : "clasifica"
+    products     ||--o| contacts       : "ten"
+    products     ||--o{ product_images : "galería"
 ```
 
 Todas as entidades usan **UUID v4** como clave primaria en lugar de enteiros autoincrementais, o que evita a enumeración dos recursos na API e simplifica a replicación futura.
@@ -331,110 +326,142 @@ Todas as entidades usan **UUID v4** como clave primaria en lugar de enteiros aut
 
 O dominio do *backend* en Go está representado polas seguintes estruturas principais:
 
+```mermaid
+classDiagram
+    class User {
+        +UUID id
+        +string username
+        +string email
+        +Role role
+        +bool active
+    }
+    class Product {
+        +UUID id
+        +string name
+        +string sku
+        +float64 price
+        +ProductStatus status
+        +bool paid
+        +UUID categoryId
+    }
+    class Category {
+        +UUID id
+        +string name
+        +string description
+    }
+    class Contact {
+        +UUID id
+        +UUID productId
+        +string name
+        +string email
+        +string phone
+    }
+    class ProductImage {
+        +UUID id
+        +UUID productId
+        +string imageKey
+        +int position
+    }
+    class RefreshToken {
+        +UUID id
+        +UUID userId
+        +string tokenHash
+        +bool revoked
+        +Time expiresAt
+    }
+
+    User "1" --> "0..*" Product : crea
+    User "1" --> "0..*" RefreshToken : posee
+    Category "1" --> "0..*" Product : clasifica
+    Product "1" --> "0..1" Contact : ten
+    Product "1" --> "0..*" ProductImage : galería
 ```
-User
-  + UUID id
-  + string username
-  + string email
-  + Role role            [admin | manager | viewer]
-  + bool active
-
-Product
-  + UUID id
-  + string name
-  + string sku
-  + float64 price
-  + ProductStatus status [reparado | en_progreso | no_reparado]
-  + bool paid
-  + UUID categoryId
-
-Category
-  + UUID id
-  + string name
-  + string description
-
-Contact
-  + UUID id
-  + UUID productId
-  + string name
-  + string email
-  + string phone
-
-ProductImage
-  + UUID id
-  + UUID productId
-  + string imageKey
-  + int position
-
-RefreshToken
-  + UUID id
-  + UUID userId
-  + string tokenHash
-  + bool revoked
-  + time.Time expiresAt
-```
-
-Relacións:
-- `User` → `[]*Product` (1 a moitos)
-- `User` → `[]*RefreshToken` (1 a moitos)
-- `Product` → `*Category` (moitos a 1)
-- `Product` → `*Contact` (1 a 1, opcional)
-- `Product` → `[]*ProductImage` (1 a moitos)
 
 ### 4.3 Arquitectura en capas do sistema
 
+```mermaid
+graph TD
+    subgraph Frontend["Frontend (React SPA)"]
+        Pages["Pages\n(UI + lóxica de páxina)"]
+        Components["Components\n(compoñentes reutilizables)"]
+        Store["Store\n(Zustand: auth, settings)"]
+        APIClient["API Client\n(Axios: interceptores JWT)"]
+    end
+
+    subgraph Backend["Backend (Go / Gin)"]
+        Router["Router\n(rutas + grupos /api/v1)"]
+        Middleware["Middleware\n(JWT auth, CORS, rate limit)"]
+        Handlers["Handlers\n(controladores HTTP)"]
+        Services["Services\n(lóxica de negocio)"]
+        Repositories["Repositories\n(acceso a datos)"]
+    end
+
+    subgraph Datos["Almacenamento"]
+        PostgreSQL["PostgreSQL\n(datos relacionais)"]
+        MinIO["MinIO\n(almacenamento de imaxes)"]
+    end
+
+    subgraph Infra["Infraestrutura"]
+        k3s["k3s (Kubernetes)"]
+        Helm["Helm Charts"]
+        GHA["GitHub Actions (CI)"]
+        ArgoCD["ArgoCD (CD / GitOps)"]
+    end
+
+    APIClient -->|"HTTPS / REST"| Router
+    Router --> Middleware --> Handlers --> Services --> Repositories
+    Repositories --> PostgreSQL
+    Repositories --> MinIO
 ```
-Frontend (React SPA)
-  ├── Pages (UI + lóxica de páxina)
-  ├── Components (compoñentes reutilizables)
-  ├── Store (Zustand: auth, settings)
-  └── API Client (Axios: interceptores JWT)
-         │
-         │ HTTPS / REST
-         ▼
-Backend (Go / Gin)
-  ├── Router (rutas + grupos /api/v1)
-  ├── Middleware (JWT auth, CORS, rate limit)
-  ├── Handlers (controladores HTTP)
-  ├── Services (lóxica de negocio)
-  └── Repositories (acceso a datos)
-         │
-         ├── PostgreSQL (datos relacionais)
-         └── MinIO (almacenamento de imaxes)
 
-Infraestrutura
-  ├── k3s (Kubernetes)
-  ├── Helm Charts
-  ├── GitHub Actions (CI)
-  └── ArgoCD (CD / GitOps)
-```
+### 4.4 Fluxo de creación dun produto (secuencia)
 
-### 4.4 Fluxo de autenticación (secuencia)
+```mermaid
+sequenceDiagram
+    actor Usuario
+    participant Frontend
+    participant Backend
+    participant PostgreSQL
+    participant MinIO
 
-```
-Usuario → Frontend: introduce credenciais
-Frontend → Backend: POST /api/auth/login { email, password }
-Backend → PostgreSQL: consulta usuario por email
-PostgreSQL → Backend: rexistro usuario
-Backend: verifica bcrypt(password, hash)
-Backend: xera access_token (JWT RS256, TTL 15 min)
-Backend: xera refresh_token, almacena hash en BD
-Backend → Frontend: { access_token, refresh_token }
-Frontend: garda tokens en Zustand + localStorage
+    Usuario->>Frontend: enche formulario de novo produto
+    Frontend->>Backend: POST /api/v1/products { name, sku, price, ... }
+    Backend->>Backend: valida JWT + rol (manager/admin)
+    Backend->>PostgreSQL: INSERT INTO products
+    PostgreSQL-->>Backend: produto creado (UUID)
 
-[Token expirado]
-Frontend → Backend: POST /api/auth/refresh { refresh_token }
-Backend: valida hash do refresh_token en BD
-Backend: rota refresh_token (invalida o anterior)
-Backend → Frontend: { access_token, refresh_token }
+    alt o usuario achega imaxes
+        Frontend->>Backend: POST /api/v1/products/:id/images (multipart)
+        Backend->>MinIO: sube arquivo → devolve image_key
+        MinIO-->>Backend: image_key
+        Backend->>PostgreSQL: INSERT INTO product_images
+        PostgreSQL-->>Backend: ok
+    end
+
+    Backend-->>Frontend: 201 Created { product }
+    Frontend->>Frontend: actualiza lista de produtos (Zustand)
+    Frontend-->>Usuario: redirixe ao detalle do produto
 ```
 
 ### 4.5 Control de acceso baseado en roles (RBAC)
 
-```
-Viewer  → le produtos, categorías, dashboard
-Manager → todo o anterior + crear/editar produtos e imaxes
-Admin   → todo o anterior + xestionar usuarios + eliminar categorías
+```mermaid
+graph LR
+    Viewer["👁 Viewer"]
+    Manager["🛠 Manager"]
+    Admin["⚙ Admin"]
+
+    Viewer -->|le| Produtos["Produtos"]
+    Viewer -->|le| Categorias["Categorías"]
+    Viewer -->|le| Dashboard["Dashboard"]
+
+    Manager -->|herda| Viewer
+    Manager -->|crea/edita| Produtos
+    Manager -->|sube/edita| Imaxes["Imaxes"]
+
+    Admin -->|herda| Manager
+    Admin -->|xestiona| Usuarios["Usuarios"]
+    Admin -->|elimina| Categorias
 ```
 
 O control de acceso aplícase en dous niveis:
