@@ -324,6 +324,8 @@ Todas as entidades usan **UUID v4** como clave primaria en lugar de enteiros aut
 
 ### 4.2 Diagrama de Clases
 
+#### 4.2.1 Backend (Go)
+
 O dominio do *backend* en Go está representado polas seguintes estruturas principais:
 
 ```mermaid
@@ -375,6 +377,105 @@ classDiagram
     Category "1" --> "0..*" Product : clasifica
     Product "1" --> "0..1" Contact : ten
     Product "1" --> "0..*" ProductImage : galería
+```
+
+#### 4.2.2 Frontend (TypeScript / React)
+
+O frontend organízase en tipos de dominio, stores de estado global e compoñentes principais:
+
+```mermaid
+classDiagram
+    %% --- Tipos de dominio ---
+    class User {
+        +string id
+        +string username
+        +string email
+        +Role role
+        +boolean active
+        +string last_login
+        +string created_at
+    }
+    class Product {
+        +string id
+        +string name
+        +string sku
+        +number price
+        +ProductStatus status
+        +boolean paid
+        +string repair_description
+        +string repair_reference
+        +string entry_date
+        +string exit_date
+        +string category_id
+        +string created_by_id
+        +Contact contact
+        +ProductImage[] images
+    }
+    class Category {
+        +string id
+        +string name
+        +string description
+    }
+    class Contact {
+        +string id
+        +string product_id
+        +string name
+        +string email
+        +string phone
+    }
+    class ProductImage {
+        +string id
+        +string product_id
+        +string image_url
+        +number position
+    }
+
+    %% --- Stores Zustand ---
+    class AuthStore {
+        +User user
+        +string accessToken
+        +string refreshToken
+        +string expiresAt
+        +boolean isAuthenticated
+        +setAuth(user, tokens) void
+        +updateUser(user) void
+        +logout() void
+    }
+    class SettingsStore {
+        +Theme theme
+        +Locale locale
+        +setTheme(theme) void
+        +setLocale(locale) void
+        +toggleTheme() void
+    }
+
+    %% --- Compoñentes principais ---
+    class ProductForm {
+        +CreateProductInput value
+        +UpsertContactInput contact
+        +File[] images
+        +onSubmit() void
+    }
+    class ProductCard {
+        +Product product
+        +onEdit() void
+        +onDelete() void
+    }
+    class Sidebar {
+        +Role role
+        +Theme theme
+        +Locale locale
+    }
+
+    %% --- Relacións ---
+    AuthStore --> User : garda
+    Product --> Category : pertence a
+    Product "1" --> "0..1" Contact : ten
+    Product "1" --> "0..*" ProductImage : galería
+    ProductForm --> Product : crea/edita
+    ProductCard --> Product : mostra
+    Sidebar --> AuthStore : le rol
+    Sidebar --> SettingsStore : le tema/idioma
 ```
 
 ### 4.3 Arquitectura en capas do sistema
