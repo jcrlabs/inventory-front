@@ -746,16 +746,16 @@ A consistencia nos radios crea coherencia visual sen ser monótona: os elementos
 
 ### 5.6 Criterios de accesibilidade
 
-A aplicación está deseñada para cumprir o nivel **WCAG 2.1 AA** en todas as pantallas. A seguinte táboa resume os criterios implementados, o seu identificador WCAG e a implementación concreta.
+A aplicación está deseñada para cumprir o nivel **WCAG 2.1 AA** en todas as pantallas. A seguinte táboa resume os criterios implementados, o seu identificador WCAG e o beneficio para o usuario.
 
-| Nº | Criterio | WCAG | Implementación |
+| Nº | Criterio | WCAG | Que aporta ao usuario |
 |---|---|---|---|
-| 1 | Contraste de cor | 1.4.3 | `text-1` 13.8:1 e `text-2` 6.4:1 sobre fondo escuro; texto negro sobre ámbar 7.2:1; ámbar-700 4.9:1 e rose-800 6.4:1 sobre fondo claro |
-| 2 | Foco visible | 2.4.7 | Anel de foco ámbar de 2 px (`rgba(245,158,11,0.6)`) con `outline-offset: 2px` en todos os elementos interactivos; nunca `outline: none` sen alternativa |
-| 3 | Estado non só por cor | 1.4.1 | *Badges* de estado con cor + icono vectorial + texto, identificables con calquera daltonismo |
-| 4 | Contraste de compoñentes UI | 1.4.11 | Bordos de *inputs* no tema claro `rgba(0,0,0,0.35)`, ≥3:1 sobre fondo branco |
-| 5 | Información multilingüe | 3.1.2 | Atributo `lang` do HTML declara o idioma activo; cambio instantáneo sen recargar |
-| 6 | Tamaño mínimo de áreas interactivas | 2.5.5 | Botóns de acción ≥32×32 px; botóns principais >44 px de alto en móbil (iOS HIG e Material Design) |
+| 1 | Contraste de cor | 1.4.3 | Os textos e botóns destacan claramente sobre o fondo, tanto no tema escuro como no claro, de modo que se len sen esforzo aínda con pouca ou moita luz |
+| 2 | Foco visible | 2.4.7 | Quen navega co teclado sempre ve resaltado o elemento seleccionado, polo que nunca se perde dentro da pantalla |
+| 3 | Estado non só por cor | 1.4.1 | O estado de cada produto recoñécese pola cor, por un icono e por un texto, así que tamén o entenden as persoas con daltonismo |
+| 4 | Contraste de compoñentes UI | 1.4.11 | Os bordos dos campos de formulario véñense con claridade no tema claro, facilitando saber onde escribir |
+| 5 | Información multilingüe | 3.1.2 | A páxina indica o idioma activo e este cámbiase ao instante, sen recargar, mellorando a comprensión e a lectura asistida |
+| 6 | Tamaño das áreas interactivas | 2.5.5 | Os botóns son o suficientemente grandes para pulsalos con comodidade, especialmente desde o móbil |
 
 ### 5.7 Usabilidade
 
