@@ -680,6 +680,22 @@ O sistema de tokens CSS (`--bg-base`, `--bg-nav`, `--bg-surface`, `--bg-card`, `
 
 O tema claro mapea os tokens ao espectro oposto: `--bg-base: #f2f2f4`, `--text-1: #18181b`. Os *overrides* WCAG específicos aseguran que as cores de estado sigan sendo accesibles sobre fondos claros: o ámbar escurece a `#b45309` (4.9:1) e o vermello a `#be123c` (6.4:1).
 
+#### 5.2.5 Resumo do sistema de cores
+
+| Nº | Cor | Código | Orientación (usuario / cliente) | Que se quere plasmar | Ref. |
+|---|---|---|---|---|---|
+| 1 | Ámbar 400 | `#fbbf24` | Usuario técnico de reparación electrónica | Inicio do gradiente e iconos activos; luz de taller | 5.2.1 |
+| 2 | Ámbar 500 (primaria) | `#f59e0b` | Usuario técnico de reparación electrónica | Cor base da marca: soldadura e chispas, distinguible por daltónicos | 5.2.1 |
+| 3 | Ámbar 600 | `#d97706` | Usuario técnico de reparación electrónica | Final do gradiente e paxinación activa | 5.2.1 |
+| 4 | Ámbar 700 | `#b45309` | Usuarios do tema claro | Contraste mínimo WCAG AA (4.9:1) sobre fondo claro | 5.2.1 / 5.2.4 |
+| 5 | Verde esmeralda | `#10b981` | Técnicos que controlan o ciclo de reparación | Estado «reparado» (con icono CheckCircle2) | 5.2.2 |
+| 6 | Ámbar (estado) | `#f59e0b` | Técnicos que controlan o ciclo de reparación | Estado «en progreso» (con icono Clock) | 5.2.2 |
+| 7 | Vermello | `#ef4444` | Técnicos que controlan o ciclo de reparación | Estado «non reparado» (con icono XCircle) | 5.2.2 |
+| 8 | Neutro de fondo (Zinc) | `#111111` | Usuarios en sesións longas e contornos de taller | Redución de fatiga visual, aforro en OLED e contraste co ámbar | 5.2.3 |
+| 9 | Fondo tema claro | `#f2f2f4` | Clientes con preferencia por interface clara | Alternativa accesible para contornos moi iluminados | 5.2.4 |
+| 10 | Texto tema claro | `#18181b` | Clientes con preferencia por interface clara | Lexibilidade máxima sobre fondo claro | 5.2.4 |
+| 11 | Vermello tema claro (Rose 800) | `#be123c` | Usuarios do tema claro | Estado «non reparado» con contraste AA (6.4:1) sobre fondo claro | 5.2.4 |
+
 ### 5.3 Tipografía
 
 **Inter** é a tipografía principal, importada de Google Fonts con pesos 300, 400, 500, 600, 700 e 800. A xustificación da súa elección:
@@ -730,37 +746,16 @@ A consistencia nos radios crea coherencia visual sen ser monótona: os elementos
 
 ### 5.6 Criterios de accesibilidade
 
-A aplicación está deseñada para cumprir o nivel **WCAG 2.1 AA** en todas as pantallas. Os principais criterios implementados son:
+A aplicación está deseñada para cumprir o nivel **WCAG 2.1 AA** en todas as pantallas. A seguinte táboa resume os criterios implementados, o seu identificador WCAG e a implementación concreta.
 
-#### 5.6.1 Contraste de cor (WCAG 1.4.3)
-
-| Par de cores | Ratio | Nivel |
-|---|---|---|
-| `text-1` (#e4e4e7) sobre `bg-base` (#111111) | 13.8:1 | AAA |
-| `text-2` (#a1a1aa) sobre `bg-base` (#111111) | 6.4:1 | AA |
-| Texto negro sobre botón ámbar (gradiente) | 7.2:1 | AAA |
-| Ámbar-700 (#b45309) sobre fondo claro (#f2f2f4) | 4.9:1 | AA |
-| Rose-800 (#be123c) sobre fondo claro | 6.4:1 | AA |
-
-#### 5.6.2 Foco visible (WCAG 2.4.7)
-
-O selector `:focus-visible` aplica un anel de foco de 2 px en cor ámbar (`rgba(245,158,11,0.6)`) con `outline-offset: 2px` en todos os elementos interactivos. Non se usa `outline: none` sen alternativa. Isto garante que os usuarios de teclado poidan navegar pola interface sen perder a referencia visual da posición do foco.
-
-#### 5.6.3 Estado non só por cor (WCAG 1.4.1)
-
-Os *badges* de estado combinan tres elementos: cor de fondo + icono vectorial + texto. Isto garante que un usuario con calquera tipo de daltonismo pode identificar o estado dun produto sen depender exclusivamente do matiz de cor.
-
-#### 5.6.4 Contraste de compoñentes UI (WCAG 1.4.11)
-
-Os bordos dos *inputs* no tema claro empregan `rgba(0,0,0,0.35)`, que acada o ratio mínimo de 3:1 sobre fondo branco requirido para compoñentes non textuais.
-
-#### 5.6.5 Información multilingüe (WCAG 3.1.2)
-
-O atributo `lang` da páxina HTML declara o idioma activo. O cambio de idioma é instantáneo e accesible desde a barra lateral sen necesidade de recargar a páxina.
-
-#### 5.6.6 Tamaño mínimo de áreas interactivas (WCAG 2.5.5)
-
-Os botóns de acción teñen un mínimo de 32×32 px en todas as resolucións, e os botóns principais superan os 44 px de alto en dispositivos móbiles, cumprindo as directrices de iOS Human Interface Guidelines e Material Design.
+| Nº | Criterio | WCAG | Implementación |
+|---|---|---|---|
+| 1 | Contraste de cor | 1.4.3 | `text-1` 13.8:1 e `text-2` 6.4:1 sobre fondo escuro; texto negro sobre ámbar 7.2:1; ámbar-700 4.9:1 e rose-800 6.4:1 sobre fondo claro |
+| 2 | Foco visible | 2.4.7 | Anel de foco ámbar de 2 px (`rgba(245,158,11,0.6)`) con `outline-offset: 2px` en todos os elementos interactivos; nunca `outline: none` sen alternativa |
+| 3 | Estado non só por cor | 1.4.1 | *Badges* de estado con cor + icono vectorial + texto, identificables con calquera daltonismo |
+| 4 | Contraste de compoñentes UI | 1.4.11 | Bordos de *inputs* no tema claro `rgba(0,0,0,0.35)`, ≥3:1 sobre fondo branco |
+| 5 | Información multilingüe | 3.1.2 | Atributo `lang` do HTML declara o idioma activo; cambio instantáneo sen recargar |
+| 6 | Tamaño mínimo de áreas interactivas | 2.5.5 | Botóns de acción ≥32×32 px; botóns principais >44 px de alto en móbil (iOS HIG e Material Design) |
 
 ### 5.7 Usabilidade
 
@@ -776,24 +771,6 @@ A usabilidade da aplicación avalíase fronte ás dez heurísticas de Nielsen:
 8. **Deseño estético e minimalista**: interface escura de alta densidade sen elementos decorativos innecesarios. O ámbar aparece exclusivamente en elementos de acción e énfase.
 9. **Axuda ao usuario a recoñecer, diagnosticar e recuperarse de erros**: mensaxes de erro específicas por campo no formulario. O componente `ErrorBoundary` captura erros de renderización e presenta unha mensaxe de recuperación con opción de reintento.
 10. **Axuda e documentación**: a interface é suficientemente intuitiva para non requirir documentación, pero existen *tooltips* e mensaxes de estado en todos os fluxos de traballo.
-
-### 5.8 Táboa xustificativa do sistema de cores
-
-Cada cor do sistema (sección 5.2) está xustificada en relación co usuario técnico e o cliente do sector da reparación electrónica e co que se quere plasmar. A seguinte táboa resume cada cor, o seu código, o destinatario ao que responde e a mensaxe que transmite.
-
-| Nº | Cor | Código | Orientación (usuario / cliente) | Que se quere plasmar | Ref. |
-|---|---|---|---|---|---|
-| 1 | Ámbar 400 | `#fbbf24` | Usuario técnico de reparación electrónica | Inicio do gradiente e iconos activos; luz de taller | 5.2.1 |
-| 2 | Ámbar 500 (primaria) | `#f59e0b` | Usuario técnico de reparación electrónica | Cor base da marca: soldadura e chispas, distinguible por daltónicos | 5.2.1 |
-| 3 | Ámbar 600 | `#d97706` | Usuario técnico de reparación electrónica | Final do gradiente e paxinación activa | 5.2.1 |
-| 4 | Ámbar 700 | `#b45309` | Usuarios do tema claro | Contraste mínimo WCAG AA (4.9:1) sobre fondo claro | 5.2.1 / 5.2.4 |
-| 5 | Verde esmeralda | `#10b981` | Técnicos que controlan o ciclo de reparación | Estado «reparado» (con icono CheckCircle2) | 5.2.2 |
-| 6 | Ámbar (estado) | `#f59e0b` | Técnicos que controlan o ciclo de reparación | Estado «en progreso» (con icono Clock) | 5.2.2 |
-| 7 | Vermello | `#ef4444` | Técnicos que controlan o ciclo de reparación | Estado «non reparado» (con icono XCircle) | 5.2.2 |
-| 8 | Neutro de fondo (Zinc) | `#111111` | Usuarios en sesións longas e contornos de taller | Redución de fatiga visual, aforro en OLED e contraste co ámbar | 5.2.3 |
-| 9 | Fondo tema claro | `#f2f2f4` | Clientes con preferencia por interface clara | Alternativa accesible para contornos moi iluminados | 5.2.4 |
-| 10 | Texto tema claro | `#18181b` | Clientes con preferencia por interface clara | Lexibilidade máxima sobre fondo claro | 5.2.4 |
-| 11 | Vermello tema claro (Rose 800) | `#be123c` | Usuarios do tema claro | Estado «non reparado» con contraste AA (6.4:1) sobre fondo claro | 5.2.4 |
 
 ---
 
