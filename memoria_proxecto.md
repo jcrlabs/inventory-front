@@ -777,24 +777,23 @@ A usabilidade da aplicación avalíase fronte ás dez heurísticas de Nielsen:
 9. **Axuda ao usuario a recoñecer, diagnosticar e recuperarse de erros**: mensaxes de erro específicas por campo no formulario. O componente `ErrorBoundary` captura erros de renderización e presenta unha mensaxe de recuperación con opción de reintento.
 10. **Axuda e documentación**: a interface é suficientemente intuitiva para non requirir documentación, pero existen *tooltips* e mensaxes de estado en todos os fluxos de traballo.
 
-### 5.8 Táboa xustificativa das decisións de deseño
+### 5.8 Táboa xustificativa do sistema de cores
 
-Toda decisión de deseño (cor, tipografía, logotipo, etc.) está xustificada en relación co usuario e o cliente ao que se orienta a aplicación e co que se quere plasmar. A seguinte táboa resume cada decisión, a súa referencia á sección detallada, o destinatario ao que responde e a mensaxe que transmite.
+Cada cor do sistema (sección 5.2) está xustificada en relación co usuario técnico e o cliente do sector da reparación electrónica e co que se quere plasmar. A seguinte táboa resume cada cor, o seu código, o destinatario ao que responde e a mensaxe que transmite.
 
-| Nº | Decisión de deseño | Escolla | Orientación (usuario / cliente) | Que se quere plasmar | Ref. |
+| Nº | Cor | Código | Orientación (usuario / cliente) | Que se quere plasmar | Ref. |
 |---|---|---|---|---|---|
-| 1 | Estrutura e navegación | Barra lateral persistente en escritorio, menú deslizable en móbil | Técnicos e xestores que alternan entre escritorio do taller e móbil | Acceso rápido e constante ás seccións sen perder contexto de traballo | 5.1 |
-| 2 | Cor primaria | Ámbar `#f59e0b` | Usuario técnico de reparación electrónica | Asociación co taller (soldadura, chispas) e accesibilidade para daltónicos | 5.2.1 |
-| 3 | Cores de estado | Verde / ámbar / vermello + icono | Técnicos que controlan o ciclo de reparación | Identificación inmediata do estado do equipo sen depender só da cor | 5.2.2 |
-| 4 | Neutros e fondo escuro | Escala Zinc, fondo `#111111` | Usuarios en sesións longas e contornos de taller | Redución de fatiga visual, aforro en OLED e máximo contraste co ámbar | 5.2.3 |
-| 5 | Tema claro | Tokens CSS invertidos con *overrides* WCAG | Clientes con preferencia por interface clara ou contornos moi iluminados | Flexibilidade e accesibilidade mantendo a coherencia da marca | 5.2.4 |
-| 6 | Tipografía | Inter (pesos 300–800) | Usuarios que comparan prezos, SKU e identificadores | Lexibilidade en alta densidade, números tabulares e soporte para galego | 5.3 |
-| 7 | Logotipo | Chave inglesa + trazas PCB con gradiente ámbar e *glow* | Cliente do sector da reparación electrónica | Comunicación inmediata do dominio: reparación de equipos electrónicos | 5.4 |
-| 8 | Tarxetas de produto | `ProductCard` con carrusel 16:9, *badge* e barra de acento | Xestores que revisan o inventario dunha ollada | Recoñecemento visual do produto e o seu estado sen abrir o detalle | 5.5.1 |
-| 9 | Modais e animacións | Modal con *backdrop-blur*, *bottom-sheet* en móbil, animación de resorte | Todos os perfís ao crear ou editar | Mantemento do contexto e sensación natural e non intrusiva | 5.5.2 |
-| 10 | Radios de bordo e sombras | 8 px *inputs*, 16 px tarxetas, *full* en *badges* | Todos os perfís | Coherencia visual e distinción entre elementos accionables e informativos | 5.5.3 |
-| 11 | Accesibilidade | Cumprimento WCAG 2.1 AA (contraste, foco, áreas táctiles) | Usuarios con baixa visión, daltonismo ou navegación por teclado | Inclusión e cumprimento normativo (RXPD, accesibilidade) | 5.6 |
-| 12 | Multilingüismo | Galego, español e inglés (i18next) | Clientes do contexto galego e expansión internacional | Proximidade lingüística e alcance de mercado | 5.6.5 |
+| 1 | Ámbar 400 | `#fbbf24` | Usuario técnico de reparación electrónica | Inicio do gradiente e iconos activos; luz de taller | 5.2.1 |
+| 2 | Ámbar 500 (primaria) | `#f59e0b` | Usuario técnico de reparación electrónica | Cor base da marca: soldadura e chispas, distinguible por daltónicos | 5.2.1 |
+| 3 | Ámbar 600 | `#d97706` | Usuario técnico de reparación electrónica | Final do gradiente e paxinación activa | 5.2.1 |
+| 4 | Ámbar 700 | `#b45309` | Usuarios do tema claro | Contraste mínimo WCAG AA (4.9:1) sobre fondo claro | 5.2.1 / 5.2.4 |
+| 5 | Verde esmeralda | `#10b981` | Técnicos que controlan o ciclo de reparación | Estado «reparado» (con icono CheckCircle2) | 5.2.2 |
+| 6 | Ámbar (estado) | `#f59e0b` | Técnicos que controlan o ciclo de reparación | Estado «en progreso» (con icono Clock) | 5.2.2 |
+| 7 | Vermello | `#ef4444` | Técnicos que controlan o ciclo de reparación | Estado «non reparado» (con icono XCircle) | 5.2.2 |
+| 8 | Neutro de fondo (Zinc) | `#111111` | Usuarios en sesións longas e contornos de taller | Redución de fatiga visual, aforro en OLED e contraste co ámbar | 5.2.3 |
+| 9 | Fondo tema claro | `#f2f2f4` | Clientes con preferencia por interface clara | Alternativa accesible para contornos moi iluminados | 5.2.4 |
+| 10 | Texto tema claro | `#18181b` | Clientes con preferencia por interface clara | Lexibilidade máxima sobre fondo claro | 5.2.4 |
+| 11 | Vermello tema claro (Rose 800) | `#be123c` | Usuarios do tema claro | Estado «non reparado» con contraste AA (6.4:1) sobre fondo claro | 5.2.4 |
 
 ---
 
