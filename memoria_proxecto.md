@@ -569,6 +569,65 @@ O control de acceso aplícase en dous niveis:
 1. **Middleware de ruta** no *backend*: cada ruta ten un `RoleGuard` que verifica que o rol do token JWT ten permiso para a operación solicitada.
 2. **UI condicional** no *frontend*: os botóns e accións que o usuario non pode executar están ocultos ou desactivados segundo o rol almacenado no estado de autenticación.
 
+### 4.6 Diagrama de casos de uso — Rol Administrador
+
+```mermaid
+flowchart LR
+    Admin(["👤 Administrador\n(usuario autenticado)"])
+
+    subgraph Dashboard
+        UC1["Ver panel de estatísticas"]
+    end
+
+    subgraph Produtos
+        UC2["Ver listado de produtos"]
+        UC3["Ver detalle dun produto"]
+        UC4["Crear produto"]
+        UC5["Editar produto"]
+        UC6["Eliminar produto"]
+        UC7["Subir imaxes dun produto"]
+    end
+
+    subgraph Categorías
+        UC8["Ver listado de categorías"]
+        UC9["Crear categoría"]
+        UC10["Editar categoría"]
+        UC11["Eliminar categoría"]
+    end
+
+    subgraph Usuarios
+        UC12["Ver listado de usuarios"]
+        UC13["Crear usuario"]
+        UC14["Editar usuario"]
+        UC15["Activar / desactivar usuario"]
+    end
+
+    subgraph Sesión
+        UC16["Cambiar idioma e tema"]
+        UC17["Pechar sesión"]
+    end
+
+    Admin --> UC1
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC4
+    Admin --> UC5
+    Admin --> UC6
+    Admin --> UC7
+    Admin --> UC8
+    Admin --> UC9
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+    Admin --> UC13
+    Admin --> UC14
+    Admin --> UC15
+    Admin --> UC16
+    Admin --> UC17
+```
+
+O rol Administrador engloba todas as accións dispoñibles na aplicación. Herda as capacidades do rol Xestor (CRUD de produtos e categorías) e engade a xestión completa de usuarios e a eliminación de categorías, operacións restrinxidas nos roles inferiores.
+
 ---
 
 ---
