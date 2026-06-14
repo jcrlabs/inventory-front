@@ -118,6 +118,13 @@
       transition: border-color .2s;
     }
     .card .icon { font-size: 1.6em; line-height: 1; display: block; margin-bottom: 0.25em; }
+    /* Brand logos (full colour) */
+    .logos { display: flex; align-items: center; gap: 16px; height: 44px; margin-bottom: 0.55em; }
+    .logo-img { height: 40px; width: auto; display: block; }
+    .logo-img.sm { height: 32px; }
+    /* Line icons (amber, baked into the SVG) */
+    .ico-img { display: block; width: 42px; height: 42px; margin-bottom: 0.4em; }
+    .ico-img.sm { display: inline-block; width: 26px; height: 26px; margin: 0 9px 0 0; vertical-align: middle; }
     .card h3 { color: var(--amber-l); margin: 0 0 0.3em; }
     .card p { font-size: 0.62em; color: var(--muted); margin: 0; line-height: 1.45; }
     .card.accent { border-color: rgba(245,158,11,0.45);
@@ -259,17 +266,17 @@
       <h2>Funcionalidades principais</h2>
       <div class="grid cols-3" style="margin-top:0.7em;">
         <div class="card">
-          <span class="icon">📦</span>
+          <img class="ico-img" src="icons/package.svg" alt="">
           <h3>Xestión de produtos</h3>
           <p>Nome, SKU, categoría e prezo. Inventario claro e accesible para os usuarios.</p>
         </div>
         <div class="card accent">
-          <span class="icon">🔧</span>
+          <img class="ico-img" src="icons/wrench.svg" alt="">
           <h3>Estado de reparación</h3>
           <p>Cada equipo clasificado en reparado, en progreso ou non reparado para unha organización óptima.</p>
         </div>
         <div class="card">
-          <span class="icon">🖼️</span>
+          <img class="ico-img" src="icons/image.svg" alt="">
           <h3>Galerías, contactos e roles</h3>
           <p>Fotos do estado físico, contactos por equipo, categorías personalizables e roles (admin, xestor, visualizador).</p>
         </div>
@@ -282,17 +289,23 @@
       <h2>Tecnoloxías Backend e Datos</h2>
       <div class="grid cols-3" style="margin-top:0.7em;">
         <div class="card">
-          <span class="icon">🐹</span>
+          <div class="logos">
+            <img class="logo-img" src="logos/go.svg" alt="Go">
+            <img class="logo-img" src="logos/postgresql.svg" alt="PostgreSQL">
+          </div>
           <h3>Go e PostgreSQL</h3>
           <p>Gin: latencias baixas, concorrencia nativa, binario estático. PostgreSQL: ACID, UUID e JSONB.</p>
         </div>
         <div class="card">
-          <span class="icon">🗄️</span>
+          <div class="logos">
+            <img class="ico-img sm" src="icons/database.svg" alt="" style="width:32px; height:32px; margin:0">
+            <img class="logo-img" src="logos/minio.svg" alt="MinIO">
+          </div>
           <h3>GORM e MinIO</h3>
           <p>GORM con migracións automáticas. MinIO: almacenamento de obxectos compatible con S3 para imaxes e arquivos.</p>
         </div>
         <div class="card accent">
-          <span class="icon">🔐</span>
+          <img class="ico-img" src="icons/shield-check.svg" alt="">
           <h3>Seguridade e escala</h3>
           <p>JWT, RBAC e bcrypt en cumprimento do RXPD. Orquestración en Kubernetes segura e escalable.</p>
         </div>
@@ -310,22 +323,25 @@
       <h2>Tecnoloxías Frontend</h2>
       <div class="grid cols-2" style="margin-top:0.6em;">
         <div class="card accent">
-          <span class="icon">⚛️</span>
+          <div class="logos">
+            <img class="logo-img" src="logos/react.svg" alt="React">
+            <img class="logo-img" src="logos/typescript.svg" alt="TypeScript">
+          </div>
           <h3>React e TypeScript</h3>
           <p>Interface modular e robusta, con tipado estático que reduce erros en tempo de execución.</p>
         </div>
         <div class="card">
-          <span class="icon">⚡</span>
+          <div class="logos"><img class="logo-img" src="logos/vite.svg" alt="Vite"></div>
           <h3>Vite</h3>
           <p>Bundler ultrarrápido con HMR instantáneo no desenvolvemento e builds optimizados para produción.</p>
         </div>
         <div class="card">
-          <span class="icon">🎨</span>
+          <div class="logos"><img class="logo-img" src="logos/tailwindcss.svg" alt="Tailwind CSS"></div>
           <h3>Tailwind CSS</h3>
           <p>Estilos utilitarios para un deseño consistente, responsivo e accesible (WCAG 2.1).</p>
         </div>
         <div class="card">
-          <span class="icon">🐻</span>
+          <img class="ico-img" src="icons/boxes.svg" alt="">
           <h3>Zustand</h3>
           <p>Xestión de estado lixeira para a sesión, os tokens JWT e os datos da aplicación.</p>
         </div>
@@ -344,22 +360,29 @@
       <h2>Infraestrutura e Despregue</h2>
       <div class="grid cols-2" style="margin-top:0.6em;">
         <div class="card">
-          <span class="icon">🐳</span>
+          <div class="logos"><img class="logo-img" src="logos/docker.svg" alt="Docker"></div>
           <h3>Docker</h3>
           <p>Contenedoriza frontend e backend en imaxes reproducibles, idénticas en local e en produción.</p>
         </div>
         <div class="card accent">
-          <span class="icon">☸️</span>
+          <div class="logos"><img class="logo-img" src="logos/kubernetes.svg" alt="Kubernetes"></div>
           <h3>Kubernetes · k3s</h3>
           <p>k3s (Kubernetes lixeiro) orquestra con Helm: reinicio automático, RollingUpdate e escalado independente.</p>
         </div>
         <div class="card">
-          <span class="icon">🔁</span>
+          <div class="logos">
+            <img class="logo-img" src="logos/githubactions.svg" alt="GitHub Actions">
+            <img class="logo-img" src="logos/argo.svg" alt="ArgoCD">
+          </div>
           <h3>CI/CD · GitOps</h3>
           <p>GitHub Actions para integración (tests + imaxe) e ArgoCD para entrega continua baixo o patrón GitOps.</p>
         </div>
         <div class="card">
-          <span class="icon">🌐</span>
+          <div class="logos">
+            <img class="logo-img" src="logos/nginx.svg" alt="Nginx">
+            <img class="logo-img" src="logos/traefikproxy.svg" alt="Traefik">
+            <img class="logo-img" src="logos/cloudflare.svg" alt="Cloudflare">
+          </div>
           <h3>Nginx, Traefik e Cloudflare</h3>
           <p>Nginx serve o frontend e fai de proxy á API. Traefik como ingress e Cloudflare xestiona o DNS.</p>
         </div>
@@ -378,12 +401,12 @@
       <h2>Arquitectura e Despregue</h2>
       <div class="grid cols-2" style="margin-top:0.6em; align-items:start;">
         <div class="grid" style="gap:14px;">
-          <div class="card"><h3>🏗️ Visión de alto nivel</h3><p>SPA React + API REST Go en VPS Hetzner (datos na UE, RXPD) con k3s; backup de MinIO no VPS secundario.</p></div>
-          <div class="card"><h3>🔒 Seguridade integral</h3><p>JWT, RBAC, contrasinais con bcrypt e TLS automático con cert-manager.</p></div>
-          <div class="card"><h3>♻️ Alta dispoñibilidade</h3><p>Dúas réplicas de frontend e backend, con reinicio automático e RollingUpdate sen cortes de servizo.</p></div>
+          <div class="card"><h3><img class="ico-img sm" src="icons/server.svg" alt="">Visión de alto nivel</h3><p>SPA React + API REST Go en VPS Hetzner (datos na UE, RXPD) con k3s; backup de MinIO no VPS secundario.</p></div>
+          <div class="card"><h3><img class="ico-img sm" src="icons/shield-check.svg" alt="">Seguridade integral</h3><p>JWT, RBAC, contrasinais con bcrypt e TLS automático con cert-manager.</p></div>
+          <div class="card"><h3><img class="ico-img sm" src="icons/layers.svg" alt="">Alta dispoñibilidade</h3><p>Dúas réplicas de frontend e backend, con reinicio automático e RollingUpdate sen cortes de servizo.</p></div>
         </div>
         <div class="card accent" style="align-self:stretch;">
-          <h3>🔗 Fluxo de datos</h3>
+          <h3><img class="ico-img sm" src="icons/workflow.svg" alt="">Fluxo de datos</h3>
           <p class="flow">
             <b>Cloudflare DNS</b><br>↓<br>
             <b>Traefik</b> (k3s)<br>↓<br>
@@ -441,10 +464,10 @@
       <span class="eyebrow">🚀 Roadmap</span>
       <h2>Liñas futuras</h2>
       <div class="grid cols-2" style="margin-top:0.7em;">
-        <div class="card"><h3>📊 Exportación a CSV</h3><p>Informes e contabilidade nun clic.</p></div>
-        <div class="card"><h3>👥 Rol Cliente</h3><p>Cada cliente consulta o estado do seu equipo en liña.</p></div>
-        <div class="card"><h3>💳 Pagos na aplicación</h3><p>Cobrar reparacións pendentes dende a propia web.</p></div>
-        <div class="card"><h3>🤖 Chat de soporte con IA</h3><p>Axuda instantánea para clientes e técnicos.</p></div>
+        <div class="card"><h3><img class="ico-img sm" src="icons/file-spreadsheet.svg" alt="">Exportación a CSV</h3><p>Informes e contabilidade nun clic.</p></div>
+        <div class="card"><h3><img class="ico-img sm" src="icons/users.svg" alt="">Rol Cliente</h3><p>Cada cliente consulta o estado do seu equipo en liña.</p></div>
+        <div class="card"><h3><img class="ico-img sm" src="icons/credit-card.svg" alt="">Pagos na aplicación</h3><p>Cobrar reparacións pendentes dende a propia web.</p></div>
+        <div class="card"><h3><img class="ico-img sm" src="icons/bot.svg" alt="">Chat de soporte con IA</h3><p>Axuda instantánea para clientes e técnicos.</p></div>
       </div>
       <h3 style="margin-top:1.2em; font-size:1.4em; color:var(--amber-l); font-weight:800;">
         Grazas pola súa atención! 🙌
