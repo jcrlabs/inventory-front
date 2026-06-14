@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Electroteca · Presentación</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --amber:   #f59e0b;
+      --amber-l: #fbbf24;
+      --amber-d: #d97706;
+      --bg0:     #0a0a0a;
+      --bg1:     #141414;
+      --ink:     #fafafa;
+      --muted:   #a1a1aa;
+      --line:    #27272a;
+      --go:      #00ACD7;
+      --react:   #61DAFB;
+      --k8s:     #6B9FEF;
+      --pg:      #6FA8D0;
+      --minio:   #E05572;
+      --ts:      #6B9FEF;
+    }
+
+    .reveal {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 30px;
+      color: var(--ink);
+    }
+    .reveal-viewport {
+      background:
+        radial-gradient(60% 50% at 50% 22%, rgba(245,158,11,0.10), transparent 70%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      text-transform: none;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .reveal h1 { font-size: 3.4em; }
+    .reveal h2 { font-size: 1.7em; }
+    .reveal h3 { font-size: 1.05em; font-weight: 700; }
+    .reveal p, .reveal li { line-height: 1.5; }
+    .reveal a { color: var(--amber-l); }
+    .reveal strong { color: var(--amber-l); font-weight: 700; }
+    .reveal em { color: var(--amber); font-style: normal; font-weight: 600; }
+
+    .reveal .controls { color: var(--amber); }
+    .reveal .progress { color: var(--amber); height: 4px; }
+    .reveal .slide-number {
+      background: transparent;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    /* ── Eyebrow / section label ── */
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6em;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.4em;
+      display: block;
+    }
+    .lead { color: var(--muted); font-size: 0.92em; max-width: 24ch; }
+
+    /* ── Title slide ── */
+    .cover { text-align: center; }
+    .cover .logo { width: 150px; height: 150px; margin: 0 auto 0.3em; display: block; }
+    .cover h1 {
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      background: linear-gradient(180deg, #fff, #d4d4d8);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .cover .rule { width: 200px; height: 3px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, var(--amber), transparent);
+      margin: 0.5em auto; }
+    .cover .sub { color: var(--amber-l); font-weight: 500; font-size: 0.85em; }
+    .cover .org { color: var(--muted); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5em; letter-spacing: 0.15em; margin-top: 2.2em; }
+    .cover .org b { color: var(--ink); font-weight: 600; }
+
+    /* ── Section divider ── */
+    .section-title { text-align: left; }
+    .section-title .big { font-size: 3em; }
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--amber); opacity: 0.5; font-size: 1em; display: block; margin-bottom: 0.2em;
+    }
+
+    /* ── Cards ── */
+    .grid { display: grid; gap: 24px; margin-top: 0.3em; }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 22px;
+      text-align: left;
+      transition: border-color .2s;
+    }
+    .card .icon { font-size: 1.6em; line-height: 1; display: block; margin-bottom: 0.25em; }
+    .card h3 { color: var(--amber-l); margin: 0 0 0.3em; }
+    .card p { font-size: 0.62em; color: var(--muted); margin: 0; line-height: 1.45; }
+    .card.accent { border-color: rgba(245,158,11,0.45);
+      background: linear-gradient(180deg, rgba(245,158,11,0.06), rgba(255,255,255,0.02)); }
+
+    /* ── Tech chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 0.4em; }
+    .chip {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.5em; font-weight: 600;
+      padding: 8px 16px; border-radius: 8px; border: 1px solid;
+    }
+
+    /* ── Stat figures ── */
+    .stat { text-align: left; }
+    .stat .num { font-size: 1.5em; font-weight: 800; color: var(--amber-l); font-family: 'Inter'; line-height: 1; }
+    .stat .lbl { font-size: 0.6em; color: var(--muted); margin-top: 0.3em; }
+
+    /* ── Timeline ── */
+    .timeline { display: flex; flex-direction: column; gap: 14px; text-align: left; margin-top: 0.4em; }
+    .step { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 18px; }
+    .step .hrs {
+      font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.7em;
+      color: var(--amber); text-align: center;
+      border: 1px solid rgba(245,158,11,0.4); border-radius: 8px; padding: 10px 0;
+      background: rgba(245,158,11,0.06);
+    }
+    .step .body h3 { margin: 0 0 0.15em; color: var(--ink); }
+    .step .body p { margin: 0; font-size: 0.58em; color: var(--muted); }
+
+    .bar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; margin-top: 1em; display: flex; }
+    .bar > span { display: block; height: 100%; }
+
+    .flow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.62em; color: var(--muted);
+      line-height: 2; margin-top: 0.5em;
+    }
+    .flow b { color: var(--amber-l); }
+
+    .reveal ul { display: inline-block; text-align: left; }
+    .reveal .future li { margin: 0.5em 0; font-size: 0.85em; }
+    footer.note { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); opacity: 0.6; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ══ 1 · PORTADA ══ -->
+    <section data-background-gradient="radial-gradient(60% 50% at 50% 30%, rgba(245,158,11,0.13), transparent 70%)">
+      <div class="cover">
+        <svg class="logo" viewBox="-44 -52 100 100" fill="none">
+          <path d="M28 -44a28 28 0 0 0-31.3 37.8L-26 17.4a10 10 0 1 0 14.1 14.1
+                   L11.7 8.1A28 28 0 0 0 48.5 -23.2l-16.2 16.2-10.8-10.8 16.2-16.2z"
+                fill="none" stroke="url(#wg)" stroke-width="2"/>
+          <circle cx="-18" cy="24" r="6.5" fill="#7c2d12"/>
+          <circle cx="-18" cy="24" r="3.8" fill="#0a0900"/>
+          <circle cx="10" cy="-18" r="2.4" fill="#f59e0b"/>
+          <circle cx="-2" cy="10" r="2.4" fill="#f59e0b"/>
+          <defs>
+            <linearGradient id="wg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h1>Electroteca</h1>
+        <div class="rule"></div>
+        <p class="sub">Sistema de xestión de reparacións</p>
+        <p class="org">
+          <b>jcrlabs S.L.</b> · Jonathan Caamaño Riveiro · DAW · 25/26
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ 2 · A NECESIDADE ══ -->
+    <section>
+      <span class="eyebrow">🔍 O problema</span>
+      <h2>A Necesidade</h2>
+      <div class="grid cols-2" style="margin-top:0.8em; align-items:start;">
+        <div style="text-align:left;">
+          <p style="font-size:0.78em; color:var(--muted);">
+            Os talleres de reparación electrónica xestionan decenas de equipos
+            <strong>sen ferramentas dixitais específicas</strong>: papel, follas de
+            cálculo ou ERP xenéricos caros e complexos.
+          </p>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr; gap:18px;">
+          <div class="card stat"><div class="num">800+</div><div class="lbl">establecementos do sector en Galicia <em>(DIRCE)</em></div></div>
+          <div class="card stat"><div class="num">+12%</div><div class="lbl">crecemento de empresas 2020–2024 <em>(INE)</em></div></div>
+          <div class="card stat"><div class="num">10 anos</div><div class="lbl">de reparación obrigatoria · Dereito a Reparar UE 2024</div></div>
+          <div class="card stat"><div class="num">13,7 Mt</div><div class="lbl">de lixo electrónico na UE en 2022 <em>(Eurostat)</em></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 3 · QUE É ══ -->
+    <section data-background-gradient="radial-gradient(50% 50% at 50% 40%, rgba(245,158,11,0.10), transparent 70%)">
+      <span class="eyebrow">⚡ A solución</span>
+      <h2>Que é Electroteca</h2>
+      <p style="max-width:20ch; margin:0.6em auto; font-size:0.95em;">
+        Aplicación web <strong>SaaS</strong> para xestionar o inventario e as
+        reparacións de equipos electrónicos.
+      </p>
+      <div class="chips" style="margin-top:1em;">
+        <span class="chip" style="color:var(--amber-l); border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.06);">Talleres</span>
+        <span class="chip" style="color:var(--amber-l); border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.06);">Almacéns técnicos</span>
+        <span class="chip" style="color:var(--amber-l); border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.06);">Departamentos TI</span>
+        <span class="chip" style="color:var(--amber-l); border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.06);">Reparadores independentes</span>
+      </div>
+      <p style="font-size:0.62em; color:var(--muted); margin-top:1.4em;">
+        Multilingüe (galego · español · inglés) · accesible <strong>WCAG 2.1</strong> ·
+        <strong>electroteca.jcrlabs.net</strong> dende calquera dispositivo
+      </p>
+    </section>
+
+    <!-- ══ 4 · FUNCIONALIDADES ══ -->
+    <section>
+      <span class="eyebrow">🛠️ Produto</span>
+      <h2>Funcionalidades principais</h2>
+      <div class="grid cols-3" style="margin-top:0.7em;">
+        <div class="card">
+          <span class="icon">📦</span>
+          <h3>Xestión de produtos</h3>
+          <p>Nome, SKU, categoría e prezo. Inventario claro e accesible para os usuarios.</p>
+        </div>
+        <div class="card accent">
+          <span class="icon">🔧</span>
+          <h3>Estado de reparación</h3>
+          <p>Cada equipo clasificado en reparado, en progreso ou non reparado para unha organización óptima.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🖼️</span>
+          <h3>Galerías, contactos e roles</h3>
+          <p>Fotos do estado físico, contactos por equipo, categorías personalizables e roles (admin, xestor, visualizador).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 5 · TECNOLOXÍAS BACKEND ══ -->
+    <section>
+      <span class="eyebrow">⚙️ Stack</span>
+      <h2>Tecnoloxías Backend e Datos</h2>
+      <div class="grid cols-3" style="margin-top:0.7em;">
+        <div class="card">
+          <span class="icon">🐹</span>
+          <h3>Go e PostgreSQL</h3>
+          <p>Gin: latencias baixas, concorrencia nativa, binario estático. PostgreSQL: ACID, UUID e JSONB.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🗄️</span>
+          <h3>GORM e MinIO</h3>
+          <p>GORM con migracións automáticas. MinIO: almacenamento de obxectos compatible con S3 para imaxes e arquivos.</p>
+        </div>
+        <div class="card accent">
+          <span class="icon">🔐</span>
+          <h3>Seguridade e escala</h3>
+          <p>JWT, RBAC e bcrypt en cumprimento do RXPD. Orquestración en Kubernetes segura e escalable.</p>
+        </div>
+      </div>
+      <div class="chips" style="margin-top:1em;">
+        <span class="chip" style="color:var(--go); border-color:rgba(0,172,215,0.35);">Go · Gin</span>
+        <span class="chip" style="color:var(--pg); border-color:rgba(111,168,208,0.35);">PostgreSQL</span>
+        <span class="chip" style="color:var(--minio); border-color:rgba(224,85,114,0.35);">MinIO</span>
+      </div>
+    </section>
+
+    <!-- ══ 6 · TECNOLOXÍAS FRONTEND ══ -->
+    <section>
+      <span class="eyebrow">🎨 Stack</span>
+      <h2>Tecnoloxías Frontend</h2>
+      <div class="grid cols-2" style="margin-top:0.6em;">
+        <div class="card">
+          <span class="icon">⚛️</span>
+          <h3>React e TypeScript</h3>
+          <p>Interface modular e robusta. Vite como bundler, Tailwind CSS e Zustand para o estado e os tokens JWT.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🐳</span>
+          <h3>Docker e Kubernetes</h3>
+          <p>Docker contenedoriza e k3s orquestra con Helm: reinicio automático, RollingUpdate e escalado independente.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🔁</span>
+          <h3>CI/CD</h3>
+          <p>GitHub Actions para integración (tests + imaxe) e ArgoCD para entrega continua baixo o patrón GitOps.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🌐</span>
+          <h3>Nginx, Traefik e Cloudflare</h3>
+          <p>Nginx serve o frontend e fai de proxy á API. Traefik como ingress e Cloudflare xestiona o DNS.</p>
+        </div>
+      </div>
+      <div class="chips" style="margin-top:0.9em;">
+        <span class="chip" style="color:var(--react); border-color:rgba(97,218,251,0.35);">React</span>
+        <span class="chip" style="color:var(--ts); border-color:rgba(107,159,239,0.35);">TypeScript</span>
+        <span class="chip" style="color:var(--k8s); border-color:rgba(107,159,239,0.35);">Kubernetes</span>
+      </div>
+    </section>
+
+    <!-- ══ 7 · ARQUITECTURA ══ -->
+    <section>
+      <span class="eyebrow">☁️ Infraestrutura</span>
+      <h2>Arquitectura e Despregue</h2>
+      <div class="grid cols-2" style="margin-top:0.6em; align-items:start;">
+        <div class="grid" style="gap:14px;">
+          <div class="card"><h3>🏗️ Visión de alto nivel</h3><p>SPA React + API REST Go en VPS Hetzner (datos na UE, RXPD) con k3s; backup de MinIO no VPS secundario.</p></div>
+          <div class="card"><h3>🔒 Seguridade integral</h3><p>JWT, RBAC, contrasinais con bcrypt e TLS automático con cert-manager.</p></div>
+          <div class="card"><h3>🔀 Entornos separados</h3><p><em>develop</em> despregue en test · <em>main</em> en produción. Dúas réplicas de frontend e backend para alta dispoñibilidade.</p></div>
+        </div>
+        <div class="card accent" style="align-self:stretch;">
+          <h3>🔗 Fluxo de datos</h3>
+          <p class="flow">
+            <b>Cloudflare DNS</b><br>↓<br>
+            <b>Traefik</b> (k3s)<br>↓<br>
+            frontend &nbsp;·&nbsp; backend<br>↓<br>
+            <b>PostgreSQL</b> &nbsp;·&nbsp; <b>MinIO</b>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 8 · RECURSOS E ORZAMENTO ══ -->
+    <section>
+      <span class="eyebrow">💶 Negocio</span>
+      <h2>Recursos e Orzamento</h2>
+      <div class="grid cols-3" style="margin-top:0.7em;">
+        <div class="card stat"><div class="num">28 €<span style="font-size:0.4em; color:var(--muted);">/mes</span></div><div class="lbl">infraestrutura en 2 VPS Hetzner, fronte a 50–200 € das xestionadas</div></div>
+        <div class="card stat"><div class="num">19 / 39 €</div><div class="lbl">plans Básico e Profesional · ingresos recorrentes e predicibles</div></div>
+        <div class="card stat"><div class="num">18.000 €</div><div class="lbl">3.000 € propios + ICO 15.000 € + axudas Igape (Xunta)</div></div>
+        <div class="card stat"><div class="num">2.679 €<span style="font-size:0.4em; color:var(--muted);">/mes</span></div><div class="lbl">custo total · o laboral (2.317 €) supón o <strong>86 %</strong></div></div>
+        <div class="card stat accent"><div class="num">~105</div><div class="lbl">clientes para o punto de equilibrio · previsto no ano 2</div></div>
+        <div class="card stat"><div class="num">+13.925 €</div><div class="lbl">beneficio estimado no ano 3 · hora a 25 €</div></div>
+      </div>
+    </section>
+
+    <!-- ══ 9 · TEMPOS DE EXECUCIÓN ══ -->
+    <section>
+      <span class="eyebrow">⏱️ Planificación</span>
+      <h2>Tempos de Execución</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="hrs">3 h</div>
+          <div class="body"><h3>Análise e deseño</h3><p>Análise de requisitos, arquitectura e maquetas.</p></div>
+        </div>
+        <div class="step">
+          <div class="hrs">4 h</div>
+          <div class="body"><h3>Infraestrutura</h3><p>VPS, k3s, PostgreSQL, MinIO, GitHub Actions e ArgoCD.</p></div>
+        </div>
+        <div class="step">
+          <div class="hrs">7 h</div>
+          <div class="body"><h3>Backend · Go</h3><p>Modelos, API REST, autenticación JWT e control de acceso.</p></div>
+        </div>
+        <div class="step">
+          <div class="hrs">12 h</div>
+          <div class="body"><h3>Frontend e peche</h3><p>Interface React e accesibilidade 7 h · probas 3 h · despregue 2 h.</p></div>
+        </div>
+      </div>
+      <div class="bar">
+        <span style="width:11.5%; background:#52525b;"></span>
+        <span style="width:15.4%; background:#71717a;"></span>
+        <span style="width:26.9%; background:var(--amber-d);"></span>
+        <span style="width:46.2%; background:var(--amber);"></span>
+      </div>
+      <p style="font-size:0.6em; color:var(--muted); margin-top:0.6em; text-align:right;">
+        Sprint total: <strong>26 h</strong>
+      </p>
+    </section>
+
+    <!-- ══ 10 · LIÑAS FUTURAS + GRAZAS ══ -->
+    <section data-background-gradient="radial-gradient(60% 50% at 50% 30%, rgba(245,158,11,0.12), transparent 70%)">
+      <span class="eyebrow">🚀 Roadmap</span>
+      <h2>Liñas futuras</h2>
+      <div class="grid cols-2" style="margin-top:0.7em;">
+        <div class="card"><h3>📊 Exportación a CSV</h3><p>Informes e contabilidade nun clic.</p></div>
+        <div class="card"><h3>👥 Rol Cliente</h3><p>Cada cliente consulta o estado do seu equipo en liña.</p></div>
+        <div class="card"><h3>💳 Pagos na aplicación</h3><p>Cobrar reparacións pendentes dende a propia web.</p></div>
+        <div class="card"><h3>🤖 Chat de soporte con IA</h3><p>Axuda instantánea para clientes e técnicos.</p></div>
+      </div>
+      <h3 style="margin-top:1.2em; font-size:1.4em; color:var(--amber-l); font-weight:800;">
+        Grazas pola súa atención! 🙌
+      </h3>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: true,
+    width: 1280,
+    height: 760,
+    margin: 0.06,
+    plugins: [ RevealNotes, RevealHighlight ]
+  });
+</script>
+</body>
+</html>
