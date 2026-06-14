@@ -156,6 +156,27 @@
     }
     .flow b { color: var(--amber-l); }
 
+    /* ── Bar chart ── */
+    .chart { display: flex; flex-direction: column; gap: 22px; margin-top: 0.7em; }
+    .crow { display: grid; grid-template-columns: 230px 1fr; align-items: center; gap: 22px; }
+    .crow .clab { text-align: right; font-weight: 600; font-size: 0.7em; color: var(--ink); }
+    .ctrack { background: rgba(255,255,255,0.04); border-radius: 8px; height: 34px;
+      border: 1px solid var(--line); overflow: hidden; }
+    .cfill {
+      display: flex; align-items: center; justify-content: flex-end;
+      height: 100%; border-radius: 7px; padding-right: 14px;
+      background: linear-gradient(90deg, var(--amber-d), var(--amber));
+      box-shadow: 0 0 24px rgba(245,158,11,0.25);
+      animation: grow 1s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .cfill b { font-family: 'JetBrains Mono', monospace; font-size: 0.6em; font-weight: 600; color: #1a1205; }
+    @keyframes grow { from { transform: scaleX(0); transform-origin: left; } to { transform: scaleX(1); } }
+    .chart-foot { display: flex; justify-content: space-between; align-items: baseline;
+      margin-top: 1.3em; font-size: 0.62em; }
+    .chart-foot .dim { color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    .chart-foot .total { color: var(--amber-l); }
+    .chart-foot .total strong { font-size: 1.5em; }
+
     .reveal ul { display: inline-block; text-align: left; }
     .reveal .future li { margin: 0.5em 0; font-size: 0.85em; }
     footer.note { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center;
@@ -187,7 +208,7 @@
         <div class="rule"></div>
         <p class="sub">Sistema de xestión de reparacións</p>
         <p class="org">
-          <b>jcrlabs S.L.</b> · Jonathan Caamaño Riveiro · DAW · 25/26
+          <b>Jonathan Caamaño Riveiro</b> · DAW · 25/26
         </p>
       </div>
     </section>
@@ -216,8 +237,8 @@
     <!-- ══ 3 · QUE É ══ -->
     <section data-background-gradient="radial-gradient(50% 50% at 50% 40%, rgba(245,158,11,0.10), transparent 70%)">
       <span class="eyebrow">⚡ A solución</span>
-      <h2>Que é Electroteca</h2>
-      <p style="max-width:20ch; margin:0.6em auto; font-size:0.95em;">
+      <h2 style="font-size:2.6em; font-weight:900; letter-spacing:-0.03em; background:linear-gradient(180deg,#fff,var(--amber-l)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">Electroteca</h2>
+      <p style="max-width:22ch; margin:0.6em auto; font-size:1.05em;">
         Aplicación web <strong>SaaS</strong> para xestionar o inventario e as
         reparacións de equipos electrónicos.
       </p>
@@ -289,19 +310,53 @@
       <span class="eyebrow">🎨 Stack</span>
       <h2>Tecnoloxías Frontend</h2>
       <div class="grid cols-2" style="margin-top:0.6em;">
-        <div class="card">
+        <div class="card accent">
           <span class="icon">⚛️</span>
           <h3>React e TypeScript</h3>
-          <p>Interface modular e robusta. Vite como bundler, Tailwind CSS e Zustand para o estado e os tokens JWT.</p>
+          <p>Interface modular e robusta, con tipado estático que reduce erros en tempo de execución.</p>
         </div>
         <div class="card">
+          <span class="icon">⚡</span>
+          <h3>Vite</h3>
+          <p>Bundler ultrarrápido con HMR instantáneo no desenvolvemento e builds optimizados para produción.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🎨</span>
+          <h3>Tailwind CSS</h3>
+          <p>Estilos utilitarios para un deseño consistente, responsivo e accesible (WCAG 2.1).</p>
+        </div>
+        <div class="card">
+          <span class="icon">🐻</span>
+          <h3>Zustand</h3>
+          <p>Xestión de estado lixeira para a sesión, os tokens JWT e os datos da aplicación.</p>
+        </div>
+      </div>
+      <div class="chips" style="margin-top:0.9em;">
+        <span class="chip" style="color:var(--react); border-color:rgba(97,218,251,0.35);">React</span>
+        <span class="chip" style="color:var(--ts); border-color:rgba(107,159,239,0.35);">TypeScript</span>
+        <span class="chip" style="color:var(--amber-l); border-color:rgba(245,158,11,0.35);">Vite</span>
+        <span class="chip" style="color:#38bdf8; border-color:rgba(56,189,248,0.35);">Tailwind</span>
+      </div>
+    </section>
+
+    <!-- ══ 7 · INFRAESTRUTURA E DEVOPS ══ -->
+    <section>
+      <span class="eyebrow">🛠️ DevOps</span>
+      <h2>Infraestrutura e Despregue</h2>
+      <div class="grid cols-2" style="margin-top:0.6em;">
+        <div class="card">
           <span class="icon">🐳</span>
-          <h3>Docker e Kubernetes</h3>
-          <p>Docker contenedoriza e k3s orquestra con Helm: reinicio automático, RollingUpdate e escalado independente.</p>
+          <h3>Docker</h3>
+          <p>Contenedoriza frontend e backend en imaxes reproducibles, idénticas en local e en produción.</p>
+        </div>
+        <div class="card accent">
+          <span class="icon">☸️</span>
+          <h3>Kubernetes · k3s</h3>
+          <p>k3s (Kubernetes lixeiro) orquestra con Helm: reinicio automático, RollingUpdate e escalado independente.</p>
         </div>
         <div class="card">
           <span class="icon">🔁</span>
-          <h3>CI/CD</h3>
+          <h3>CI/CD · GitOps</h3>
           <p>GitHub Actions para integración (tests + imaxe) e ArgoCD para entrega continua baixo o patrón GitOps.</p>
         </div>
         <div class="card">
@@ -311,9 +366,10 @@
         </div>
       </div>
       <div class="chips" style="margin-top:0.9em;">
-        <span class="chip" style="color:var(--react); border-color:rgba(97,218,251,0.35);">React</span>
-        <span class="chip" style="color:var(--ts); border-color:rgba(107,159,239,0.35);">TypeScript</span>
+        <span class="chip" style="color:#2496ED; border-color:rgba(36,150,237,0.35);">Docker</span>
         <span class="chip" style="color:var(--k8s); border-color:rgba(107,159,239,0.35);">Kubernetes</span>
+        <span class="chip" style="color:#EF7B4D; border-color:rgba(239,123,77,0.35);">GitHub Actions</span>
+        <span class="chip" style="color:#F44D27; border-color:rgba(244,77,39,0.35);">ArgoCD</span>
       </div>
     </section>
 
@@ -325,7 +381,7 @@
         <div class="grid" style="gap:14px;">
           <div class="card"><h3>🏗️ Visión de alto nivel</h3><p>SPA React + API REST Go en VPS Hetzner (datos na UE, RXPD) con k3s; backup de MinIO no VPS secundario.</p></div>
           <div class="card"><h3>🔒 Seguridade integral</h3><p>JWT, RBAC, contrasinais con bcrypt e TLS automático con cert-manager.</p></div>
-          <div class="card"><h3>🔀 Entornos separados</h3><p><em>develop</em> despregue en test · <em>main</em> en produción. Dúas réplicas de frontend e backend para alta dispoñibilidade.</p></div>
+          <div class="card"><h3>♻️ Alta dispoñibilidade</h3><p>Dúas réplicas de frontend e backend, con reinicio automático e RollingUpdate sen cortes de servizo.</p></div>
         </div>
         <div class="card accent" style="align-self:stretch;">
           <h3>🔗 Fluxo de datos</h3>
@@ -346,8 +402,8 @@
       <div class="grid cols-3" style="margin-top:0.7em;">
         <div class="card stat"><div class="num">28 €<span style="font-size:0.4em; color:var(--muted);">/mes</span></div><div class="lbl">infraestrutura en 2 VPS Hetzner, fronte a 50–200 € das xestionadas</div></div>
         <div class="card stat"><div class="num">19 / 39 €</div><div class="lbl">plans Básico e Profesional · ingresos recorrentes e predicibles</div></div>
-        <div class="card stat"><div class="num">18.000 €</div><div class="lbl">3.000 € propios + ICO 15.000 € + axudas Igape (Xunta)</div></div>
-        <div class="card stat"><div class="num">2.679 €<span style="font-size:0.4em; color:var(--muted);">/mes</span></div><div class="lbl">custo total · o laboral (2.317 €) supón o <strong>86 %</strong></div></div>
+        <div class="card stat"><div class="num">15.001 €</div><div class="lbl">1 € propio + ICO 15.000 € + axudas Igape (Xunta)</div></div>
+        <div class="card stat"><div class="num">2.450 €<span style="font-size:0.4em; color:var(--muted);">/mes</span></div><div class="lbl">custo total · o laboral (2.088 €) supón o <strong>85 %</strong></div></div>
         <div class="card stat accent"><div class="num">~105</div><div class="lbl">clientes para o punto de equilibrio · previsto no ano 2</div></div>
         <div class="card stat"><div class="num">+13.925 €</div><div class="lbl">beneficio estimado no ano 3 · hora a 25 €</div></div>
       </div>
@@ -357,33 +413,28 @@
     <section>
       <span class="eyebrow">⏱️ Planificación</span>
       <h2>Tempos de Execución</h2>
-      <div class="timeline">
-        <div class="step">
-          <div class="hrs">3 h</div>
-          <div class="body"><h3>Análise e deseño</h3><p>Análise de requisitos, arquitectura e maquetas.</p></div>
+      <div class="chart">
+        <div class="crow">
+          <span class="clab">Análise e deseño</span>
+          <div class="ctrack"><span class="cfill" style="width:25%;"><b>3 h</b></span></div>
         </div>
-        <div class="step">
-          <div class="hrs">4 h</div>
-          <div class="body"><h3>Infraestrutura</h3><p>VPS, k3s, PostgreSQL, MinIO, GitHub Actions e ArgoCD.</p></div>
+        <div class="crow">
+          <span class="clab">Infraestrutura</span>
+          <div class="ctrack"><span class="cfill" style="width:33.3%;"><b>4 h</b></span></div>
         </div>
-        <div class="step">
-          <div class="hrs">7 h</div>
-          <div class="body"><h3>Backend · Go</h3><p>Modelos, API REST, autenticación JWT e control de acceso.</p></div>
+        <div class="crow">
+          <span class="clab">Backend · Go</span>
+          <div class="ctrack"><span class="cfill" style="width:58.3%;"><b>7 h</b></span></div>
         </div>
-        <div class="step">
-          <div class="hrs">12 h</div>
-          <div class="body"><h3>Frontend e peche</h3><p>Interface React e accesibilidade 7 h · probas 3 h · despregue 2 h.</p></div>
+        <div class="crow">
+          <span class="clab">Frontend e peche</span>
+          <div class="ctrack"><span class="cfill" style="width:100%;"><b>12 h</b></span></div>
         </div>
       </div>
-      <div class="bar">
-        <span style="width:11.5%; background:#52525b;"></span>
-        <span style="width:15.4%; background:#71717a;"></span>
-        <span style="width:26.9%; background:var(--amber-d);"></span>
-        <span style="width:46.2%; background:var(--amber);"></span>
+      <div class="chart-foot">
+        <span class="dim">Frontend 7 h · probas 3 h · despregue 2 h</span>
+        <span class="total">Sprint total <strong>26 h</strong></span>
       </div>
-      <p style="font-size:0.6em; color:var(--muted); margin-top:0.6em; text-align:right;">
-        Sprint total: <strong>26 h</strong>
-      </p>
     </section>
 
     <!-- ══ 10 · LIÑAS FUTURAS + GRAZAS ══ -->
