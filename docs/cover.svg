@@ -105,12 +105,12 @@
         fill="white" text-anchor="middle" letter-spacing="-3">Electroteca</text>
 
   <rect x="308" y="646" width="184" height="2.5" rx="1.25"
-        fill="#f59e0b" opacity="0.55"/>
+        fill="#f59e0b" opacity="0.9"/>
 
   <text x="400" y="682"
         font-family="Inter, -apple-system, sans-serif"
-        font-size="18" font-weight="400"
-        fill="#52525b" text-anchor="middle" letter-spacing="0.2">
+        font-size="18" font-weight="500"
+        fill="#fbbf24" text-anchor="middle" letter-spacing="0.2">
     Sistema de xestión de reparacións
   </text>
 
@@ -165,13 +165,13 @@
   <text x="400" y="1032"
         font-family="Inter, -apple-system, sans-serif"
         font-size="16" font-weight="600"
-        fill="#71717a" text-anchor="middle" letter-spacing="0.3">
+        fill="#e4e4e7" text-anchor="middle" letter-spacing="0.3">
     Jonathan Caamaño Riveiro
   </text>
   <text x="400" y="1058"
         font-family="Inter, -apple-system, sans-serif"
-        font-size="12" font-weight="400"
-        fill="#3f3f46" text-anchor="middle" letter-spacing="0.8">
+        font-size="12" font-weight="500"
+        fill="#f59e0b" text-anchor="middle" letter-spacing="0.8">
     DAW · 25/26
   </text>
 
